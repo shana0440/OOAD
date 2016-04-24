@@ -18,8 +18,8 @@ namespace Windows_Spotlight_Test
         [TestMethod]
         public void TestCalculater()
         {
-            _calculator.Expression = "1+2";
-            Assert.AreEqual(3, _calculator.getResult());
+            _calculator.Expression = "1+2*2";
+            Assert.AreEqual(5, _calculator.getResult());
         }
 
         [TestMethod]

@@ -20,14 +20,16 @@ namespace WPF_Windows_Spotlight
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Adapter _adapter;
         public MainWindow()
         {
+            _adapter = new Adapter();
             InitializeComponent();
         }
 
         private void Search(object sender, TextChangedEventArgs e)
         {
-
+            _adapter.Search(Input.Text);
         }
     }
 }
