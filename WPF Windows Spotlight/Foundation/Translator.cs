@@ -41,6 +41,10 @@ namespace WPF_Windows_Spotlight.Foundation
                 HtmlDocument dom = new HtmlDocument();
                 dom.LoadHtml(html);
                 HtmlNode node = dom.DocumentNode.SelectSingleNode(_xpath);
+                if (node == null)
+                {
+                    return "Not Found";
+                }
                 string result = node.InnerHtml;
                 return result;
             }
