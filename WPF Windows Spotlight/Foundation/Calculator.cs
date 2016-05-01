@@ -40,6 +40,12 @@ namespace WPF_Windows_Spotlight.Foundation
             }
         }
 
+        public void replaceSqrt ()
+        {
+            string replace = _expression.Replace("sqrt", "Math.sqrt");
+            Console.WriteLine(replace);
+        }
+
         public float getResult()
         {
             try
