@@ -8,6 +8,7 @@ using Microsoft.CSharp;
 using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace WPF_Windows_Spotlight.Foundation
 {
@@ -15,6 +16,9 @@ namespace WPF_Windows_Spotlight.Foundation
     {
         private string _expression;
         private float _lastResult;
+        private string _transformWord;
+        private string _pattern = @"(\d+\.*\d*)|(\+)|(\-)|(\*)|(\/)";
+        private string _powPattern = @"\(.*\)\^\(.*\)";
 
         public Calculator(string expression = "")
         {
@@ -26,10 +30,21 @@ namespace WPF_Windows_Spotlight.Foundation
             set { _expression = value + ";"; }
         }
 
+        public void transformWord (string input)
+        {
+            Regex regex = new Regex(_pattern);
+            MatchCollection matches = regex.Matches(input);
+            foreach (Match m in matches)
+            {
+                Console.WriteLine(m);
+            }
+        }
+
         public float getResult()
         {
             try
             {
+                transformWord(_expression);
                 string result = Eval(_expression).ToString();
                 _lastResult = Convert.ToSingle(result);
                 return _lastResult;
