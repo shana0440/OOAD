@@ -38,6 +38,7 @@ namespace WPF_Windows_Spotlight
         {
             BackgroundWorker bgworker = new BackgroundWorker();
             IFoundation foundation = _factory.CreateFoundation(foundationName, keyword);
+            bgworker.WorkerSupportsCancellation = true; // 支援取消
             bgworker.RunWorkerCompleted += WorkerCompleted; // 結束時呼叫
             bgworker.DoWork += foundation.DoWork; // start thread時呼叫
             return bgworker;
@@ -52,14 +53,21 @@ namespace WPF_Windows_Spotlight
         {
             foreach (BackgroundWorker worker in _workers)
             {
-                worker.CancelAsync();
+                if (worker.IsBusy)
+                {
+                    worker.CancelAsync();
+                }
             }
+            _workers.Clear();
         }
 
         private void WorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             Console.WriteLine("Result = " + e.Result);
-            _result = e.Result.ToString();
+            if (e.Result != null)
+            {
+                _result = e.Result.ToString();
+            }            
         }
     }
 }
