@@ -167,7 +167,7 @@ namespace WPF_Windows_Spotlight.Foundation
             Console.WriteLine(_expression);
         }
 
-        public string getResult()
+        public string GetResult()
         {
             try
             {
@@ -186,7 +186,7 @@ namespace WPF_Windows_Spotlight.Foundation
 
         public void DoWork(object sender, DoWorkEventArgs e)
         {
-            e.Result = getResult();
+            e.Result = GetResult();
         }
 
         private static object Eval(string sCSCode)
