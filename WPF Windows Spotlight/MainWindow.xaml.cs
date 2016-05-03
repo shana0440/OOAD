@@ -21,15 +21,19 @@ namespace WPF_Windows_Spotlight
     public partial class MainWindow : Window
     {
         private Adapter _adapter;
+
         public MainWindow()
         {
             _adapter = new Adapter();
             InitializeComponent();
+            QueryList.ItemsSource = _adapter.QueryList;
         }
 
         private void Search(object sender, TextChangedEventArgs e)
         {
             _adapter.Search(Input.Text);
         }
+
     }
+
 }

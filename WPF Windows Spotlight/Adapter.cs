@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using WPF_Windows_Spotlight.Foundation;
+using System.Collections.ObjectModel;
 
 namespace WPF_Windows_Spotlight
 {
@@ -15,15 +16,20 @@ namespace WPF_Windows_Spotlight
         private List<BackgroundWorker> _workers;
         private string _result;
         private FoundationFactory _factory;
+        private ObservableCollection<Item> _queryList;
+        public delegate void ViewChangeHandler();
+        public ViewChangeHandler UpdateView;
 
         public Adapter()
         {
             _workers = new List<BackgroundWorker>();
             _factory = new FoundationFactory();
+            _queryList = new ObservableCollection<Item>();
         }
 
         public void Search(string keyword)
         {
+            _queryList.Clear();
             CancelBackgroundWorker();
             List<string> foundations = _factory.GetFoundations();
             foreach (string foundation in foundations)
@@ -49,6 +55,11 @@ namespace WPF_Windows_Spotlight
             return _result;
         }
 
+        public ObservableCollection<Item> QueryList
+        {
+            get { return _queryList; }
+        }
+
         private void CancelBackgroundWorker()
         {
             foreach (BackgroundWorker worker in _workers)
@@ -66,8 +77,9 @@ namespace WPF_Windows_Spotlight
             Console.WriteLine("Result = " + e.Result);
             if (e.Result != null)
             {
-                _result = e.Result.ToString();
-            }            
+                //_result = e.Result.ToString();
+                _queryList.Add((Item)e.Result);
+            }
         }
     }
 }
