@@ -67,6 +67,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Foundation\Calculator.cs" />
+    <Compile Include="Foundation\FoundationFactory.cs" />
     <Compile Include="Foundation\IFoundation.cs" />
     <Compile Include="Foundation\Translator.cs" />
     <Compile Include="MainWindow.xaml.cs">
