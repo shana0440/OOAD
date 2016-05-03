@@ -27,6 +27,8 @@ namespace WPF_Windows_Spotlight
             _adapter = new Adapter();
             InitializeComponent();
             QueryList.ItemsSource = _adapter.QueryList;
+
+            this.KeyDown += new KeyEventHandler(HotKeyOpen);
         }
 
         private void Search(object sender, TextChangedEventArgs e)
@@ -34,6 +36,13 @@ namespace WPF_Windows_Spotlight
             _adapter.Search(Input.Text);
         }
 
+        private void HotKeyOpen(object sender, KeyEventArgs e)
+        {
+            if ((Keyboard.IsKeyDown(Key.LeftCtrl) && Keyboard.IsKeyDown(Key.A)))
+            {
+                this.Hide();
+            }
+        }
     }
 
 }
