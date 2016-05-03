@@ -21,15 +21,26 @@ namespace WPF_Windows_Spotlight
     public partial class MainWindow : Window
     {
         private Adapter _adapter;
+       
         public MainWindow()
         {
             _adapter = new Adapter();
             InitializeComponent();
+            this.KeyDown += new KeyEventHandler(HotKeyOpen);
+            
         }
 
         private void Search(object sender, TextChangedEventArgs e)
         {
             _adapter.Search(Input.Text);
+        }
+
+        private void HotKeyOpen(object sender, KeyEventArgs e)
+        {
+            if ((Keyboard.IsKeyDown(Key.LeftCtrl) && Keyboard.IsKeyDown(Key.A)))
+            {
+                this.Hide();
+            }
         }
     }
 }
