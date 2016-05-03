@@ -126,13 +126,14 @@ namespace WPF_Windows_Spotlight.Foundation
                 }
                 else
                 {
-                    for (int i = splitRight.Length - 1; i >= 0; i--)
+                    for (int i = 0; i < splitRight.Length; i++)
                     {
                         if (splitRight[i] == '+' || splitRight[i] == '-' || splitRight[i] == '*' || splitRight[i] == '/' || splitRight[i] == '^')
                         {
                             rightPosition = i;
                             break;
                         }
+                        rightPosition = i;
                     }
                 }
                 //轉換成 pow

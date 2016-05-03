@@ -22,8 +22,8 @@ namespace Windows_Spotlight_Test
             Assert.AreEqual("1", _calculator.GetResult());
             _calculator.Expression = "1+sqrt(4+5)-2";
             Assert.AreEqual("2", _calculator.GetResult());
-            _calculator.Expression = "2+3^1+1";
-            Assert.AreEqual("6", _calculator.GetResult());
+            _calculator.Expression = "2^2";
+            Assert.AreEqual("4", _calculator.GetResult());
             _calculator.Expression = "2+3^(1+1)";
             Assert.AreEqual("11", _calculator.GetResult());
             _calculator.Expression = "1.1+2+(1*2.2)";
