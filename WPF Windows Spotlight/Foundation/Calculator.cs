@@ -63,7 +63,9 @@ namespace WPF_Windows_Spotlight.Foundation
 
         public void DoWork(object sender, DoWorkEventArgs e)
         {
-            e.Result = GetResult();
+            Item item = new Item();
+            item.Title = GetResult();
+            e.Result = item;
         }
 
         private static object Eval(string sCSCode)
