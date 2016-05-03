@@ -15,7 +15,7 @@ namespace WPF_Windows_Spotlight.Foundation
     public class Calculator : IFoundation
     {
         private string _expression;
-        private float _lastResult;
+        private string _lastResult;
         private string _transformWord;
         private string _pattern = @"(\d+\.*\d*)|(\+)|(\-)|(\*)|(\/)";
         private string _powPattern = @"\(.*\)\^\(.*\)";
@@ -46,13 +46,13 @@ namespace WPF_Windows_Spotlight.Foundation
             Console.WriteLine(replace);
         }
 
-        public float GetResult()
+        public string GetResult()
         {
             try
             {
                 transformWord(_expression);
                 string result = Eval(_expression).ToString();
-                _lastResult = Convert.ToSingle(result);
+                _lastResult = result;
                 return _lastResult;
             }
             catch (Exception e)
