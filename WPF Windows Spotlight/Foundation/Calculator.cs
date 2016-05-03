@@ -22,7 +22,7 @@ namespace WPF_Windows_Spotlight.Foundation
 
         public Calculator(string expression = "")
         {
-            _expression = expression;
+            _expression = expression + ";";
         }
 
         public string Expression
@@ -30,27 +30,158 @@ namespace WPF_Windows_Spotlight.Foundation
             set { _expression = value + ";"; }
         }
 
-        public void transformWord (string input)
+        public void ToLower ()
         {
-            Regex regex = new Regex(_pattern);
-            MatchCollection matches = regex.Matches(input);
-            foreach (Match m in matches)
-            {
-                Console.WriteLine(m);
-            }
+            _expression = _expression.ToLower();
         }
 
-        public void replaceSqrt ()
+        public void TransToFloat ()
         {
-            string replace = _expression.Replace("sqrt", "Math.sqrt");
-            Console.WriteLine(replace);
+            int isFloat = 0;
+            int isNumber = 0;
+            for (int i = 0; i < _expression.Length; i++)
+            {
+                if (_expression[i] >= '0' && _expression[i] <= '9')
+                {
+                    isNumber = 1;
+                }
+                else if (_expression[i] == '.')
+                {
+                    isFloat = 1;
+                }
+                else
+                {
+                    if (isNumber == 1 && isFloat == 0)
+                    {
+                        _expression = _expression.Insert(i, ".0");
+                        i = i+2;
+                    }
+                    isNumber = 0;
+                    isFloat = 0;
+                }
+            }
+
+            Console.WriteLine(_expression);
+        }
+
+        public void TransformPow ()
+        {
+            string[] resultString = Regex.Split(_expression, @"\^");
+            if (resultString[0] != _expression)
+            {
+                string splitLeft = resultString[0];
+                string splitRight = resultString[1];
+                int leftBracketsCount = 0;
+                int leftPosition = 0;
+                int rightBracketsCount = 0;
+                int rightPosition = 0;
+                string powLeft = "";
+                string powRight = "";
+                //指數符號左邊 尋找括號
+                if (splitLeft[splitLeft.Length - 1] == ')')
+                {
+                    for (int i = splitLeft.Length - 1; i >= 0; i--)
+                    {
+                        if (splitLeft[i] == '(')
+                        {
+                            leftBracketsCount--;
+                        }
+                        else if (splitLeft[i] == ')')
+                        {
+                            leftBracketsCount++;
+                        }
+
+                        if (leftBracketsCount == 0)
+                        {
+                            leftPosition = i;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = splitLeft.Length - 1; i >= 0; i--)
+                    {
+                        if (splitLeft[i] == '+' || splitLeft[i] == '-' || splitLeft[i] == '*' || splitLeft[i] == '/' || splitLeft[i] == '^')
+                        {
+                            leftPosition = i + 1;
+                            break;
+                        }
+                    }
+                }
+                //右邊尋找括號
+                if (splitRight[0] == '(')
+                {
+                    for (int i = 0; i < splitRight.Length; i++)
+                    {
+                        if (splitRight[i] == ')')
+                        {
+                            rightBracketsCount--;
+                        }
+                        else if (splitRight[i] == '(')
+                        {
+                            rightBracketsCount++;
+                        }
+
+                        if (rightBracketsCount == 0)
+                        {
+                            rightPosition = i + 1;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < splitRight.Length; i++)
+                    {
+                        if (splitRight[i] == '+' || splitRight[i] == '-' || splitRight[i] == '*' || splitRight[i] == '/' || splitRight[i] == '^')
+                        {
+                            rightPosition = i;
+                            break;
+                        }
+                        rightPosition = i;
+                    }
+                }
+                //轉換成 pow
+                for (int i = leftPosition; i < splitLeft.Length; i++)
+                {
+                    powLeft = powLeft + splitLeft[i];
+                }
+
+                for (int i = 0; i < rightPosition; i++)
+                {
+                    powRight = powRight + splitRight[i];
+                }
+
+                _expression = "";
+                for (int i = 0; i < leftPosition; i++)
+                {
+                    _expression = _expression + splitLeft[i];
+                }
+                _expression = _expression + "Math.Pow(" + powLeft + "," + powRight + ")";
+                for (int i = rightPosition; i < splitRight.Length; i++)
+                {
+                    _expression = _expression + splitRight[i];
+                }
+            }
+            
+            Console.WriteLine(_expression);
+        }
+
+        public void ReplaceSqrt ()
+        {
+            _expression = _expression.Replace("sqrt", "Math.Sqrt");
+            Console.WriteLine(_expression);
         }
 
         public string GetResult()
         {
             try
             {
-                transformWord(_expression);
+                ToLower();
+                TransToFloat();
+                ReplaceSqrt();
+                TransformPow();
                 string result = Eval(_expression).ToString();
                 _lastResult = result;
                 return _lastResult;

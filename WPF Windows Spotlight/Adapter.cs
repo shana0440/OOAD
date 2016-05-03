@@ -50,11 +50,6 @@ namespace WPF_Windows_Spotlight
             return bgworker;
         }
 
-        public string GetResult()
-        {
-            return _result;
-        }
-
         public ObservableCollection<Item> QueryList
         {
             get { return _queryList; }
