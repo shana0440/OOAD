@@ -8,6 +8,14 @@ namespace WPF_Windows_Spotlight.Foundation
 {
     public class FoundationFactory
     {
+        private List<string> foundations;
+
+        public FoundationFactory()
+        {
+            foundations = new List<string>();
+            foundations.Add("calculator");
+        }
+
         public IFoundation CreateFoundation(string foundationName, string arg)
         {
             IFoundation foundation;
@@ -21,6 +29,11 @@ namespace WPF_Windows_Spotlight.Foundation
                     break;
 	        }
             return foundation;
+        }
+
+        public List<string> GetFoundations()
+        {
+            return foundations;
         }
     }
 }

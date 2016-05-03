@@ -14,21 +14,33 @@ namespace WPF_Windows_Spotlight
         private string _keyword;
         private List<BackgroundWorker> _workers;
         private string _result;
+        private FoundationFactory _factory;
 
         public Adapter()
         {
             _workers = new List<BackgroundWorker>();
+            _factory = new FoundationFactory();
         }
 
         public void Search(string keyword)
         {
             CancelBackgroundWorker();
+            List<string> foundations = _factory.GetFoundations();
+            foreach (string foundation in foundations)
+            {
+                BackgroundWorker worker = CreateBackgroundWorker(foundation, keyword);
+                worker.RunWorkerAsync();
+                _workers.Add(worker);
+            }
+        }
 
+        private BackgroundWorker CreateBackgroundWorker(string foundationName, string keyword)
+        {
             BackgroundWorker bgworker = new BackgroundWorker();
-            IFoundation foundation = new Calculator(keyword);
-            bgworker.RunWorkerCompleted += WorkerCompleted;
-            bgworker.DoWork += foundation.DoWork;
-            bgworker.RunWorkerAsync();
+            IFoundation foundation = _factory.CreateFoundation(foundationName, keyword);
+            bgworker.RunWorkerCompleted += WorkerCompleted; // 結束時呼叫
+            bgworker.DoWork += foundation.DoWork; // start thread時呼叫
+            return bgworker;
         }
 
         public string GetResult()
