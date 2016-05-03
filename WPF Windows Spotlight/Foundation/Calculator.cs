@@ -46,7 +46,7 @@ namespace WPF_Windows_Spotlight.Foundation
             Console.WriteLine(replace);
         }
 
-        public float getResult()
+        public float GetResult()
         {
             try
             {
@@ -63,7 +63,7 @@ namespace WPF_Windows_Spotlight.Foundation
 
         public void DoWork(object sender, DoWorkEventArgs e)
         {
-            e.Result = getResult();
+            e.Result = GetResult();
         }
 
         private static object Eval(string sCSCode)

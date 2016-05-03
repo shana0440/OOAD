@@ -28,15 +28,17 @@ namespace Windows_Spotlight_Test
             //Assert.AreEqual(0.6, _calculator.getResult());
             //_calculator.Expression = "100+2*2";
             //Assert.AreEqual(104, _calculator.getResult());
+            _calculator.Expression = "1+2*2";
+            Assert.AreEqual(5, _calculator.GetResult());
         }
 
         [TestMethod]
         public void TestErrorCalculater()
         {
             _calculator.Expression = "1+2";
-            Assert.AreEqual(3, _calculator.getResult());
+            Assert.AreEqual(3, _calculator.GetResult());
             _calculator.Expression = "1+2+";
-            Assert.AreEqual(3, _calculator.getResult());
+            Assert.AreEqual(3, _calculator.GetResult());
         }
 
     }
