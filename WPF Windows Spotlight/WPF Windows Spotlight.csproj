@@ -66,6 +66,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Foundation\Exchange.cs" />
     <Compile Include="Foundation\Calculator.cs" />
     <Compile Include="Foundation\IFoundation.cs" />
     <Compile Include="Foundation\Translator.cs" />
