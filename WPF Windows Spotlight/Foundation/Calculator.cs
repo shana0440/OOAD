@@ -30,6 +30,11 @@ namespace WPF_Windows_Spotlight.Foundation
             set { _expression = value + ";"; }
         }
 
+        public void ToLower ()
+        {
+            _expression = _expression.ToLower();
+        }
+
         public void TransToFloat ()
         {
             int isFloat = 0;
@@ -173,6 +178,7 @@ namespace WPF_Windows_Spotlight.Foundation
         {
             try
             {
+                ToLower();
                 TransToFloat();
                 ReplaceSqrt();
                 TransformPow();
