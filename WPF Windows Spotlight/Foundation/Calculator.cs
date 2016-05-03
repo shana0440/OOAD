@@ -16,8 +16,9 @@ namespace WPF_Windows_Spotlight.Foundation
     {
         private string _expression;
         private string _lastResult;
-
-        
+        private string _transformWord;
+        private string _pattern = @"(\d+\.*\d*)|(\+)|(\-)|(\*)|(\/)";
+        private string _powPattern = @"\(.*\)\^\(.*\)";
 
         public Calculator(string expression = "")
         {
@@ -186,7 +187,9 @@ namespace WPF_Windows_Spotlight.Foundation
 
         public void DoWork(object sender, DoWorkEventArgs e)
         {
-            e.Result = GetResult();
+            Item item = new Item();
+            item.Title = GetResult();
+            e.Result = item;
         }
 
         private static object Eval(string sCSCode)
