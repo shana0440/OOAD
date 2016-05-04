@@ -14,11 +14,8 @@ namespace WPF_Windows_Spotlight
     {
         private string _keyword;
         private List<BackgroundWorker> _workers;
-        private string _result;
         private FoundationFactory _factory;
         private ObservableCollection<Item> _queryList;
-        public delegate void ViewChangeHandler();
-        public ViewChangeHandler UpdateView;
 
         public Adapter()
         {
@@ -29,21 +26,22 @@ namespace WPF_Windows_Spotlight
 
         public void Search(string keyword)
         {
+            _keyword = keyword;
             _queryList.Clear();
             CancelBackgroundWorker();
             List<string> foundations = _factory.GetFoundations();
             foreach (string foundation in foundations)
             {
-                BackgroundWorker worker = CreateBackgroundWorker(foundation, keyword);
+                BackgroundWorker worker = CreateBackgroundWorker(foundation);
                 worker.RunWorkerAsync();
                 _workers.Add(worker);
             }
         }
 
-        private BackgroundWorker CreateBackgroundWorker(string foundationName, string keyword)
+        private BackgroundWorker CreateBackgroundWorker(string foundationName)
         {
             BackgroundWorker bgworker = new BackgroundWorker();
-            IFoundation foundation = _factory.CreateFoundation(foundationName, keyword);
+            IFoundation foundation = _factory.CreateFoundation(foundationName, _keyword);
             bgworker.WorkerSupportsCancellation = true; // 支援取消
             bgworker.RunWorkerCompleted += WorkerCompleted; // 結束時呼叫
             bgworker.DoWork += foundation.DoWork; // start thread時呼叫

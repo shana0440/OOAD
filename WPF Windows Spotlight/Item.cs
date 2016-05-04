@@ -10,6 +10,7 @@ namespace WPF_Windows_Spotlight
     public class Item : INotifyPropertyChanged
     {
         private string _title;
+        private string _content;
 
         public string Title
         {
@@ -17,6 +18,16 @@ namespace WPF_Windows_Spotlight
             set { 
                 _title = value;
                 NotifyPropertyChanged("Title");
+            }
+        }
+
+        public string Content
+        {
+            get { return _content; }
+            set
+            {
+                _content = value;
+                NotifyPropertyChanged("Content");
             }
         }
 
