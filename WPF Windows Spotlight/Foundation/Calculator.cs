@@ -16,23 +16,15 @@ namespace WPF_Windows_Spotlight.Foundation
     {
         private string _expression;
         private string _lastResult;
-        private string _transformWord;
-        private string _pattern = @"(\d+\.*\d*)|(\+)|(\-)|(\*)|(\/)";
-        private string _powPattern = @"\(.*\)\^\(.*\)";
 
         public Calculator(string expression = "")
         {
-            _expression = expression + ";";
+            _expression = expression.ToLower() + ";";
         }
 
         public string Expression
         {
-            set { _expression = value + ";"; }
-        }
-
-        public void ToLower ()
-        {
-            _expression = _expression.ToLower();
+            set { _expression = value.ToLower() + ";"; }
         }
 
         public void TransToFloat ()

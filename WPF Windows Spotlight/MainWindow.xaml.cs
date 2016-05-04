@@ -36,6 +36,13 @@ namespace WPF_Windows_Spotlight
             _adapter.Search(Input.Text);
         }
 
+        private void SelectItem(object sender, SelectionChangedEventArgs e)
+        {
+            ListBox list = (ListBox)sender;
+            Item selectedItem = _adapter.QueryList[list.SelectedIndex];
+
+        }
+
         private void HotKeyOpen(object sender, KeyEventArgs e)
         {
             if ((Keyboard.IsKeyDown(Key.LeftCtrl) && Keyboard.IsKeyDown(Key.A)))

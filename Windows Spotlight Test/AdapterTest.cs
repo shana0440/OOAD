@@ -25,6 +25,7 @@ namespace Windows_Spotlight_Test
 
             //string result = _adapter.GetResult();
             //Assert.AreEqual(Item, result);
+            
         }
     }
 }
