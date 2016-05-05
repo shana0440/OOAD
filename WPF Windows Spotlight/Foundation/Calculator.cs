@@ -170,7 +170,6 @@ namespace WPF_Windows_Spotlight.Foundation
         {
             try
             {
-                ToLower();
                 TransToFloat();
                 ReplaceSqrt();
                 TransformPow();
