@@ -46,8 +46,10 @@ namespace WPF_Windows_Spotlight
         private void SelectItem(object sender, SelectionChangedEventArgs e)
         {
             ListBox list = (ListBox)sender;
-            Item selectedItem = _adapter.QueryList[list.SelectedIndex];
-
+            if (list.SelectedIndex < _adapter.QueryList.Count)
+            {
+                Item selectedItem = _adapter.QueryList[list.SelectedIndex];
+            }
         }
 
         private void HideWindow(object sender, KeyEventArgs e)
@@ -76,8 +78,20 @@ namespace WPF_Windows_Spotlight
             {
                 this.Show();
                 Input.Text = "";
+                this.Focus();
                 _openKeyPointer = 0;
             }
+        }
+
+        private void ClosedWindow(object sender, EventArgs e)
+        {
+            _listener.UnHookKeyboard();
+        }
+
+        private void LostFocusWindow(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            if (e.NewFocus == null)
+                this.Hide();
         }
 
     }
