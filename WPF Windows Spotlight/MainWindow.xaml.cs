@@ -21,14 +21,21 @@ namespace WPF_Windows_Spotlight
     public partial class MainWindow : Window
     {
         private Adapter _adapter;
-
+        private LowLevelKeyboardListener _listener;
+        private string[] _hotKeyForHide = new string[] { "Escape" };
+        private string[] _hotKeyForOpen = new string[] { "LeftCtrl", "Space" };
+        private int _hideKeyPointer = 0;
+        private int _openKeyPointer = 0;
+        
         public MainWindow()
         {
             _adapter = new Adapter();
             InitializeComponent();
             QueryList.ItemsSource = _adapter.QueryList;
-
-            this.KeyDown += new KeyEventHandler(HotKeyOpen);
+            _listener = new LowLevelKeyboardListener();
+            _listener.OnKeyPressed += OpenWindow;
+            
+            _listener.HookKeyboard();
         }
 
         private void Search(object sender, TextChangedEventArgs e)
@@ -43,13 +50,36 @@ namespace WPF_Windows_Spotlight
 
         }
 
-        private void HotKeyOpen(object sender, KeyEventArgs e)
+        private void HideWindow(object sender, KeyEventArgs e)
         {
-            if ((Keyboard.IsKeyDown(Key.LeftCtrl) && Keyboard.IsKeyDown(Key.A)))
+            if (e.Key.ToString() == _hotKeyForHide[_hideKeyPointer])
+                _hideKeyPointer++;
+            else
+                _hideKeyPointer = 0;
+
+            if (_hideKeyPointer == _hotKeyForHide.Length)
             {
                 this.Hide();
+                _hideKeyPointer = 0;
             }
         }
+
+        private void OpenWindow(object sender, KeyPressedArgs e)
+        {
+            Console.WriteLine(e.KeyPressed.ToString());
+            if (e.KeyPressed.ToString() == _hotKeyForOpen[_openKeyPointer])
+                _openKeyPointer++;
+            else
+                _openKeyPointer = 0;
+
+            if (_openKeyPointer == _hotKeyForOpen.Length)
+            {
+                this.Show();
+                Input.Text = "";
+                _openKeyPointer = 0;
+            }
+        }
+
     }
 
 }
