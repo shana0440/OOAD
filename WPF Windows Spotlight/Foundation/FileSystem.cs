@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using System.IO;
+using System.Drawing;
 
 namespace WPF_Windows_Spotlight.Foundation
 {
@@ -31,8 +32,17 @@ namespace WPF_Windows_Spotlight.Foundation
             {
                 // get the result's full path and file name.
                 Everything.Everything_GetResultFullPathNameW(i, buf, bufsize);
-                FileInfo file = new FileInfo(buf.ToString());
-                // 在return type是IEnumerable的時候, yield return之後還會繼續執行
+                FileInfo file;
+                try
+                {
+                    file = new FileInfo(buf.ToString());
+                    // 在return type是IEnumerable的時候, yield return之後還會繼續執行
+                }
+                catch (UnauthorizedAccessException e)
+                {
+                    Console.WriteLine(e.Message);
+                    continue;
+                }
                 yield return file;
             }
         }
