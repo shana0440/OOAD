@@ -71,7 +71,7 @@ namespace WPF_Windows_Spotlight
             if (e.Result != null)
             {
                 //_result = e.Result.ToString();
-                _queryList.Add((Item)e.Result);
+                ((List<Item>)e.Result).ForEach(_queryList.Add);
             }
         }
     }

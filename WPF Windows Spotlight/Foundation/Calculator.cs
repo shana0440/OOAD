@@ -185,9 +185,10 @@ namespace WPF_Windows_Spotlight.Foundation
 
         public void DoWork(object sender, DoWorkEventArgs e)
         {
-            Item item = new Item();
-            item.Title = GetResult();
-            e.Result = item;
+            Item item = new Item(GetResult());
+            List<Item> list = new List<Item>();
+            list.Add(item);
+            e.Result = list;
         }
 
         private static object Eval(string sCSCode)
