@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using System.Drawing;
+using System.Windows.Media.Imaging;
+using System.IO;
 
 namespace WPF_Windows_Spotlight
 {
@@ -11,6 +14,7 @@ namespace WPF_Windows_Spotlight
     {
         private string _title;
         private string _content;
+        private Bitmap _icon;
 
         public Item(string title)
         {
@@ -36,6 +40,26 @@ namespace WPF_Windows_Spotlight
             }
         }
 
+        public BitmapImage Icon
+        {
+            get
+            {
+                if (_icon == null) return null;
+                using (MemoryStream memory = new MemoryStream())
+                {
+                    _icon.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
+                    memory.Position = 0;
+                    BitmapImage bitmapimage = new BitmapImage();
+                    bitmapimage.BeginInit();
+                    bitmapimage.StreamSource = memory;
+                    bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmapimage.EndInit();
+
+                    return bitmapimage;
+                }
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(string property)
         {
@@ -44,6 +68,12 @@ namespace WPF_Windows_Spotlight
             {
                 handler(this, new PropertyChangedEventArgs(property));
             }
+        }
+
+        internal void SetIcon(Bitmap bitmap)
+        {
+            _icon = bitmap;
+            _icon.MakeTransparent();
         }
     }
 }

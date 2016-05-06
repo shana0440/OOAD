@@ -43,8 +43,13 @@ namespace WPF_Windows_Spotlight.Foundation
             List<Item> list = new List<Item>();
             foreach (FileInfo result in results)
             {
-                Item item = new Item(result.Name);
-                list.Add(item);
+                if (result.Exists)
+                {
+                    Icon ico = Icon.ExtractAssociatedIcon(result.FullName);
+                    Item item = new Item(result.Name);
+                    item.SetIcon(ico.ToBitmap());
+                    list.Add(item);
+                }
             }
             e.Result = list;
         }
