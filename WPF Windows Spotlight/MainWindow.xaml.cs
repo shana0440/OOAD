@@ -46,9 +46,9 @@ namespace WPF_Windows_Spotlight
         private void SelectItem(object sender, SelectionChangedEventArgs e)
         {
             ListBox list = (ListBox)sender;
-            if (list.SelectedIndex < _adapter.QueryList.Count)
+            if (list.SelectedIndex < _adapter.QueryList.Count && list.SelectedIndex != -1)
             {
-                Item selectedItem = _adapter.QueryList[list.SelectedIndex];
+                Item selectedItem = _adapter.QueryList[list.SelectedIndex];                                
             }
         }
 
@@ -78,6 +78,7 @@ namespace WPF_Windows_Spotlight
             {
                 this.Show();
                 Input.Text = "";
+                _adapter.QueryList.Clear();
                 this.Focus();
                 _openKeyPointer = 0;
             }
