@@ -21,7 +21,7 @@ namespace WPF_Windows_Spotlight.Foundation
             set { _keyword = value; }
         }
 
-        public IEnumerable<string> Search()
+        public IEnumerable<FileInfo> Search()
         {
             const int bufsize = 260;
             StringBuilder buf = new StringBuilder(bufsize);
@@ -31,9 +31,9 @@ namespace WPF_Windows_Spotlight.Foundation
             {
                 // get the result's full path and file name.
                 Everything.Everything_GetResultFullPathNameW(i, buf, bufsize);
-
+                FileInfo file = new FileInfo(buf.ToString());
                 // 在return type是IEnumerable的時候, yield return之後還會繼續執行
-                yield return buf.ToString();
+                yield return file;
             }
         }
 
@@ -41,9 +41,9 @@ namespace WPF_Windows_Spotlight.Foundation
         {
             var results = Search();
             List<Item> list = new List<Item>();
-            foreach (var result in results)
+            foreach (FileInfo result in results)
             {
-                Item item = new Item(result);
+                Item item = new Item(result.Name);
                 list.Add(item);
             }
             e.Result = list;
