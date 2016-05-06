@@ -13,7 +13,8 @@ namespace WPF_Windows_Spotlight.Foundation
         public FoundationFactory()
         {
             _foundations = new List<string>();
-            _foundations.Add("calculator");
+            _foundations.Add("Calculator");
+            _foundations.Add("FileSystem");
         }
 
         public IFoundation CreateFoundation(string foundationName, string arg)
@@ -21,8 +22,11 @@ namespace WPF_Windows_Spotlight.Foundation
             IFoundation foundation;
             switch (foundationName)
 	        {
-                case "calculator":
+                case "Calculator":
                     foundation = new Calculator(arg);
+                    break;
+                case "FileSystem":
+                    foundation = new FileSystem(arg);
                     break;
 		        default:
                     foundation = null;
