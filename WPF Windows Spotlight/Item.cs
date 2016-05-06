@@ -12,6 +12,11 @@ namespace WPF_Windows_Spotlight
         private string _title;
         private string _content;
 
+        public Item(string title)
+        {
+            _title = title;
+        }
+
         public string Title
         {
             get { return _title; }
