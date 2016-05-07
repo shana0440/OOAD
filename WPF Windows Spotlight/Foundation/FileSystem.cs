@@ -67,6 +67,7 @@ namespace WPF_Windows_Spotlight.Foundation
                     {
                         Icon ico = Icon.ExtractAssociatedIcon(result.FullName);
                         Bitmap bmp = ico.ToBitmap();
+                        bmp.MakeTransparent();
                         item.SetIcon(bmp);
                     }
                     else if (result.IsFolder)

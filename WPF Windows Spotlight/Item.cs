@@ -47,15 +47,23 @@ namespace WPF_Windows_Spotlight
                 if (_icon == null) return null;
                 using (MemoryStream memory = new MemoryStream())
                 {
-                    _icon.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
-                    memory.Position = 0;
-                    BitmapImage bitmapimage = new BitmapImage();
-                    bitmapimage.BeginInit();
-                    bitmapimage.StreamSource = memory;
-                    bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
-                    bitmapimage.EndInit();
+                    try
+                    {
+                        _icon.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
+                        memory.Position = 0;
+                        BitmapImage bitmapimage = new BitmapImage();
+                        bitmapimage.BeginInit();
+                        bitmapimage.StreamSource = memory;
+                        bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapimage.EndInit();
 
-                    return bitmapimage;
+                        return bitmapimage;
+                    }
+                    catch (ArgumentException e)
+                    {
+                        Console.WriteLine(e.Message);
+                        return null;
+                    }
                 }
             }
         }
@@ -73,7 +81,6 @@ namespace WPF_Windows_Spotlight
         internal void SetIcon(Bitmap bitmap)
         {
             _icon = bitmap;
-            _icon.MakeTransparent();
         }
     }
 }
