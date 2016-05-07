@@ -18,7 +18,7 @@ namespace Windows_Spotlight_Test
         [TestMethod]
         public void TestCreateCalculator()
         {
-            IFoundation foundation = _factory.CreateFoundation("calculator", "1+1");
+            IFoundation foundation = _factory.CreateFoundation("Calculator");
             Assert.AreEqual("Calculator", foundation.GetType().Name);
         }
     }
