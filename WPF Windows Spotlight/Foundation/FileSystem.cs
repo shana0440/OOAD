@@ -12,10 +12,13 @@ namespace WPF_Windows_Spotlight.Foundation
     public class FileSystem : IFoundation
     {
         private string _keyword;
+        private Bitmap _dirIcon;
 
         public FileSystem(string keyword = "")
         {
             _keyword = keyword;
+            _dirIcon = (Bitmap)Image.FromFile("Images/folder_icon.png");
+            _dirIcon.MakeTransparent();
         }
 
         public string Keyword {
@@ -27,7 +30,7 @@ namespace WPF_Windows_Spotlight.Foundation
             _keyword = keyword;
         }
 
-        public IEnumerable<FileInfo> Search()
+        public IEnumerable<FolderOrFile> Search()
         {
             const int bufsize = 260;
             StringBuilder buf = new StringBuilder(bufsize);
@@ -37,18 +40,17 @@ namespace WPF_Windows_Spotlight.Foundation
             {
                 // get the result's full path and file name.
                 Everything.Everything_GetResultFullPathNameW(i, buf, bufsize);
-                FileInfo file;
-                try
+                FolderOrFile folderOrFile = null;
+                if (Everything.Everything_IsFolderResult(i))
                 {
-                    file = new FileInfo(buf.ToString());
+                    folderOrFile = new FolderOrFile(new DirectoryInfo(buf.ToString()));
+                }
+                else if (Everything.Everything_IsFileResult(i))
+                {
+                    folderOrFile = new FolderOrFile(new FileInfo(buf.ToString()));
                     // 在return type是IEnumerable的時候, yield return之後還會繼續執行
                 }
-                catch (UnauthorizedAccessException e)
-                {
-                    Console.WriteLine(e.Message);
-                    continue;
-                }
-                yield return file;
+                yield return folderOrFile;
             }
         }
 
@@ -56,13 +58,21 @@ namespace WPF_Windows_Spotlight.Foundation
         {
             var results = Search();
             List<Item> list = new List<Item>();
-            foreach (FileInfo result in results)
+            foreach (FolderOrFile result in results)
             {
-                if (result.Exists)
+                if (result != null && result.Exists)
                 {
-                    Icon ico = Icon.ExtractAssociatedIcon(result.FullName);
                     Item item = new Item(result.Name);
-                    item.SetIcon(ico.ToBitmap());
+                    if (result.IsFile)
+                    {
+                        Icon ico = Icon.ExtractAssociatedIcon(result.FullName);
+                        Bitmap bmp = ico.ToBitmap();
+                        item.SetIcon(bmp);
+                    }
+                    else if (result.IsFolder)
+                    {
+                        item.SetIcon(_dirIcon);
+                    }
                     list.Add(item);
                 }
             }
