@@ -22,6 +22,11 @@ namespace WPF_Windows_Spotlight.Foundation
             set { _keyword = value; }
         }
 
+        public void SetKeyword(string keyword)
+        {
+            _keyword = keyword;
+        }
+
         public IEnumerable<FileInfo> Search()
         {
             const int bufsize = 260;

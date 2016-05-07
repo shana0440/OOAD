@@ -27,6 +27,11 @@ namespace WPF_Windows_Spotlight.Foundation
             set { _expression = value.ToLower() + ";"; }
         }
 
+        public void SetKeyword(string keyword)
+        {
+            _expression = keyword;
+        }
+
         public void TransToFloat ()
         {
             int isFloat = 0;
