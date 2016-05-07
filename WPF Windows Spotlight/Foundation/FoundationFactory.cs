@@ -17,7 +17,7 @@ namespace WPF_Windows_Spotlight.Foundation
             _foundations.Add("FileSystem");
         }
 
-        public IFoundation CreateFoundation(string foundationName, string arg)
+        public IFoundation CreateFoundation(string foundationName, string arg = "")
         {
             IFoundation foundation;
             switch (foundationName)
@@ -35,9 +35,14 @@ namespace WPF_Windows_Spotlight.Foundation
             return foundation;
         }
 
-        public List<string> GetFoundations()
+        public List<IFoundation> GetFoundations()
         {
-            return _foundations;
+            List<IFoundation> foundations = new List<IFoundation>();
+            foreach (string foundationName in _foundations)
+            {
+                foundations.Add(CreateFoundation(foundationName));
+            }
+            return foundations;
         }
     }
 }
