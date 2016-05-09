@@ -33,6 +33,7 @@ namespace WPF_Windows_Spotlight
             _adapter = new Adapter();
             InitializeComponent();
             QueryList.ItemsSource = _adapter.QueryList;
+            CenterWindowOnScreen();
             _listener = new LowLevelKeyboardListener();
             _listener.OnKeyPressed += OpenWindow;
             
@@ -92,10 +93,20 @@ namespace WPF_Windows_Spotlight
 
         private void LostFocusWindow(object sender, KeyboardFocusChangedEventArgs e)
         {
-            if (e.NewFocus == null)
-                this.Hide();
+            //if (e.NewFocus == null)
+            //    this.Hide();
         }
 
+        // 將視窗設定在螢幕中央
+        private void CenterWindowOnScreen()
+        {
+            double screenWidth = System.Windows.SystemParameters.PrimaryScreenWidth;
+            double screenHeight = System.Windows.SystemParameters.PrimaryScreenHeight;
+            double windowWidth = this.Width;
+            double windowHeight = this.Height;
+            this.Left = (screenWidth / 2) - (windowWidth / 2);
+            this.Top = (screenHeight / 2) - (windowHeight / 2);
+        }
     }
 
 }
