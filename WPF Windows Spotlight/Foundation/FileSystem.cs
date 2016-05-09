@@ -13,6 +13,8 @@ namespace WPF_Windows_Spotlight.Foundation
     {
         private string _keyword;
         private Bitmap _dirIcon;
+        const int _bufsize = 260;
+        StringBuilder _buf = new StringBuilder(260);
 
         public FileSystem(string keyword = "")
         {
@@ -30,56 +32,68 @@ namespace WPF_Windows_Spotlight.Foundation
             _keyword = keyword;
         }
 
-        public IEnumerable<FolderOrFile> Search()
+        public List<FolderOrFile> Search(string keyword = "")
         {
-            const int bufsize = 260;
-            StringBuilder buf = new StringBuilder(bufsize);
-            Everything.Everything_SetSearchW(_keyword);
+            if (keyword == "") keyword = _keyword;
+            if (keyword == "") return new List<FolderOrFile>();
+            
+            Everything.Everything_SetSearchW(keyword);
             Everything.Everything_QueryW(true);
+            return GetResult();
+        }
+
+        public List<FolderOrFile> GetResult()
+        {
+            List<FolderOrFile> list = new List<FolderOrFile>();
             for (int i = 0; i < Everything.Everything_GetNumResults(); i++)
             {
                 // get the result's full path and file name.
-                Everything.Everything_GetResultFullPathNameW(i, buf, bufsize);
+                Everything.Everything_GetResultFullPathNameW(i, _buf, _bufsize);
                 FolderOrFile folderOrFile = null;
-                if (Everything.Everything_IsFolderResult(i))
+                try
                 {
-                    folderOrFile = new FolderOrFile(new DirectoryInfo(buf.ToString()));
+                    if (Everything.Everything_IsFolderResult(i))
+                    {
+                        folderOrFile = new FolderOrFile(new DirectoryInfo(_buf.ToString()));
+                    }
+                    else if (Everything.Everything_IsFileResult(i))
+                    {
+                        folderOrFile = new FolderOrFile(new FileInfo(_buf.ToString()));
+                        // 在return type是IEnumerable的時候, yield return之後還會繼續執行
+                    }
+                    if (folderOrFile.Exists) list.Add(folderOrFile);
                 }
-                else if (Everything.Everything_IsFileResult(i))
+                catch (ArgumentException e)
                 {
-                    folderOrFile = new FolderOrFile(new FileInfo(buf.ToString()));
-                    // 在return type是IEnumerable的時候, yield return之後還會繼續執行
+                    Console.WriteLine(e.Message);
                 }
-                yield return folderOrFile;
             }
+            return list;
         }
 
         public void DoWork(object sender, DoWorkEventArgs e)
         {
-            var results = Search();
+            List<FolderOrFile> results = Search();
             List<Item> list = new List<Item>();
             foreach (FolderOrFile result in results)
             {
-                if (result != null && result.Exists)
+                Item item = new Item(result.Name);
+                if (result.IsFile)
                 {
-                    Item item = new Item(result.Name);
-                    if (result.IsFile)
-                    {
-                        Icon ico = Icon.ExtractAssociatedIcon(result.FullName);
-                        Bitmap bmp = ico.ToBitmap();
-                        bmp.MakeTransparent();
-                        item.SetIcon(bmp);
-                    }
-                    else if (result.IsFolder)
-                    {
-                        item.SetIcon(_dirIcon);
-                    }
-                    list.Add(item);
+                    Icon ico = Icon.ExtractAssociatedIcon(result.FullName);
+                    Bitmap bmp = ico.ToBitmap();
+                    bmp.MakeTransparent();
+                    item.SetIcon(bmp);
                 }
+                else if (result.IsFolder)
+                {
+                    item.SetIcon(_dirIcon);
+                }
+                item.Content = result.FullName;
+                list.Add(item);
             }
             e.Result = list;
         }
-
         
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WPF_Windows_Spotlight.Foundation;
 using System.IO;
+using System.Collections.Generic;
 
 namespace Windows_Spotlight_Test
 {
@@ -19,8 +20,7 @@ namespace Windows_Spotlight_Test
         [TestMethod]
         public void TestSearchFile()
         {
-            _fileSystem.Keyword = "putty.exe";
-            var reslut = _fileSystem.Search();
+            Assert.AreEqual(1, _fileSystem.Search("putty.exe").Count);
         }
     }
 }
