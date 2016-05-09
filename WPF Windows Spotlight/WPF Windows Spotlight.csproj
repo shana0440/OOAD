@@ -84,7 +84,6 @@
     </Compile>
     <Compile Include="Foundation\Calculator.cs" />
     <Compile Include="Foundation\Everything.cs" />
-    <Compile Include="Foundation\File.cs" />
     <Compile Include="Foundation\FileSystem.cs" />
     <Compile Include="Foundation\FolderOrFile.cs" />
     <Compile Include="Foundation\FoundationFactory.cs" />
@@ -149,7 +148,7 @@
     <Resource Include="Images\folder_icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
