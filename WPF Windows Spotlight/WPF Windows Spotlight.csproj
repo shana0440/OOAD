@@ -84,12 +84,13 @@
     </Compile>
     <Compile Include="Foundation\Calculator.cs" />
     <Compile Include="Foundation\Everything.cs" />
+    <Compile Include="Foundation\File.cs" />
     <Compile Include="Foundation\FileSystem.cs" />
     <Compile Include="Foundation\FolderOrFile.cs" />
     <Compile Include="Foundation\FoundationFactory.cs" />
     <Compile Include="Foundation\IFoundation.cs" />
     <Compile Include="Foundation\Translator.cs" />
-    <Compile Include="Item.cs" />
+    <Compile Include="Foundation\Item.cs" />
     <Compile Include="LowLevelKeyboardListener.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

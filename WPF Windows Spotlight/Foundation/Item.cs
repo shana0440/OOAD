@@ -7,14 +7,16 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Media.Imaging;
 using System.IO;
+using WPF_Windows_Spotlight;
 
-namespace WPF_Windows_Spotlight
+namespace WPF_Windows_Spotlight.Foundation
 {
     public class Item : INotifyPropertyChanged
     {
         private string _title;
         private string _content;
         private Bitmap _icon;
+        
 
         public Item(string title)
         {
@@ -24,7 +26,8 @@ namespace WPF_Windows_Spotlight
         public string Title
         {
             get { return _title; }
-            set { 
+            set
+            {
                 _title = value;
                 NotifyPropertyChanged("Title");
             }
@@ -68,8 +71,23 @@ namespace WPF_Windows_Spotlight
             }
         }
 
+        public void Open()
+        {
+            if (_content != null)
+            {
+                try
+                {
+                    System.Diagnostics.Process.Start(_content);
+                }
+                catch (Win32Exception e)
+                {
+                    Console.WriteLine("無法開啟");
+                }
+            }            
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged(string property)
+        protected void NotifyPropertyChanged(string property)
         {
             PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null)
@@ -78,7 +96,7 @@ namespace WPF_Windows_Spotlight
             }
         }
 
-        internal void SetIcon(Bitmap bitmap)
+        public void SetIcon(Bitmap bitmap)
         {
             _icon = bitmap;
         }
