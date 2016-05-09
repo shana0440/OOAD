@@ -50,7 +50,8 @@ namespace WPF_Windows_Spotlight
             ListBox list = (ListBox)sender;
             if (list.SelectedIndex < _adapter.QueryList.Count && list.SelectedIndex != -1)
             {
-                Item selectedItem = _adapter.QueryList[list.SelectedIndex];                                
+                Item selectedItem = _adapter.QueryList[list.SelectedIndex];
+                selectedItem.Open();
             }
         }
 
@@ -86,6 +87,7 @@ namespace WPF_Windows_Spotlight
             }
         }
 
+        // 關閉程式時將keyboard hook解除
         private void ClosedWindow(object sender, EventArgs e)
         {
             _listener.UnHookKeyboard();
