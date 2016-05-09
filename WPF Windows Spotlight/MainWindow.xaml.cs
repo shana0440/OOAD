@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WPF_Windows_Spotlight.Foundation;
 
 namespace WPF_Windows_Spotlight
 {
@@ -32,6 +33,7 @@ namespace WPF_Windows_Spotlight
             _adapter = new Adapter();
             InitializeComponent();
             QueryList.ItemsSource = _adapter.QueryList;
+            CenterWindowOnScreen();
             _listener = new LowLevelKeyboardListener();
             _listener.OnKeyPressed += OpenWindow;
             
@@ -46,9 +48,10 @@ namespace WPF_Windows_Spotlight
         private void SelectItem(object sender, SelectionChangedEventArgs e)
         {
             ListBox list = (ListBox)sender;
-            if (list.SelectedIndex < _adapter.QueryList.Count)
+            if (list.SelectedIndex < _adapter.QueryList.Count && list.SelectedIndex != -1)
             {
                 Item selectedItem = _adapter.QueryList[list.SelectedIndex];
+                selectedItem.Open();
             }
         }
 
@@ -78,11 +81,13 @@ namespace WPF_Windows_Spotlight
             {
                 this.Show();
                 Input.Text = "";
+                _adapter.QueryList.Clear();
                 this.Focus();
                 _openKeyPointer = 0;
             }
         }
 
+        // 關閉程式時將keyboard hook解除
         private void ClosedWindow(object sender, EventArgs e)
         {
             _listener.UnHookKeyboard();
@@ -90,10 +95,20 @@ namespace WPF_Windows_Spotlight
 
         private void LostFocusWindow(object sender, KeyboardFocusChangedEventArgs e)
         {
-            if (e.NewFocus == null)
-                this.Hide();
+            //if (e.NewFocus == null)
+            //    this.Hide();
         }
 
+        // 將視窗設定在螢幕中央
+        private void CenterWindowOnScreen()
+        {
+            double screenWidth = System.Windows.SystemParameters.PrimaryScreenWidth;
+            double screenHeight = System.Windows.SystemParameters.PrimaryScreenHeight;
+            double windowWidth = this.Width;
+            double windowHeight = this.Height;
+            this.Left = (screenWidth / 2) - (windowWidth / 2);
+            this.Top = (screenHeight / 2) - (windowHeight / 2);
+        }
     }
 
 }
