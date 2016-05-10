@@ -44,7 +44,7 @@ namespace WPF_Windows_Spotlight
 
         private void Search(object sender, TextChangedEventArgs e)
         {
-            if (Input.Text == "")
+            if (Input.Text.Trim() == "")
             {
                 Height = _inputHieght;
             }
