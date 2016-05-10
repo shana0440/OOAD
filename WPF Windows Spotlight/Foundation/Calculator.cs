@@ -192,6 +192,12 @@ namespace WPF_Windows_Spotlight.Foundation
         public void DoWork(object sender, DoWorkEventArgs e)
         {
             Item item = new Item(GetResult());
+            BackgroundWorker bg = sender as BackgroundWorker;
+            if (bg.CancellationPending)
+            {
+                e.Cancel = true;
+                return;
+            }
             List<Item> list = new List<Item>();
             list.Add(item);
             e.Result = list;
