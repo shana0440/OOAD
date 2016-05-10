@@ -26,6 +26,11 @@
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <EventSetter Event="PreviewMouseLeftButtonUp" Handler="ClickListViewItem" />
+                </Style>
+            </ListBox.ItemContainerStyle>
         </ListBox>
         <Border BorderBrush="#FFD7D7D7" BorderThickness="0,0,0,1" HorizontalAlignment="Left" Height="1" Margin="-1,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="601" Grid.ColumnSpan="3"/>
         <Image Margin="5, 5, 5, 5" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="40" Source="Images/search.png"/>

@@ -194,9 +194,11 @@ namespace WPF_Windows_Spotlight.Foundation
 
         public void DoWork(object sender, DoWorkEventArgs e)
         {
-            Item item = new Item(GetResult());
+            string answer = GetResult();
+            Item item = new Item(answer);
+            double n;
             BackgroundWorker bg = sender as BackgroundWorker;
-            if (bg.CancellationPending)
+            if (bg.CancellationPending || !double.TryParse(answer, out n) || answer == null)
             {
                 e.Cancel = true;
                 return;

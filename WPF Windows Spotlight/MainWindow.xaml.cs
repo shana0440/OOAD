@@ -57,12 +57,12 @@ namespace WPF_Windows_Spotlight
 
         private void SelectItem(object sender, SelectionChangedEventArgs e)
         {
-            ListBox list = (ListBox)sender;
-            if (list.SelectedIndex < _adapter.QueryList.Count && list.SelectedIndex != -1)
-            {
-                Item selectedItem = _adapter.QueryList[list.SelectedIndex];
-                selectedItem.Open();
-            }
+            //ListBox list = (ListBox)sender;
+            //if (list.SelectedIndex < _adapter.QueryList.Count && list.SelectedIndex != -1)
+            //{
+            //    Item selectedItem = _adapter.QueryList[list.SelectedIndex];
+            //    selectedItem.Open();
+            //}
         }
 
         private void HideWindow(object sender, KeyEventArgs e)
@@ -118,6 +118,16 @@ namespace WPF_Windows_Spotlight
             double windowHeight = this.Height;
             this.Left = (screenWidth / 2) - (windowWidth / 2);
             this.Top = (screenHeight / 2) - (windowHeight / 2);
+        }
+
+        private void ClickListViewItem(object sender, MouseButtonEventArgs e)
+        {
+            var item = sender as ListBoxItem;
+            if (item != null && item.IsSelected)
+            {
+                Item selectedItem = _adapter.QueryList[QueryList.SelectedIndex];
+                selectedItem.Open();
+            }
         }
     }
 
