@@ -88,6 +88,8 @@
     <Compile Include="Foundation\FolderOrFile.cs" />
     <Compile Include="Foundation\FoundationFactory.cs" />
     <Compile Include="Foundation\IFoundation.cs" />
+    <Compile Include="Foundation\ItemType\AnswerItem.cs" />
+    <Compile Include="Foundation\ItemType\FileItem.cs" />
     <Compile Include="Foundation\Translator.cs" />
     <Compile Include="Foundation\Item.cs" />
     <Compile Include="LowLevelKeyboardListener.cs" />
@@ -146,6 +148,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\folder_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\calculator_icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

@@ -11,3 +11,7 @@
 
 ## 找不到.dll
 > 要把.dll放到跟.exe同一個目錄之下
+
+## 把圖片加入Resource
+[來源]http://stackoverflow.com/questions/10673957/load-image-from-folder-in-solution
+> 將圖片加入Resource後就不須用將圖片跟.exe放在同一層
