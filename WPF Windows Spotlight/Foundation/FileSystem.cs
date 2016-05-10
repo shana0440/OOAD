@@ -77,6 +77,12 @@ namespace WPF_Windows_Spotlight.Foundation
             List<Item> list = new List<Item>();
             foreach (FolderOrFile result in results)
             {
+                BackgroundWorker bg = sender as BackgroundWorker;
+                if (bg.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return;
+                }
                 Item item = new Item(result.Name);
                 if (result.IsFile)
                 {

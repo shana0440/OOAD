@@ -24,7 +24,6 @@ namespace WPF_Windows_Spotlight
             _factory = new FoundationFactory();
             _queryList = new ObservableCollection<Item>();
             _foundations = _factory.GetFoundations();
-            GetBackgroundWorkers();
         }
 
         public void Search(string keyword)
@@ -80,10 +79,9 @@ namespace WPF_Windows_Spotlight
 
         private void WorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            Console.WriteLine("Result = " + e.Result);
-            if (e.Result != null)
+            if (!e.Cancelled && e.Result != null)
             {
-                //_result = e.Result.ToString();
+                Console.WriteLine("Result = " + e.Result);
                 ((List<Item>)e.Result).ForEach(_queryList.Add);
             }
         }
