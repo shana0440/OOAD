@@ -24,20 +24,25 @@ namespace WPF_Windows_Spotlight.Foundation
 
         public string Expression
         {
-            set { _expression = value.ToLower() + ";"; }
+            set { _expression = value.ToLower() + ";"; } 
         }
 
-        public void TransToFloat ()
+        public void SetKeyword(string keyword)
+        {
+            _expression = keyword;
+        }
+
+        public string TransToFloat (string inputExpression)
         {
             int isFloat = 0;
             int isNumber = 0;
-            for (int i = 0; i < _expression.Length; i++)
+            for (int i = 0; i < inputExpression.Length; i++)
             {
-                if (_expression[i] >= '0' && _expression[i] <= '9')
+                if (inputExpression[i] >= '0' && inputExpression[i] <= '9')
                 {
                     isNumber = 1;
                 }
-                else if (_expression[i] == '.')
+                else if (inputExpression[i] == '.')
                 {
                     isFloat = 1;
                 }
@@ -45,7 +50,7 @@ namespace WPF_Windows_Spotlight.Foundation
                 {
                     if (isNumber == 1 && isFloat == 0)
                     {
-                        _expression = _expression.Insert(i, ".0");
+                        inputExpression = inputExpression.Insert(i, ".0");
                         i = i+2;
                     }
                     isNumber = 0;
@@ -53,13 +58,13 @@ namespace WPF_Windows_Spotlight.Foundation
                 }
             }
 
-            Console.WriteLine(_expression);
+            return inputExpression;
         }
 
-        public void TransformPow ()
+        public string TransformPow (string inputExpression)
         {
-            string[] resultString = Regex.Split(_expression, @"\^");
-            if (resultString[0] != _expression)
+            string[] resultString = Regex.Split(inputExpression, @"\^");
+            if (resultString[0] != inputExpression)
             {
                 string splitLeft = resultString[0];
                 string splitRight = resultString[1];
@@ -69,6 +74,8 @@ namespace WPF_Windows_Spotlight.Foundation
                 int rightPosition = 0;
                 string powLeft = "";
                 string powRight = "";
+
+                //sqrt(1^2)
                 //指數符號左邊 尋找括號
                 if (splitLeft[splitLeft.Length - 1] == ')')
                 {
@@ -94,7 +101,7 @@ namespace WPF_Windows_Spotlight.Foundation
                 {
                     for (int i = splitLeft.Length - 1; i >= 0; i--)
                     {
-                        if (splitLeft[i] == '+' || splitLeft[i] == '-' || splitLeft[i] == '*' || splitLeft[i] == '/' || splitLeft[i] == '^')
+                        if (splitLeft[i] == '+' || splitLeft[i] == '-' || splitLeft[i] == '*' || splitLeft[i] == '/' || splitLeft[i] == '^' || splitLeft[i] == '(')
                         {
                             leftPosition = i + 1;
                             break;
@@ -126,7 +133,7 @@ namespace WPF_Windows_Spotlight.Foundation
                 {
                     for (int i = 0; i < splitRight.Length; i++)
                     {
-                        if (splitRight[i] == '+' || splitRight[i] == '-' || splitRight[i] == '*' || splitRight[i] == '/' || splitRight[i] == '^')
+                        if (splitRight[i] == '+' || splitRight[i] == '-' || splitRight[i] == '*' || splitRight[i] == '/' || splitRight[i] == '^' || splitRight[i] == ')')
                         {
                             rightPosition = i;
                             break;
@@ -145,34 +152,33 @@ namespace WPF_Windows_Spotlight.Foundation
                     powRight = powRight + splitRight[i];
                 }
 
-                _expression = "";
+                inputExpression = "";
                 for (int i = 0; i < leftPosition; i++)
                 {
-                    _expression = _expression + splitLeft[i];
+                    inputExpression = inputExpression + splitLeft[i];
                 }
-                _expression = _expression + "Math.Pow(" + powLeft + "," + powRight + ")";
+                inputExpression = inputExpression + "Math.Pow(" + powLeft + "," + powRight + ")";
                 for (int i = rightPosition; i < splitRight.Length; i++)
                 {
-                    _expression = _expression + splitRight[i];
+                    inputExpression = inputExpression + splitRight[i];
                 }
             }
-            
-            Console.WriteLine(_expression);
+
+            return inputExpression;
         }
 
-        public void ReplaceSqrt ()
+        public string ReplaceSqrt (string inputExpression)
         {
-            _expression = _expression.Replace("sqrt", "Math.Sqrt");
-            Console.WriteLine(_expression);
+            return inputExpression.Replace("sqrt", "Math.Sqrt");
         }
 
         public string GetResult()
         {
             try
             {
-                TransToFloat();
-                ReplaceSqrt();
-                TransformPow();
+                _expression = TransToFloat(_expression);
+                _expression = ReplaceSqrt(_expression);
+                _expression = TransformPow(_expression);
                 string result = Eval(_expression).ToString();
                 _lastResult = result;
                 return _lastResult;
@@ -185,9 +191,10 @@ namespace WPF_Windows_Spotlight.Foundation
 
         public void DoWork(object sender, DoWorkEventArgs e)
         {
-            Item item = new Item();
-            item.Title = GetResult();
-            e.Result = item;
+            Item item = new Item(GetResult());
+            List<Item> list = new List<Item>();
+            list.Add(item);
+            e.Result = list;
         }
 
         private static object Eval(string sCSCode)

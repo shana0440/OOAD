@@ -39,12 +39,39 @@ namespace Windows_Spotlight_Test
         }
 
         [TestMethod]
+        public void TestTransToFloat()
+        {
+            string testExp; 
+            testExp = "sqrt(1^2)";
+            Assert.AreEqual("sqrt(1.0^2.0)", _calculator.TransToFloat(testExp));
+            testExp = "sqrt(1^2)";
+            testExp = _calculator.TransformPow(testExp);
+            Assert.AreEqual("sqrt(Math.Pow(1.0,2.0))", _calculator.TransToFloat(testExp));
+        }
+
+        [TestMethod]
+        public void TestTransformPow()
+        {
+            string testExp;
+            testExp = "sqrt(1^2)";
+            testExp = _calculator.TransToFloat(testExp);
+            Assert.AreEqual("sqrt(Math.Pow(1.0,2.0))", _calculator.TransformPow(testExp));
+        }
+
+        [TestMethod]
         public void TestErrorCalculater()
         {
             _calculator.Expression = "1+2";
             Assert.AreEqual("3", _calculator.GetResult());
             _calculator.Expression = "1+2+";
             Assert.AreEqual("3", _calculator.GetResult());
+        }
+
+        [TestMethod]
+        public void TestReplaceSqrt ()
+        {
+            string testExp = "sqrt(1^2)";
+            Assert.AreEqual("Math.Sqrt(1^2)", _calculator.ReplaceSqrt(testExp));
         }
 
     }

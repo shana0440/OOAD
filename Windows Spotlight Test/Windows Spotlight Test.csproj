@@ -55,6 +55,7 @@
     <Compile Include="TranslatorTest.cs" />
     <Compile Include="AdapterTest.cs" />
     <Compile Include="FoundationFactoryTest.cs" />
+    <Compile Include="FileSystemTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WPF Windows Spotlight\WPF Windows Spotlight.csproj">

@@ -28,6 +28,11 @@ namespace WPF_Windows_Spotlight.Foundation
             set { _word = value; }
         }
 
+        public void SetKeyword(string keyword)
+        {
+            _word = keyword;
+        }
+
         public string Translate()
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_url + _word);

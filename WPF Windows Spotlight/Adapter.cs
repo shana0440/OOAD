@@ -16,12 +16,14 @@ namespace WPF_Windows_Spotlight
         private List<BackgroundWorker> _workers;
         private FoundationFactory _factory;
         private ObservableCollection<Item> _queryList;
+        private List<IFoundation> _foundations;
 
         public Adapter()
         {
             _workers = new List<BackgroundWorker>();
             _factory = new FoundationFactory();
             _queryList = new ObservableCollection<Item>();
+            _foundations = _factory.GetFoundations();
         }
 
         public void Search(string keyword)
@@ -29,23 +31,33 @@ namespace WPF_Windows_Spotlight
             _keyword = keyword;
             _queryList.Clear();
             CancelBackgroundWorker();
-            List<string> foundations = _factory.GetFoundations();
-            foreach (string foundation in foundations)
+            GetBackgroundWorkers();
+            foreach (IFoundation foundation in _foundations)
             {
-                BackgroundWorker worker = CreateBackgroundWorker(foundation);
+                foundation.SetKeyword(_keyword);
+            }
+            foreach (BackgroundWorker worker in _workers)
+            {
                 worker.RunWorkerAsync();
-                _workers.Add(worker);
             }
         }
 
-        private BackgroundWorker CreateBackgroundWorker(string foundationName)
+        private BackgroundWorker CreateBackgroundWorker(IFoundation foundation)
         {
             BackgroundWorker bgworker = new BackgroundWorker();
-            IFoundation foundation = _factory.CreateFoundation(foundationName, _keyword);
             bgworker.WorkerSupportsCancellation = true; // 支援取消
             bgworker.RunWorkerCompleted += WorkerCompleted; // 結束時呼叫
             bgworker.DoWork += foundation.DoWork; // start thread時呼叫
             return bgworker;
+        }
+
+        private void GetBackgroundWorkers()
+        {
+            foreach (IFoundation foundation in _foundations)
+            {
+                BackgroundWorker worker = CreateBackgroundWorker(foundation);
+                _workers.Add(worker);
+            }
         }
 
         public ObservableCollection<Item> QueryList
@@ -67,11 +79,10 @@ namespace WPF_Windows_Spotlight
 
         private void WorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            Console.WriteLine("Result = " + e.Result);
-            if (e.Result != null)
+            if (!e.Cancelled && e.Result != null)
             {
-                //_result = e.Result.ToString();
-                _queryList.Add((Item)e.Result);
+                Console.WriteLine("Result = " + e.Result);
+                ((List<Item>)e.Result).ForEach(_queryList.Add);
             }
         }
     }
