@@ -27,6 +27,8 @@ namespace WPF_Windows_Spotlight
         private string[] _hotKeyForOpen = new string[] { "LeftCtrl", "Space" };
         private int _hideKeyPointer = 0;
         private int _openKeyPointer = 0;
+        private int _windowHieght = 350;
+        private int _inputHieght = 50;
         
         public MainWindow()
         {
@@ -42,7 +44,15 @@ namespace WPF_Windows_Spotlight
 
         private void Search(object sender, TextChangedEventArgs e)
         {
-            _adapter.Search(Input.Text);
+            if (Input.Text.Trim() == "")
+            {
+                Height = _inputHieght;
+            }
+            else
+            {
+                _adapter.Search(Input.Text);
+                Height = _windowHieght;
+            }
         }
 
         private void SelectItem(object sender, SelectionChangedEventArgs e)
