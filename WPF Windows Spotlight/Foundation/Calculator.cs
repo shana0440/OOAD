@@ -9,6 +9,7 @@ using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Drawing;
 
 namespace WPF_Windows_Spotlight.Foundation
 {
@@ -16,10 +17,12 @@ namespace WPF_Windows_Spotlight.Foundation
     {
         private string _expression;
         private string _lastResult;
+        private Bitmap _icon;
 
         public Calculator(string expression = "")
         {
             _expression = expression.ToLower() + ";";
+            _icon = (Bitmap)Image.FromFile("Images/calculator_icon.png");
         }
 
         public string Expression
@@ -199,6 +202,7 @@ namespace WPF_Windows_Spotlight.Foundation
                 return;
             }
             List<Item> list = new List<Item>();
+            item.SetIcon(_icon);
             list.Add(item);
             e.Result = list;
         }
