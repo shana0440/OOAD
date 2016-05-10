@@ -11,7 +11,7 @@ using WPF_Windows_Spotlight;
 
 namespace WPF_Windows_Spotlight.Foundation
 {
-    public class Item : INotifyPropertyChanged
+    public class Item
     {
         private string _title;
         private string _content;
@@ -26,21 +26,13 @@ namespace WPF_Windows_Spotlight.Foundation
         public string Title
         {
             get { return _title; }
-            set
-            {
-                _title = value;
-                NotifyPropertyChanged("Title");
-            }
+            set { _title = value; }
         }
 
         public string Content
         {
             get { return _content; }
-            set
-            {
-                _content = value;
-                NotifyPropertyChanged("Content");
-            }
+            set { _content = value; }
         }
 
         public BitmapImage Icon
@@ -84,16 +76,6 @@ namespace WPF_Windows_Spotlight.Foundation
                     Console.WriteLine("無法開啟");
                 }
             }            
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void NotifyPropertyChanged(string property)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(property));
-            }
         }
 
         public void SetIcon(Bitmap bitmap)
