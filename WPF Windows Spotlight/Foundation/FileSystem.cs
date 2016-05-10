@@ -60,6 +60,10 @@ namespace WPF_Windows_Spotlight.Foundation
                     {
                         folderOrFile = new FolderOrFile(new FileInfo(_buf.ToString()));
                         // 在return type是IEnumerable的時候, yield return之後還會繼續執行
+                    } 
+                    else
+                    {
+                        continue;
                     }
                     if (folderOrFile.Exists) list.Add(folderOrFile);
                 }
