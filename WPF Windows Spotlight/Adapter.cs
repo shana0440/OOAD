@@ -81,8 +81,9 @@ namespace WPF_Windows_Spotlight
         {
             if (!e.Cancelled && e.Result != null)
             {
-                Console.WriteLine("Result = " + e.Result);
-                ((List<Item>)e.Result).ForEach(_queryList.Add);
+                List<Item> list = ((List<Item>)e.Result);
+                if (list.Count > 0)
+                    list.ForEach(_queryList.Add);
             }
         }
     }
