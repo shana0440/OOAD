@@ -16,7 +16,7 @@ namespace WPF_Windows_Spotlight.Foundation
         protected string _title;
         protected string _content;
         protected Bitmap _icon;
-        
+        protected bool _isSelected;
 
         public Item(string title)
         {
@@ -33,6 +33,12 @@ namespace WPF_Windows_Spotlight.Foundation
         {
             get { return _content; }
             set { _content = value; }
+        }
+
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set { _isSelected = value; }
         }
 
         public BitmapImage Icon

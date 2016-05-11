@@ -56,6 +56,7 @@ namespace WPF_Windows_Spotlight
             }
         }
 
+
         private void SelectItem(object sender, SelectionChangedEventArgs e)
         {
             //ListBox list = (ListBox)sender;
@@ -178,6 +179,24 @@ namespace WPF_Windows_Spotlight
                 ContentView.Children.Add(wrap);
             }
         }
+
+        private void MyKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Up)
+            {
+                _adapter.SelectItem(_adapter.SelectedIndex - 1);
+            }
+            else if (e.Key == Key.Down)
+            {
+                _adapter.SelectItem(_adapter.SelectedIndex + 1);
+            }
+            else if (e.Key == Key.Enter)
+            {
+                Item item = _adapter.QueryList[_adapter.SelectedIndex];
+                item.Open();
+            }
+        }
+
     }
 
 }
