@@ -123,8 +123,10 @@ namespace WPF_Windows_Spotlight
             }
         }
 
+        // 分配要用哪個ShowXXXXDetail來顯示Item的詳細資料
         private void ShowDetail(Item item)
         {
+            if (item == null) return;
             string type = item.GetType().Name;
             switch(type)
             {

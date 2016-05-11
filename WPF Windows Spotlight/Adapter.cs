@@ -75,6 +75,7 @@ namespace WPF_Windows_Spotlight
 
         public Item SelectItem(int index)
         {
+            if (_queryList.Count == 0) return null;
             foreach (Item item in _queryList)
             {
                 item.IsSelected = false;
