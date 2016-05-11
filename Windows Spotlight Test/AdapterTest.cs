@@ -21,7 +21,7 @@ namespace Windows_Spotlight_Test
         [TestMethod]
         public void TestAdapterSearch()
         {
-            _adapter.Search("putty.exe");
+            _adapter.Search("AnswerItem.cs");
 
             Thread.Sleep(1000);
 
@@ -32,15 +32,13 @@ namespace Windows_Spotlight_Test
         [TestMethod]
         public void TestSelectItem()
         {
-            _adapter.Search("putty");
+            _adapter.Search("notepad");
 
             Thread.Sleep(1000);
 
             Assert.AreEqual(0, _adapter.SelectedIndex);
             _adapter.SelectItem(1);
             Assert.AreEqual(1, _adapter.SelectedIndex);
-            _adapter.SelectItem(2);
-            Assert.AreEqual(2, _adapter.SelectedIndex);
 
             _adapter.SelectItem(-1);
             Assert.AreEqual(0, _adapter.SelectedIndex);
