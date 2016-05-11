@@ -28,13 +28,13 @@
                 </Style>
             </TextBlock.Style>
         </TextBlock>
-        <ListBox BorderBrush="#FFD7D7D7" BorderThickness="0,0,1,0" x:Name="QueryList" ItemsSource="{Binding}" HorizontalAlignment="Left" Height="346" VerticalAlignment="Top" Width="298" Grid.Row="1" Grid.ColumnSpan="2" Background="Transparent" Margin="-1,1,0,-46">
+        <ListBox BorderBrush="#FFD7D7D7" BorderThickness="0,0,1,0" x:Name="QueryList" ItemsSource="{Binding}" HorizontalAlignment="Left" Height="346" VerticalAlignment="Stretch" Width="298" Grid.Row="1" Grid.ColumnSpan="2" Background="Transparent" Margin="-1,1,0,-46" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" Margin="0, 0, 0, 0">
                         <Image Width="20" Height="20" Margin="10, 0, 10, 0" Source="{Binding Icon}" />
                         <StackPanel Orientation="Vertical" Margin="5, 0">
-                            <TextBlock Text="{Binding Title}" FontSize="18" FontWeight="Bold"/>
+                            <TextBlock Text="{Binding Title}" FontSize="18"/>
                             <!--<TextBlock Text="{Binding Message}" TextWrapping="Wrap" />-->
                             <!--<TextBlock Text="{Binding PostTime}" Foreground="Gray"/>-->
                         </StackPanel>
