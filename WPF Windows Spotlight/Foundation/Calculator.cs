@@ -24,25 +24,30 @@ namespace WPF_Windows_Spotlight.Foundation
 
         public Calculator(string expression = "")
         {
-            _expression = expression.ToLower() + ";";
             _icon = (Bitmap)WPF_Windows_Spotlight.Properties.Resources.calculator_icon;
         }
 
         public string Expression
         {
-            set { _expression = value.ToLower() + ";"; } 
+            set 
+            {
+                _expression = value.Replace(" ", "").ToLower(); 
+            } 
         }
 
         public void SetKeyword(string keyword)
         {
             _expression = keyword;
+            _expression = _expression.Replace(" ", "").ToLower();
         }
 
         public string TransToFloat (string inputExpression)
         {
             int isFloat = 0;
             int isNumber = 0;
-            for (int i = 0; i < inputExpression.Length; i++)
+            int end = inputExpression.Length;
+            int i = 0;
+            while (i < end)
             {
                 if (inputExpression[i] >= '0' && inputExpression[i] <= '9')
                 {
@@ -58,10 +63,12 @@ namespace WPF_Windows_Spotlight.Foundation
                     {
                         inputExpression = inputExpression.Insert(i, ".0");
                         i = i+2;
+                        end = end + 2;
                     }
                     isNumber = 0;
                     isFloat = 0;
                 }
+                i++;
             }
 
             return inputExpression;
@@ -80,8 +87,7 @@ namespace WPF_Windows_Spotlight.Foundation
                 int rightPosition = 0;
                 string powLeft = "";
                 string powRight = "";
-
-                //sqrt(1^2)
+                
                 //指數符號左邊 尋找括號
                 if (splitLeft[splitLeft.Length - 1] == ')')
                 {
@@ -144,8 +150,9 @@ namespace WPF_Windows_Spotlight.Foundation
                             rightPosition = i;
                             break;
                         }
-                        rightPosition = i;
+                        rightPosition = i + 1;
                     }
+                    
                 }
                 //轉換成 pow
                 for (int i = leftPosition; i < splitLeft.Length; i++)
@@ -180,12 +187,12 @@ namespace WPF_Windows_Spotlight.Foundation
 
         public string GetResult()
         {
+            _orignalExp = _expression;
             try
             {
-                _orignalExp = _expression;
                 int expLength = _expression.Length;
 
-                if (_orignalExp[expLength-1] != '=')
+                if (_orignalExp[expLength-1] >= '0' &&  _orignalExp[expLength-1] <= '9')
                 {
                     _orignalExp = _orignalExp + "=";
                 }
@@ -199,7 +206,26 @@ namespace WPF_Windows_Spotlight.Foundation
             }
             catch (Exception e)
             {
-                return _lastResult;
+                string tempExp = _expression;
+                int expLength = tempExp.Length;
+                if (_expression[expLength - 1] == '+' || _expression[expLength - 1] == '-')
+                {
+                    tempExp = tempExp + '0';
+                }else if (_expression[expLength - 1] == '*' || _expression[expLength - 1] == '/'  || _expression[expLength - 1] == '^')
+                {
+                    tempExp = tempExp + '1';
+                }
+              
+                try
+                {   
+                    string result = Eval(tempExp).ToString();
+                    return _lastResult;
+                }
+                catch
+                {
+                    return null;
+                }
+                
             }
         }
 

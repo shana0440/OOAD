@@ -238,7 +238,7 @@ namespace WPF_Windows_Spotlight
 
             Label answer = new Label();
             answer.Content = answerItme.Title;
-            answer.FontSize = 60;
+            answer.FontSize = 36;
             answer.HorizontalContentAlignment = HorizontalAlignment.Center;
             ContentView.Children.Add(answer);
         }
