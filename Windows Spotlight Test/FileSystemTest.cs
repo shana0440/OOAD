@@ -24,7 +24,7 @@ namespace Windows_Spotlight_Test
         [TestMethod]
         public void TestSearchFile()
         {
-            Assert.AreEqual(1, _fileSystem.Search("putty.exe").Count);
+            Assert.AreEqual(1, _fileSystem.Search("AnswerItem.cs").Count);
             Assert.AreEqual(0, _fileSystem.Search("").Count);
         }
 
@@ -32,7 +32,7 @@ namespace Windows_Spotlight_Test
         public void TestDoWork()
         {
             BackgroundWorker woker = new BackgroundWorker();
-            _fileSystem.SetKeyword("putty.exe");
+            _fileSystem.SetKeyword("AnswerItem.cs");
             woker.DoWork += _fileSystem.DoWork;
             woker.RunWorkerCompleted += TestBackgroundWokerSearchFileComplete;
             woker.RunWorkerAsync();
