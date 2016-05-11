@@ -123,6 +123,21 @@ namespace WPF_Windows_Spotlight
             }
         }
 
+        private void ShowDetail(Item item)
+        {
+            string type = item.GetType().Name;
+            switch(type)
+            {
+                case "FileItem":
+                    ShowFileDetail((FileItem)item);
+                    break;
+                case "AnswerItem":
+                    break;
+                default:
+                    break;
+            }
+        }
+
         private void ShowFileDetail(FileItem file)
         {
             ContentView.Children.Clear();
