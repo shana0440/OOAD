@@ -109,7 +109,12 @@ namespace WPF_Windows_Spotlight
                 if (list.Count > 0)
                 {
                     list.ForEach(_queryList.Add);
+                    _queryList[0].IsSelected = true;
                     UpdateContentHandler(_queryList[0]);
+                }
+                else
+                {
+                    UpdateContentHandler(null);
                 }
             }
         }
