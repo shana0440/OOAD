@@ -29,3 +29,6 @@ KeyDown Event不支援
 
 ## 移除listbox item hover效果
 [source](http://stackoverflow.com/questions/15632493/wpf-listbox-turn-off-hover-effect)
+
+## 修改list item IsSelected的Style
+[source](http://stackoverflow.com/questions/28686752/changing-wpf-listbox-selecteditem-text-color-and-highlight-background-color-usin)

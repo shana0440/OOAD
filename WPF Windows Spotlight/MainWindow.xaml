@@ -17,7 +17,7 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" Margin="0, 0, 0, 0">
-                        <Image Width="20" Height="20" Source="{Binding Icon}" />
+                        <Image Width="20" Height="20" Margin="10, 0, 10, 0" Source="{Binding Icon}" />
                         <StackPanel Orientation="Vertical" Margin="5, 0">
                             <TextBlock Text="{Binding Title}" FontSize="18" FontWeight="Bold"/>
                             <!--<TextBlock Text="{Binding Message}" TextWrapping="Wrap" />-->
@@ -51,9 +51,10 @@
                                     <Trigger Property="IsSelected" Value="True">
                                         <Setter Property="Background">
                                             <Setter.Value>
-                                                <SolidColorBrush>#FF3D8CF5</SolidColorBrush>
+                                                <SolidColorBrush>#FF0068DA</SolidColorBrush>
                                             </Setter.Value>
                                         </Setter>
+                                        <Setter Property="Foreground" Value="White"></Setter>
                                     </Trigger>
                                     <MultiTrigger>
                                         <MultiTrigger.Conditions>
