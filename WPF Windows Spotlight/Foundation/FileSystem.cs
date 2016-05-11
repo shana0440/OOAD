@@ -24,10 +24,6 @@ namespace WPF_Windows_Spotlight.Foundation
             _dirIcon.MakeTransparent();
         }
 
-        public string Keyword {
-            set { _keyword = value; }
-        }
-
         public void SetKeyword(string keyword)
         {
             _keyword = keyword;
@@ -45,7 +41,7 @@ namespace WPF_Windows_Spotlight.Foundation
             return list;
         }
 
-        public List<FolderOrFile> GetResult()
+        private List<FolderOrFile> GetResult()
         {
             List<FolderOrFile> list = new List<FolderOrFile>();
             for (int i = 0; i < Everything.Everything_GetNumResults(); i++)
