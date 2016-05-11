@@ -19,6 +19,8 @@ namespace WPF_Windows_Spotlight.Foundation
         private string _expression;
         private string _lastResult;
         private Bitmap _icon;
+        private string _orignalExp;
+        
 
         public Calculator(string expression = "")
         {
@@ -180,6 +182,14 @@ namespace WPF_Windows_Spotlight.Foundation
         {
             try
             {
+                _orignalExp = _expression;
+                int expLength = _expression.Length;
+
+                if (_orignalExp[expLength-1] != '=')
+                {
+                    _orignalExp = _orignalExp + "=";
+                }
+
                 _expression = TransToFloat(_expression);
                 _expression = ReplaceSqrt(_expression);
                 _expression = TransformPow(_expression);
@@ -196,7 +206,7 @@ namespace WPF_Windows_Spotlight.Foundation
         public void DoWork(object sender, DoWorkEventArgs e)
         {
             string answer = GetResult();
-            AnswerItem item = new AnswerItem(answer);
+            AnswerItem item = new AnswerItem(answer, _orignalExp);
             double n;
             BackgroundWorker bg = sender as BackgroundWorker;
             if (bg.CancellationPending || !double.TryParse(answer, out n) || answer == null)
