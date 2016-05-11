@@ -18,6 +18,8 @@ namespace WPF_Windows_Spotlight
         private ObservableCollection<Item> _queryList;
         private List<IFoundation> _foundations;
         private int _selectedIndex;
+        public delegate void ModelChangedHandler(Item item);
+        public ModelChangedHandler UpdateContentHandler;
 
         public Adapter()
         {
@@ -73,9 +75,9 @@ namespace WPF_Windows_Spotlight
             get { return _selectedIndex; }
         }
 
-        public Item SelectItem(int index)
+        public void SelectItem(int index)
         {
-            if (_queryList.Count == 0) return null;
+            if (_queryList.Count == 0) return;
             foreach (Item item in _queryList)
             {
                 item.IsSelected = false;
@@ -84,7 +86,7 @@ namespace WPF_Windows_Spotlight
             if (index > _queryList.Count - 1) index = _queryList.Count - 1;
             _queryList[index].IsSelected = true;
             _selectedIndex = index;
-            return _queryList[index];
+            UpdateContentHandler(_queryList[index]);
         }
 
         private void CancelBackgroundWorker()
@@ -105,7 +107,10 @@ namespace WPF_Windows_Spotlight
             {
                 List<Item> list = ((List<Item>)e.Result);
                 if (list.Count > 0)
+                {
                     list.ForEach(_queryList.Add);
+                    UpdateContentHandler(_queryList[0]);
+                }
             }
         }
 

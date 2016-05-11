@@ -37,6 +37,7 @@ namespace WPF_Windows_Spotlight
             InitializeComponent();
             QueryList.ItemsSource = _adapter.QueryList;
             CenterWindowOnScreen();
+            _adapter.UpdateContentHandler += ShowDetail;
             _listener = new LowLevelKeyboardListener();
             _listener.OnKeyPressed += OpenWindow;
             
@@ -192,12 +193,10 @@ namespace WPF_Windows_Spotlight
             switch (e.Key)
             {
                 case Key.Up:
-                    item = _adapter.SelectItem(_adapter.SelectedIndex - 1);
-                    ShowDetail(item);
+                    _adapter.SelectItem(_adapter.SelectedIndex - 1);
                     break;
                 case Key.Down:
-                    item = _adapter.SelectItem(_adapter.SelectedIndex + 1);
-                    ShowDetail(item);
+                    _adapter.SelectItem(_adapter.SelectedIndex + 1);
                     break;
                 case Key.Enter:
                     item = _adapter.QueryList[_adapter.SelectedIndex];
