@@ -32,3 +32,9 @@ KeyDown Event不支援
 
 ## 修改list item IsSelected的Style
 [source](http://stackoverflow.com/questions/28686752/changing-wpf-listbox-selecteditem-text-color-and-highlight-background-color-usin)
+
+## textbox浮水印
+第一個方法大家說很爛
+第二個方法我用不起來
+第三個方法好棒棒，不用額外的擴展，直接把xml放上去就會動惹，懶人專用QQ
+[source](http://stackoverflow.com/questions/833943/watermark-hint-text-placeholder-textbox-in-wpf)

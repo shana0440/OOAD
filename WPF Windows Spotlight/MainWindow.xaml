@@ -10,10 +10,24 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50"/>
             <ColumnDefinition Width="250"/>
-            <ColumnDefinition Width="325"/>
+            <ColumnDefinition Width="323"/>
+            <ColumnDefinition Width="2"/>
             <ColumnDefinition Width="55"/>
         </Grid.ColumnDefinitions>
-        <TextBox x:Name="Input" Margin="0,12,10,11" FontSize="24" FontFamily="Arial" TextChanged="Search" Grid.ColumnSpan="2" Grid.Column="1" VerticalAlignment="Center" BorderThickness="0" Background="Transparent" PreviewKeyDown="SelectItem" Height="28"/>
+        <TextBox x:Name="Input" Margin="0,12,8,11" FontSize="23" FontFamily="Arial" TextChanged="Search" Grid.ColumnSpan="2" Grid.Column="1" VerticalAlignment="Center" BorderThickness="0" Background="Transparent" PreviewKeyDown="SelectItem" Height="28"/>
+        <TextBlock x:Name="Watermark" Margin="2,12,8,11" IsHitTestVisible="False" Text="Enter Search Term Here" VerticalAlignment="Center" Foreground="DarkGray" Grid.ColumnSpan="2" Grid.Column="1" FontSize="23" FontFamily="Arial" Background="Transparent" Height="28" Panel.ZIndex="-1">
+            <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <!--<Style.Triggers>
+                        <DataTrigger Binding="{Binding Text, ElementName=Input}" Value="">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>-->
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
         <ListBox BorderBrush="#FFD7D7D7" BorderThickness="0,0,1,0" x:Name="QueryList" ItemsSource="{Binding}" HorizontalAlignment="Left" Height="346" VerticalAlignment="Top" Width="298" Grid.Row="1" Grid.ColumnSpan="2" Background="Transparent" Margin="-1,1,0,-46">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -83,9 +97,9 @@
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>
-        <Border BorderBrush="#FFD7D7D7" BorderThickness="0,0,0,1" HorizontalAlignment="Left" Height="1" Margin="0,0,-320,0" Grid.Row="1" VerticalAlignment="Top" Width="1000" Grid.ColumnSpan="4"/>
-        <StackPanel x:Name="ContentView" Grid.Column="2" HorizontalAlignment="Left" Height="347" Grid.Row="1" VerticalAlignment="Top" Width="376" Margin="0,0,0,-46" Grid.ColumnSpan="2"/>
+        <Border BorderBrush="#FFD7D7D7" BorderThickness="0,0,0,1" HorizontalAlignment="Left" Height="1" Margin="0,0,-320,0" Grid.Row="1" VerticalAlignment="Top" Width="1000" Grid.ColumnSpan="5"/>
+        <StackPanel x:Name="ContentView" Grid.Column="2" HorizontalAlignment="Left" Height="347" Grid.Row="1" VerticalAlignment="Top" Width="376" Margin="0,0,0,-46" Grid.ColumnSpan="3"/>
         <Image Margin="5,5,0,0" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="40" Source="Images/search.png"/>
-        <Image x:Name="ResultIcon" Margin="10,10,0,0" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="30" Grid.Column="3"/>
+        <Image x:Name="ResultIcon" Margin="10,10,0,0" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="30" Grid.Column="4"/>
     </Grid>
 </Window>
