@@ -16,10 +16,16 @@ namespace Windows_Spotlight_Test
         }
 
         [TestMethod]
-        public void TestCreateCalculator()
+        public void TestCreateFundation()
         {
             IFoundation foundation = _factory.CreateFoundation("Calculator");
             Assert.AreEqual("Calculator", foundation.GetType().Name);
+
+            foundation = _factory.CreateFoundation("FileSystem");
+            Assert.AreEqual("FileSystem", foundation.GetType().Name);
+
+            foundation = _factory.CreateFoundation("");
+            Assert.IsNull(foundation);
         }
     }
 }
