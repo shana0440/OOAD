@@ -10,9 +10,16 @@ namespace WPF_Windows_Spotlight.Foundation.ItemType
 {
     public class AnswerItem : Item
     {
-        public AnswerItem(string title) : base(title)
+        private string _expression;
+        public AnswerItem(string title, string exprssion)
+            : base(title)
         {
+            _expression = exprssion;
+        }
 
+        public string Expression
+        {
+            get { return _expression; }
         }
 
         public override void Open()

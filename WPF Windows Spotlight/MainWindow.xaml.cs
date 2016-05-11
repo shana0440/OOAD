@@ -134,6 +134,7 @@ namespace WPF_Windows_Spotlight
                     ShowFileDetail((FileItem)item);
                     break;
                 case "AnswerItem":
+                    ShowAnswerItem((AnswerItem)item);
                     break;
                 default:
                     break;
@@ -184,6 +185,37 @@ namespace WPF_Windows_Spotlight
                 wrap.Children.Add(value);
                 ContentView.Children.Add(wrap);
             }
+        }
+
+        private void ShowAnswerItem(AnswerItem answerItme)
+        {
+            ContentView.Children.Clear();
+            Label expression = new Label();
+            expression.Content = answerItme.Expression;
+            expression.FontSize = 24;
+            Color fontColor = (Color)ColorConverter.ConvertFromString("#434343");
+            expression.BorderBrush = new SolidColorBrush(fontColor);
+
+            expression.Foreground = expression.BorderBrush; 
+            expression.HorizontalContentAlignment = HorizontalAlignment.Center;
+            Thickness expMargin = new Thickness(0, 100, 0, 10);
+            expression.Margin = expMargin;
+            ContentView.Children.Add(expression);
+
+            Border hr = new Border();
+            Color hrColor = (Color)ColorConverter.ConvertFromString("#FFD7D7D7");
+            hr.Height = 1;
+            hr.BorderBrush = new SolidColorBrush(hrColor);
+            hr.BorderThickness = new Thickness(0, 1, 0, 0);
+            hr.Width = ContentView.Width - 30;
+            hr.Margin = new Thickness(15, 10, 15, 10);
+            ContentView.Children.Add(hr);
+
+            Label answer = new Label();
+            answer.Content = answerItme.Title;
+            answer.FontSize = 60;
+            answer.HorizontalContentAlignment = HorizontalAlignment.Center;
+            ContentView.Children.Add(answer);
         }
 
         private void SelectItem(object sender, KeyEventArgs e)
