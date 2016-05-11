@@ -39,7 +39,7 @@ namespace WPF_Windows_Spotlight
             QueryList.ItemsSource = _adapter.QueryList;
             CenterWindowOnScreen();
             Height = _inputHieght;
-            _adapter.UpdateContentHandler += ShowDetail;
+            _adapter.UpdateContentHandler += SearchOver;
             _listener = new LowLevelKeyboardListener();
             _listener.OnKeyPressed += OpenWindow;
             
@@ -54,6 +54,7 @@ namespace WPF_Windows_Spotlight
             }
             else
             {
+                ResultIcon.Source = null;
                 _adapter.Search(Input.Text);
                 _hasResult = _adapter.GetWrokerCount();
             }
@@ -126,18 +127,28 @@ namespace WPF_Windows_Spotlight
             }
         }
 
-        // 分配要用哪個ShowXXXXDetail來顯示Item的詳細資料
-        private void ShowDetail(Item item)
+        private void SearchOver()
         {
-            if (item == null)
+            if (_adapter.SelectedIndex < 0)
             {
                 if (--_hasResult == 0)
                 {
                     Height = _inputHieght;
                     ContentView.Children.Clear();
                 }
-                return;
             }
+            else
+            {
+                Item item = _adapter.QueryList[_adapter.SelectedIndex];
+                ShowDetail(item);
+            }
+        }
+
+        // 分配要用哪個ShowXXXXDetail來顯示Item的詳細資料
+        private void ShowDetail(Item item)
+        {
+            if (item == null) return;
+            ResultIcon.Source = item.Icon;
             Height = _windowHieght;
             string type = item.GetType().Name;
             switch(type)

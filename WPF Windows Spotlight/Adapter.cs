@@ -18,7 +18,7 @@ namespace WPF_Windows_Spotlight
         private ObservableCollection<Item> _queryList;
         private List<IFoundation> _foundations;
         private int _selectedIndex;
-        public delegate void ModelChangedHandler(Item item);
+        public delegate void ModelChangedHandler();
         public ModelChangedHandler UpdateContentHandler;
 
         public Adapter()
@@ -33,7 +33,7 @@ namespace WPF_Windows_Spotlight
         public void Search(string keyword)
         {
             _keyword = keyword;
-            _selectedIndex = 0;
+            _selectedIndex = -1;
             _queryList.Clear();
             CancelBackgroundWorker();
             GetBackgroundWorkers();
@@ -91,7 +91,7 @@ namespace WPF_Windows_Spotlight
             if (index > _queryList.Count - 1) index = _queryList.Count - 1;
             _queryList[index].IsSelected = true;
             _selectedIndex = index;
-            UpdateContentHandler(_queryList[index]);
+            UpdateContentHandler();
         }
 
         private void CancelBackgroundWorker()
@@ -113,14 +113,11 @@ namespace WPF_Windows_Spotlight
                 List<Item> list = ((List<Item>)e.Result);
                 if (list.Count > 0)
                 {
+                    _selectedIndex = 0;
                     list.ForEach(_queryList.Add);
                     _queryList[0].IsSelected = true;
-                    UpdateContentHandler(_queryList[0]);
                 }
-                else
-                {
-                    UpdateContentHandler(null);
-                }
+                UpdateContentHandler();
             }
         }
 
