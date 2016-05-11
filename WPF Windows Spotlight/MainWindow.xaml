@@ -67,10 +67,6 @@
                                             </Setter.Value>
                                         </Setter>
                                     </MultiTrigger>
-                                    <Trigger Property="UIElement.IsMouseOver" Value="True">
-                                        <Setter Property="Panel.Background" Value="Transparent"/>
-                                        <Setter Property="Border.BorderBrush" Value="Transparent"/>
-                                    </Trigger>
                                     <Trigger Property="UIElement.IsEnabled" Value="False">
                                         <Setter Property="TextElement.Foreground" TargetName="Bd">
                                             <Setter.Value>
