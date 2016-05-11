@@ -91,7 +91,10 @@ namespace WPF_Windows_Spotlight
             if (index > _queryList.Count - 1) index = _queryList.Count - 1;
             _queryList[index].IsSelected = true;
             _selectedIndex = index;
-            UpdateContentHandler();
+            if (UpdateContentHandler != null)
+            {
+                UpdateContentHandler();
+            }
         }
 
         private void CancelBackgroundWorker()
@@ -117,7 +120,10 @@ namespace WPF_Windows_Spotlight
                     list.ForEach(_queryList.Add);
                     _queryList[0].IsSelected = true;
                 }
-                UpdateContentHandler();
+                if (UpdateContentHandler != null)
+                {
+                    UpdateContentHandler();
+                }
             }
         }
 
