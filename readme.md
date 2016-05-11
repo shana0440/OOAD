@@ -18,3 +18,11 @@
 
 ## click item
 [source](http://stackoverflow.com/questions/10207888/wpf-listview-detect-when-selected-item-is-clicked)
+
+## PreviewKeyDown, KeyDown
+PreviewKeyDown Event支援up, down, left, right按鍵
+KeyDown Event不支援
+
+## 自訂Selected item
+利用WPF的<Setter>來設定ListView的Property，並Binding到自訂的變數上，達到修改Property的效果
+[source](http://stackoverflow.com/questions/1069577/wpf-listview-programmatically-select-item)

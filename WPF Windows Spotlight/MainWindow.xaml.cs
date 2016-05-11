@@ -56,16 +56,6 @@ namespace WPF_Windows_Spotlight
             }
         }
 
-        private void SelectItem(object sender, SelectionChangedEventArgs e)
-        {
-            //ListBox list = (ListBox)sender;
-            //if (list.SelectedIndex < _adapter.QueryList.Count && list.SelectedIndex != -1)
-            //{
-            //    Item selectedItem = _adapter.QueryList[list.SelectedIndex];
-            //    selectedItem.Open();
-            //}
-        }
-
         private void HideWindow(object sender, KeyEventArgs e)
         {
             if (e.Key.ToString() == _hotKeyForHide[_hideKeyPointer])
@@ -133,6 +123,23 @@ namespace WPF_Windows_Spotlight
             }
         }
 
+        // 分配要用哪個ShowXXXXDetail來顯示Item的詳細資料
+        private void ShowDetail(Item item)
+        {
+            if (item == null) return;
+            string type = item.GetType().Name;
+            switch(type)
+            {
+                case "FileItem":
+                    ShowFileDetail((FileItem)item);
+                    break;
+                case "AnswerItem":
+                    break;
+                default:
+                    break;
+            }
+        }
+
         private void ShowFileDetail(FileItem file)
         {
             ContentView.Children.Clear();
@@ -178,6 +185,29 @@ namespace WPF_Windows_Spotlight
                 ContentView.Children.Add(wrap);
             }
         }
+
+        private void SelectItem(object sender, KeyEventArgs e)
+        {
+            Item item;
+            switch (e.Key)
+            {
+                case Key.Up:
+                    item = _adapter.SelectItem(_adapter.SelectedIndex - 1);
+                    ShowDetail(item);
+                    break;
+                case Key.Down:
+                    item = _adapter.SelectItem(_adapter.SelectedIndex + 1);
+                    ShowDetail(item);
+                    break;
+                case Key.Enter:
+                    item = _adapter.QueryList[_adapter.SelectedIndex];
+                    item.Open();
+                    break;
+                default:
+                    break;
+            }
+        }
+
     }
 
 }

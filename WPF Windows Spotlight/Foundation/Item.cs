@@ -11,12 +11,12 @@ using WPF_Windows_Spotlight;
 
 namespace WPF_Windows_Spotlight.Foundation
 {
-    abstract public class Item
+    abstract public class Item : INotifyPropertyChanged
     {
         protected string _title;
         protected string _content;
         protected Bitmap _icon;
-        
+        protected bool _isSelected;
 
         public Item(string title)
         {
@@ -33,6 +33,16 @@ namespace WPF_Windows_Spotlight.Foundation
         {
             get { return _content; }
             set { _content = value; }
+        }
+
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set 
+            {
+                _isSelected = value;
+                NotifyPropertyChanged("IsSelected");
+            }
         }
 
         public BitmapImage Icon
@@ -68,6 +78,16 @@ namespace WPF_Windows_Spotlight.Foundation
         public void SetIcon(Bitmap bitmap)
         {
             _icon = bitmap;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void NotifyPropertyChanged(string property)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(property));
+            }
         }
     }
 }

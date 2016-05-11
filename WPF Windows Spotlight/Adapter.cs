@@ -17,6 +17,7 @@ namespace WPF_Windows_Spotlight
         private FoundationFactory _factory;
         private ObservableCollection<Item> _queryList;
         private List<IFoundation> _foundations;
+        private int _selectedIndex;
 
         public Adapter()
         {
@@ -24,11 +25,13 @@ namespace WPF_Windows_Spotlight
             _factory = new FoundationFactory();
             _queryList = new ObservableCollection<Item>();
             _foundations = _factory.GetFoundations();
+            _selectedIndex = 0;
         }
 
         public void Search(string keyword)
         {
             _keyword = keyword;
+            _selectedIndex = 0;
             _queryList.Clear();
             CancelBackgroundWorker();
             GetBackgroundWorkers();
@@ -65,6 +68,25 @@ namespace WPF_Windows_Spotlight
             get { return _queryList; }
         }
 
+        public int SelectedIndex
+        {
+            get { return _selectedIndex; }
+        }
+
+        public Item SelectItem(int index)
+        {
+            if (_queryList.Count == 0) return null;
+            foreach (Item item in _queryList)
+            {
+                item.IsSelected = false;
+            }
+            if (index < 0) index = 0;
+            if (index > _queryList.Count - 1) index = _queryList.Count - 1;
+            _queryList[index].IsSelected = true;
+            _selectedIndex = index;
+            return _queryList[index];
+        }
+
         private void CancelBackgroundWorker()
         {
             foreach (BackgroundWorker worker in _workers)
@@ -86,5 +108,6 @@ namespace WPF_Windows_Spotlight
                     list.ForEach(_queryList.Add);
             }
         }
+
     }
 }
