@@ -199,14 +199,17 @@ namespace WPF_Windows_Spotlight.Foundation
             AnswerItem item = new AnswerItem(answer);
             double n;
             BackgroundWorker bg = sender as BackgroundWorker;
-            if (bg.CancellationPending || !double.TryParse(answer, out n) || answer == null)
+            if (bg.CancellationPending)
             {
                 e.Cancel = true;
                 return;
             }
             List<Item> list = new List<Item>();
-            item.SetIcon(_icon);
-            list.Add(item);
+            if (double.TryParse(answer, out n) && answer != null)
+            {
+                item.SetIcon(_icon);
+                list.Add(item);
+            }
             e.Result = list;
         }
 

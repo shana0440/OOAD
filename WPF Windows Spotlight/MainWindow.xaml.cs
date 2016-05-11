@@ -30,6 +30,7 @@ namespace WPF_Windows_Spotlight
         private int _openKeyPointer = 0;
         private int _windowHieght = 400;
         private int _inputHieght = 50;
+        private int _hasResult;
         
         public MainWindow()
         {
@@ -37,6 +38,7 @@ namespace WPF_Windows_Spotlight
             InitializeComponent();
             QueryList.ItemsSource = _adapter.QueryList;
             CenterWindowOnScreen();
+            Height = _inputHieght;
             _adapter.UpdateContentHandler += ShowDetail;
             _listener = new LowLevelKeyboardListener();
             _listener.OnKeyPressed += OpenWindow;
@@ -53,7 +55,7 @@ namespace WPF_Windows_Spotlight
             else
             {
                 _adapter.Search(Input.Text);
-                Height = _windowHieght;
+                _hasResult = _adapter.GetWrokerCount();
             }
         }
 
@@ -127,7 +129,16 @@ namespace WPF_Windows_Spotlight
         // 分配要用哪個ShowXXXXDetail來顯示Item的詳細資料
         private void ShowDetail(Item item)
         {
-            if (item == null) return;
+            if (item == null)
+            {
+                if (--_hasResult == 0)
+                {
+                    Height = _inputHieght;
+                    ContentView.Children.Clear();
+                }
+                return;
+            }
+            Height = _windowHieght;
             string type = item.GetType().Name;
             switch(type)
             {

@@ -47,6 +47,11 @@ namespace WPF_Windows_Spotlight
             }
         }
 
+        public int GetWrokerCount()
+        {
+            return _workers.Count;
+        }
+
         private BackgroundWorker CreateBackgroundWorker(IFoundation foundation)
         {
             BackgroundWorker bgworker = new BackgroundWorker();
