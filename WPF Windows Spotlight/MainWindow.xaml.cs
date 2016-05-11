@@ -56,17 +56,6 @@ namespace WPF_Windows_Spotlight
             }
         }
 
-
-        private void SelectItem(object sender, SelectionChangedEventArgs e)
-        {
-            //ListBox list = (ListBox)sender;
-            //if (list.SelectedIndex < _adapter.QueryList.Count && list.SelectedIndex != -1)
-            //{
-            //    Item selectedItem = _adapter.QueryList[list.SelectedIndex];
-            //    selectedItem.Open();
-            //}
-        }
-
         private void HideWindow(object sender, KeyEventArgs e)
         {
             if (e.Key.ToString() == _hotKeyForHide[_hideKeyPointer])
@@ -180,20 +169,25 @@ namespace WPF_Windows_Spotlight
             }
         }
 
-        private void MyKeyDown(object sender, KeyEventArgs e)
+        private void SelectItem(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Up)
+            Item item;
+            switch (e.Key)
             {
-                _adapter.SelectItem(_adapter.SelectedIndex - 1);
-            }
-            else if (e.Key == Key.Down)
-            {
-                _adapter.SelectItem(_adapter.SelectedIndex + 1);
-            }
-            else if (e.Key == Key.Enter)
-            {
-                Item item = _adapter.QueryList[_adapter.SelectedIndex];
-                item.Open();
+                case Key.Up:
+                    item = _adapter.SelectItem(_adapter.SelectedIndex - 1);
+                    ShowDetail(item);
+                    break;
+                case Key.Down:
+                    item = _adapter.SelectItem(_adapter.SelectedIndex + 1);
+                    ShowDetail(item);
+                    break;
+                case Key.Enter:
+                    item = _adapter.QueryList[_adapter.SelectedIndex];
+                    item.Open();
+                    break;
+                default:
+                    break;
             }
         }
 
