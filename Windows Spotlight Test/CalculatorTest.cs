@@ -56,6 +56,12 @@ namespace Windows_Spotlight_Test
             testExp = "sqrt(1^2)";
             testExp = _calculator.TransToFloat(testExp);
             Assert.AreEqual("sqrt(Math.Pow(1.0,2.0))", _calculator.TransformPow(testExp));
+            testExp = "1^2";
+            testExp = _calculator.TransToFloat(testExp);
+            Assert.AreEqual("Math.Pow(1.0,2)", _calculator.TransformPow(testExp));
+            testExp = "1+1^2+4";
+            testExp = _calculator.TransToFloat(testExp);
+            Assert.AreEqual("1.0+Math.Pow(1.0,2.0)+4", _calculator.TransformPow(testExp));
         }
 
         [TestMethod]
