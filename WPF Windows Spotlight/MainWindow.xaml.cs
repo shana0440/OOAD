@@ -157,7 +157,7 @@ namespace WPF_Windows_Spotlight
             ContentView.Children.Clear();
             Image img = new Image();
             img.Source = file.Icon;
-            Thickness imgMargin = new Thickness(150, 50, 150, 10);
+            Thickness imgMargin = new Thickness(125, 50, 125, 10);
             img.Margin = imgMargin;
             img.Width = 100;
             ContentView.Children.Add(img);
