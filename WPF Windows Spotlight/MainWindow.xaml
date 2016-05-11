@@ -16,7 +16,7 @@
         <ListBox BorderBrush="#FFD7D7D7" BorderThickness="0,0,1,0" x:Name="QueryList" ItemsSource="{Binding}" HorizontalAlignment="Left" Height="347" VerticalAlignment="Top" Width="201" Grid.Row="1" Grid.ColumnSpan="3" Background="Transparent" Margin="0,0,0,-46">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" Margin="0, 0, 0, 0">
                         <Image Width="20" Height="20" Source="{Binding Icon}" />
                         <StackPanel Orientation="Vertical" Margin="5, 0">
                             <TextBlock Text="{Binding Title}" FontSize="18" FontWeight="Bold"/>
@@ -29,7 +29,8 @@
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}">
                     <EventSetter Event="PreviewMouseLeftButtonUp" Handler="ClickListViewItem" />
-                    <Setter Property="IsSelected" Value="{Binding IsSelected}"></Setter>
+                    <Setter Property="IsSelected" Value="{Binding IsSelected}">
+                    </Setter>
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="ListBoxItem">
@@ -47,19 +48,13 @@
                                SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
                                 </Border>
                                 <ControlTemplate.Triggers>
-                                    <MultiTrigger>
-                                        <MultiTrigger.Conditions>
-                                            <Condition Property="Selector.IsSelectionActive" Value="False"/>
-                                            <Condition Property="Selector.IsSelected" Value="True"/>
-                                        </MultiTrigger.Conditions>
-                                        <Setter Property="Panel.Background" TargetName="Bd" 
-                        Value="Transparent"/>
-                                        <Setter Property="Border.BorderBrush" TargetName="Bd">
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background">
                                             <Setter.Value>
-                                                <SolidColorBrush>#FFDADADA</SolidColorBrush>
+                                                <SolidColorBrush>#FF3D8CF5</SolidColorBrush>
                                             </Setter.Value>
                                         </Setter>
-                                    </MultiTrigger>
+                                    </Trigger>
                                     <MultiTrigger>
                                         <MultiTrigger.Conditions>
                                             <Condition Property="Selector.IsSelectionActive" Value="True"/>

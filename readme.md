@@ -26,3 +26,6 @@ KeyDown Event不支援
 ## 自訂Selected item
 利用WPF的<Setter>來設定ListView的Property，並Binding到自訂的變數上，達到修改Property的效果
 [source](http://stackoverflow.com/questions/1069577/wpf-listview-programmatically-select-item)
+
+## 移除listbox item hover效果
+[source](http://stackoverflow.com/questions/15632493/wpf-listbox-turn-off-hover-effect)
