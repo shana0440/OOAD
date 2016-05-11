@@ -11,11 +11,11 @@ using WPF_Windows_Spotlight;
 
 namespace WPF_Windows_Spotlight.Foundation
 {
-    public class Item
+    abstract public class Item
     {
-        private string _title;
-        private string _content;
-        private Bitmap _icon;
+        protected string _title;
+        protected string _content;
+        protected Bitmap _icon;
         
 
         public Item(string title)
@@ -63,20 +63,7 @@ namespace WPF_Windows_Spotlight.Foundation
             }
         }
 
-        public void Open()
-        {
-            if (_content != null)
-            {
-                try
-                {
-                    System.Diagnostics.Process.Start(_content);
-                }
-                catch (Win32Exception e)
-                {
-                    Console.WriteLine("無法開啟");
-                }
-            }            
-        }
+        abstract public void Open();
 
         public void SetIcon(Bitmap bitmap)
         {

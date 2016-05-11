@@ -55,5 +55,20 @@ namespace WPF_Windows_Spotlight.Foundation
         {
             get { return _folder != null; }
         }
+
+        public string CreationDate
+        {
+            get { return (_file != null) ? _file.CreationTime.ToString("d") : _folder.CreationTime.ToString("d"); }
+        }
+
+        public string LastWriteDate
+        {
+            get { return (_file != null) ? _file.LastWriteTime.ToString("d") : _folder.LastWriteTime.ToString("d"); }
+        }
+
+        public string LastAccessDate
+        {
+            get { return (_file != null) ? _file.LastAccessTime.ToString("d") : _folder.LastAccessTime.ToString("d"); }
+        }
     }
 }

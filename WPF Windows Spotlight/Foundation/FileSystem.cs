@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using System.IO;
 using System.Drawing;
+using WPF_Windows_Spotlight.Foundation.ItemType;
 
 namespace WPF_Windows_Spotlight.Foundation
 {
@@ -19,7 +20,7 @@ namespace WPF_Windows_Spotlight.Foundation
         public FileSystem(string keyword = "")
         {
             _keyword = keyword;
-            _dirIcon = (Bitmap)Image.FromFile("Images/folder_icon.png");
+            _dirIcon = (Bitmap)WPF_Windows_Spotlight.Properties.Resources.folder_icon;
             _dirIcon.MakeTransparent();
         }
 
@@ -36,10 +37,12 @@ namespace WPF_Windows_Spotlight.Foundation
         {
             if (keyword == "") keyword = _keyword;
             if (keyword == "") return new List<FolderOrFile>();
-            
             Everything.Everything_SetSearchW(keyword);
+            Everything.Everything_SetMax(150);
             Everything.Everything_QueryW(true);
-            return GetResult();
+            List<FolderOrFile> list = GetResult();
+            Everything.Everything_Reset();
+            return list;
         }
 
         public List<FolderOrFile> GetResult()
@@ -69,7 +72,7 @@ namespace WPF_Windows_Spotlight.Foundation
                 }
                 catch (ArgumentException e)
                 {
-                    Console.WriteLine(e.Message);
+                    //Console.WriteLine(e.Message);
                 }
             }
             return list;
@@ -87,7 +90,7 @@ namespace WPF_Windows_Spotlight.Foundation
                     e.Cancel = true;
                     return;
                 }
-                Item item = new Item(result.Name);
+                FileItem item = new FileItem(result, result.Name);
                 if (result.IsFile)
                 {
                     Icon ico = Icon.ExtractAssociatedIcon(result.FullName);

@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WPF_Windows_Spotlight.Foundation;
+using WPF_Windows_Spotlight.Foundation.ItemType;
 
 namespace WPF_Windows_Spotlight
 {
@@ -27,7 +28,7 @@ namespace WPF_Windows_Spotlight
         private string[] _hotKeyForOpen = new string[] { "LeftCtrl", "Space" };
         private int _hideKeyPointer = 0;
         private int _openKeyPointer = 0;
-        private int _windowHieght = 350;
+        private int _windowHieght = 400;
         private int _inputHieght = 50;
         
         public MainWindow()
@@ -120,6 +121,7 @@ namespace WPF_Windows_Spotlight
             this.Top = (screenHeight / 2) - (windowHeight / 2);
         }
 
+        // 點擊item時開啟檔案
         private void ClickListViewItem(object sender, MouseButtonEventArgs e)
         {
             var item = sender as ListBoxItem;
@@ -127,6 +129,53 @@ namespace WPF_Windows_Spotlight
             {
                 Item selectedItem = _adapter.QueryList[QueryList.SelectedIndex];
                 selectedItem.Open();
+                ShowFileDetail((FileItem)selectedItem);
+            }
+        }
+
+        private void ShowFileDetail(FileItem file)
+        {
+            ContentView.Children.Clear();
+            Image img = new Image();
+            img.Source = file.Icon;
+            Thickness imgMargin = new Thickness(150, 50, 150, 10);
+            img.Margin = imgMargin;
+            img.Width = 100;
+            ContentView.Children.Add(img);
+
+            Label title = new Label();
+            title.Content = file.Title;
+            title.FontSize = 24;
+            title.HorizontalContentAlignment = HorizontalAlignment.Center;
+            ContentView.Children.Add(title);
+
+            Border hr = new Border();
+            Color hrColor = (Color)ColorConverter.ConvertFromString("#FFD7D7D7");
+            hr.Height = 1;
+            hr.BorderBrush = new SolidColorBrush(hrColor);
+            hr.BorderThickness = new Thickness(0, 1, 0, 0);
+            hr.Width = ContentView.Width - 30;
+            hr.Margin= new Thickness(15, 40, 15, 15);
+            hr.VerticalAlignment = VerticalAlignment.Top;
+            hr.HorizontalAlignment = HorizontalAlignment.Left;
+            ContentView.Children.Add(hr);
+
+            List<KeyValuePair<string, string>> propertys = file.GetProperty();
+            foreach (KeyValuePair<string, string> property in propertys)
+            {
+                WrapPanel wrap = new WrapPanel();
+                Label name = new Label();
+                name.Content = property.Key;
+                Label value = new Label();
+                value.Content = property.Value;
+                name.Width = value.Width = ContentView.Width / 2;
+                name.HorizontalContentAlignment = HorizontalAlignment.Right;
+                value.HorizontalContentAlignment = HorizontalAlignment.Left;
+                name.Foreground = Brushes.Gray;
+
+                wrap.Children.Add(name);
+                wrap.Children.Add(value);
+                ContentView.Children.Add(wrap);
             }
         }
     }

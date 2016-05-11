@@ -10,6 +10,7 @@ using System.CodeDom.Compiler;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Drawing;
+using WPF_Windows_Spotlight.Foundation.ItemType;
 
 namespace WPF_Windows_Spotlight.Foundation
 {
@@ -22,7 +23,7 @@ namespace WPF_Windows_Spotlight.Foundation
         public Calculator(string expression = "")
         {
             _expression = expression.ToLower() + ";";
-            _icon = (Bitmap)Image.FromFile("Images/calculator_icon.png");
+            _icon = (Bitmap)WPF_Windows_Spotlight.Properties.Resources.calculator_icon;
         }
 
         public string Expression
@@ -195,7 +196,7 @@ namespace WPF_Windows_Spotlight.Foundation
         public void DoWork(object sender, DoWorkEventArgs e)
         {
             string answer = GetResult();
-            Item item = new Item(answer);
+            AnswerItem item = new AnswerItem(answer);
             double n;
             BackgroundWorker bg = sender as BackgroundWorker;
             if (bg.CancellationPending || !double.TryParse(answer, out n) || answer == null)
