@@ -48,14 +48,16 @@ namespace WPF_Windows_Spotlight
 
         private void Search(object sender, TextChangedEventArgs e)
         {
-            if (Input.Text.Trim() == "")
+            if (InputTextBox.Text.Trim() == "")
             {
                 Height = _inputHieght;
             }
             else
             {
                 ResultIcon.Source = null;
-                _adapter.Search(Input.Text);
+                InputTextBoxWatermark.Text = "";
+                InputTextBoxWatermark.HorizontalAlignment = HorizontalAlignment.Left;
+                _adapter.Search(InputTextBox.Text);
                 _hasResult = _adapter.GetWrokerCount();
             }
         }
@@ -85,7 +87,7 @@ namespace WPF_Windows_Spotlight
             if (_openKeyPointer == _hotKeyForOpen.Length)
             {
                 this.Show();
-                Input.Text = "";
+                InputTextBox.Text = "";
                 _adapter.QueryList.Clear();
                 this.Focus();
                 _openKeyPointer = 0;
@@ -135,6 +137,8 @@ namespace WPF_Windows_Spotlight
                 {
                     Height = _inputHieght;
                     ContentView.Children.Clear();
+                    InputTextBoxWatermark.Text = "— No result";
+                    InputTextBoxWatermark.HorizontalAlignment = HorizontalAlignment.Right;
                 }
             }
             else
@@ -186,8 +190,6 @@ namespace WPF_Windows_Spotlight
             hr.BorderThickness = new Thickness(0, 1, 0, 0);
             hr.Width = ContentView.Width - 30;
             hr.Margin= new Thickness(15, 40, 15, 15);
-            hr.VerticalAlignment = VerticalAlignment.Top;
-            hr.HorizontalAlignment = HorizontalAlignment.Left;
             ContentView.Children.Add(hr);
 
             List<KeyValuePair<string, string>> propertys = file.GetProperty();
