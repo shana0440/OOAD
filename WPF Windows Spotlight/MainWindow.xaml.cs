@@ -144,6 +144,7 @@ namespace WPF_Windows_Spotlight
             else
             {
                 Item item = _adapter.QueryList[_adapter.SelectedIndex];
+                QueryList.ScrollIntoView(item);
                 ShowDetail(item);
             }
         }
