@@ -14,6 +14,7 @@ namespace Windows_Spotlight_Test
         FileSystem _fileSystem;
         List<Item> _list;
         bool _running;
+        private bool _canceled;
 
         [TestInitialize]
         public void TestInit()
@@ -46,8 +47,34 @@ namespace Windows_Spotlight_Test
 
         public void TestBackgroundWokerSearchFileComplete(object sender, RunWorkerCompletedEventArgs e)
         {
-            _list = ((List<Item>)e.Result);
-            _running = false;
+            if (!e.Cancelled)
+            {
+                _list = ((List<Item>)e.Result);
+                _running = false;
+            }
+            else
+            {
+                _running = false;
+                _canceled = e.Cancelled;
+            }
+        }
+
+        [TestMethod]
+        public void TestCancelDoWork()
+        {
+            BackgroundWorker woker = new BackgroundWorker();
+            _fileSystem.SetKeyword("AnswerItem.cs");
+            woker.DoWork += _fileSystem.DoWork;
+            woker.RunWorkerCompleted += TestBackgroundWokerSearchFileComplete;
+            woker.WorkerSupportsCancellation = true;
+            woker.RunWorkerAsync();
+            woker.CancelAsync();
+            _running = true;
+            while (_running)
+            {
+                Thread.Sleep(100);
+            }
+            Assert.AreEqual(true, _canceled);
         }
     }
 }

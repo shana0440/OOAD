@@ -14,7 +14,6 @@ namespace WPF_Windows_Spotlight.Foundation
     abstract public class Item : INotifyPropertyChanged
     {
         protected string _title;
-        protected string _content;
         protected Bitmap _icon;
         protected bool _isSelected;
 
@@ -27,12 +26,6 @@ namespace WPF_Windows_Spotlight.Foundation
         {
             get { return _title; }
             set { _title = value; }
-        }
-
-        public string Content
-        {
-            get { return _content; }
-            set { _content = value; }
         }
 
         public bool IsSelected

@@ -24,17 +24,6 @@ namespace WPF_Windows_Spotlight.Foundation.ItemType
 
         public override void Open()
         {
-            if (_content != null)
-            {
-                try
-                {
-                    System.Diagnostics.Process.Start(_content);
-                }
-                catch (Win32Exception e)
-                {
-                    Console.WriteLine("無法開啟");
-                }
-            }
         }
     }
 }

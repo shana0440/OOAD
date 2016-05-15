@@ -54,17 +54,13 @@ namespace WPF_Windows_Spotlight.Foundation
                     if (Everything.Everything_IsFolderResult(i))
                     {
                         folderOrFile = new FolderOrFile(new DirectoryInfo(_buf.ToString()));
+                        if (folderOrFile.Exists) list.Add(folderOrFile);
                     }
                     else if (Everything.Everything_IsFileResult(i))
                     {
                         folderOrFile = new FolderOrFile(new FileInfo(_buf.ToString()));
-                        // 在return type是IEnumerable的時候, yield return之後還會繼續執行
+                        if (folderOrFile.Exists) list.Add(folderOrFile);
                     } 
-                    else
-                    {
-                        continue;
-                    }
-                    if (folderOrFile.Exists) list.Add(folderOrFile);
                 }
                 catch (ArgumentException e)
                 {
@@ -86,7 +82,7 @@ namespace WPF_Windows_Spotlight.Foundation
                     e.Cancel = true;
                     return;
                 }
-                FileItem item = new FileItem(result, result.Name);
+                FileItem item = new FileItem(result);
                 if (result.IsFile)
                 {
                     Icon ico = Icon.ExtractAssociatedIcon(result.FullName);
@@ -98,7 +94,6 @@ namespace WPF_Windows_Spotlight.Foundation
                 {
                     item.SetIcon(_dirIcon);
                 }
-                item.Content = result.FullName;
                 list.Add(item);
             }
             e.Result = list;

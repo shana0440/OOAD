@@ -12,7 +12,8 @@ namespace WPF_Windows_Spotlight.Foundation.ItemType
     {
         private FolderOrFile _folderOrFile;
 
-        public FileItem(FolderOrFile folderOrFile, string title) : base(title)
+        public FileItem(FolderOrFile folderOrFile)
+            : base(folderOrFile.Name)
         {
             _folderOrFile = folderOrFile;
         }
@@ -36,7 +37,7 @@ namespace WPF_Windows_Spotlight.Foundation.ItemType
                 }
                 catch (Win32Exception e)
                 {
-                    Console.WriteLine("無法開啟");
+                    throw new Exception("Can't open this file or folder");
                 }
             }   
         }
