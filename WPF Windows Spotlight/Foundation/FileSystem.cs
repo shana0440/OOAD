@@ -32,7 +32,7 @@ namespace WPF_Windows_Spotlight.Foundation
         public List<FolderOrFile> Search(string keyword = "")
         {
             if (keyword == "") keyword = _keyword;
-            if (keyword == "") return new List<FolderOrFile>();
+            if (keyword == "" || keyword.Length < 3) return new List<FolderOrFile>();
             Everything.Everything_SetSearchW(keyword);
             Everything.Everything_SetMax(150);
             Everything.Everything_QueryW(true);
@@ -96,7 +96,7 @@ namespace WPF_Windows_Spotlight.Foundation
                 }
                 list.Add(item);
             }
-            e.Result = list;
+            e.Result = new KeyValuePair<string, List<Item>>((string)e.Argument, list);
         }
         
     }

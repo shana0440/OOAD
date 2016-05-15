@@ -20,7 +20,7 @@ namespace WPF_Windows_Spotlight.Foundation
         private string _lastResult;
         private Bitmap _icon;
         private string _orignalExp;
-        
+
 
         public Calculator(string expression = "")
         {
@@ -246,7 +246,7 @@ namespace WPF_Windows_Spotlight.Foundation
                 item.SetIcon(_icon);
                 list.Add(item);
             }
-            e.Result = list;
+            e.Result = new KeyValuePair<string, List<Item>>((string)e.Argument, list);
         }
 
         private static object Eval(string sCSCode)

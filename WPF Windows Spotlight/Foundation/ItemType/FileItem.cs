@@ -18,6 +18,11 @@ namespace WPF_Windows_Spotlight.Foundation.ItemType
             _folderOrFile = folderOrFile;
         }
 
+        public string FullName
+        {
+            get { return _folderOrFile.FullName; }
+        }
+
         public List<KeyValuePair<string, string>> GetProperty()
         {
             List<KeyValuePair<string, string>> propertys = new List<KeyValuePair<string, string>>();

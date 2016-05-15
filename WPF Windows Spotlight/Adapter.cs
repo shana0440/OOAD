@@ -20,6 +20,7 @@ namespace WPF_Windows_Spotlight
         private int _selectedIndex;
         public delegate void ModelChangedHandler();
         public ModelChangedHandler UpdateContentHandler;
+        private string _identify;
 
         public Adapter()
         {
@@ -37,13 +38,14 @@ namespace WPF_Windows_Spotlight
             _queryList.Clear();
             CancelBackgroundWorker();
             GetBackgroundWorkers();
+            _identify = Convert.ToInt32(DateTime.UtcNow.AddHours(8).Subtract(new DateTime(1970, 1, 1)).TotalSeconds).ToString();
             foreach (IFoundation foundation in _foundations)
             {
                 foundation.SetKeyword(_keyword);
             }
             foreach (BackgroundWorker worker in _workers)
             {
-                worker.RunWorkerAsync();
+                worker.RunWorkerAsync(_identify);
             }
         }
 
@@ -113,11 +115,14 @@ namespace WPF_Windows_Spotlight
         {
             if (!e.Cancelled && e.Result != null)
             {
-                List<Item> list = ((List<Item>)e.Result);
-                if (list.Count > 0)
+                KeyValuePair<string, List<Item>> result = ((KeyValuePair<string, List<Item>>)e.Result);
+                if (result.Key != _identify) 
+                    return;
+
+                if (result.Value.Count > 0)
                 {
                     _selectedIndex = 0;
-                    list.ForEach(_queryList.Add);
+                    result.Value.ForEach(_queryList.Add);
                     _queryList[0].IsSelected = true;
                 }
                 if (UpdateContentHandler != null)
