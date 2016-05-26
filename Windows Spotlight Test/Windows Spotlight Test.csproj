@@ -57,6 +57,7 @@
     <Compile Include="FoundationFactoryTest.cs" />
     <Compile Include="FileSystemTest.cs" />
     <Compile Include="FileItemTest.cs" />
+    <Compile Include="FilePriorityTester.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WPF Windows Spotlight\WPF Windows Spotlight.csproj">

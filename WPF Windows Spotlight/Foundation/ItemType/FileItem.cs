@@ -38,6 +38,8 @@ namespace WPF_Windows_Spotlight.Foundation.ItemType
             {
                 if (_folderOrFile != null)
                 {
+                    var filePriority = new FilePriority();
+                    filePriority.PriorityUp(_folderOrFile.FullName);
                     System.Diagnostics.Process.Start(_folderOrFile.FullName);
                 }
             }
