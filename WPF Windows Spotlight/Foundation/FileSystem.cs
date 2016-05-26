@@ -73,7 +73,7 @@ namespace WPF_Windows_Spotlight.Foundation
             return list;
         }
 
-        private List<FolderOrFile> Sort(List<FolderOrFile> list)
+        private List<FolderOrFile> Sort(IEnumerable<FolderOrFile> list)
         {
             var sortedLists = new List<List<FolderOrFile>>();
             // 定義n個要搜尋的條件，第n+1個放不存在於條件內的
@@ -81,13 +81,12 @@ namespace WPF_Windows_Spotlight.Foundation
             {
                 sortedLists.Add(new List<FolderOrFile>());
             }
-            var added = false;
             foreach (var item in list)
             {
-                added = false;
+                var added = false;
                 for (var j = 0; j < _sortOrder.Length; j++)
                 {
-                    if (item.Name.Contains(_sortOrder[j]))
+                    if (item.Name.EndsWith(_sortOrder[j]))
                     {
                         sortedLists[j].Add(item);
                         added = true;
@@ -99,7 +98,7 @@ namespace WPF_Windows_Spotlight.Foundation
             var result = new List<FolderOrFile>();
             foreach (var sortedList in sortedLists)
             {
-                result.AddRange(sortedList);
+                result.AddRange(sortedList.OrderBy(item => item.Name));
             }
             return result;
         }
