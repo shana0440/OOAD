@@ -14,8 +14,9 @@ namespace WPF_Windows_Spotlight.Foundation
     {
         private string _keyword;
         private readonly Bitmap _dirIcon;
+        private readonly string[] _sortOrder = {".exe", ".lnk"};
 
-        public FileSystem(string keyword = "")
+    public FileSystem(string keyword = "")
         {
             _keyword = keyword;
             _dirIcon = (Bitmap)WPF_Windows_Spotlight.Properties.Resources.folder_icon;
@@ -36,6 +37,7 @@ namespace WPF_Windows_Spotlight.Foundation
             Everything.Everything_QueryW(true);
             Everything.Everything_SortResultsByPath();
             var list = GetResult();
+            list = Sort(list);
             Everything.Everything_Reset();
             return list;
         }
@@ -69,6 +71,37 @@ namespace WPF_Windows_Spotlight.Foundation
                 }
             }
             return list;
+        }
+
+        private List<FolderOrFile> Sort(List<FolderOrFile> list)
+        {
+            var sortedLists = new List<List<FolderOrFile>>();
+            // 定義n個要搜尋的條件，第n+1個放不存在於條件內的
+            for (var i = 0; i < _sortOrder.Length + 1; i++)
+            {
+                sortedLists.Add(new List<FolderOrFile>());
+            }
+            var added = false;
+            foreach (var item in list)
+            {
+                added = false;
+                for (var j = 0; j < _sortOrder.Length; j++)
+                {
+                    if (item.Name.Contains(_sortOrder[j]))
+                    {
+                        sortedLists[j].Add(item);
+                        added = true;
+                    }
+                }
+                if (!added)
+                    sortedLists[_sortOrder.Length].Add(item);
+            }
+            var result = new List<FolderOrFile>();
+            foreach (var sortedList in sortedLists)
+            {
+                result.AddRange(sortedList);
+            }
+            return result;
         }
 
         public void DoWork(object sender, DoWorkEventArgs e)

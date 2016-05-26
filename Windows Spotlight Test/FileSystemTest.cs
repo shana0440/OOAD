@@ -77,5 +77,6 @@ namespace Windows_Spotlight_Test
             }
             Assert.AreEqual(true, _canceled);
         }
+
     }
 }

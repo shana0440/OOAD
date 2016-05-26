@@ -10,7 +10,7 @@ namespace WPF_Windows_Spotlight.Foundation.ItemType
 {
     public class FileItem : Item
     {
-        private FolderOrFile _folderOrFile;
+        private readonly FolderOrFile _folderOrFile;
 
         public FileItem(FolderOrFile folderOrFile)
             : base(folderOrFile.Name)
