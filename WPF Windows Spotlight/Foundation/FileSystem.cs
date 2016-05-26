@@ -13,9 +13,7 @@ namespace WPF_Windows_Spotlight.Foundation
     public class FileSystem : IFoundation
     {
         private string _keyword;
-        private Bitmap _dirIcon;
-        const int _bufsize = 260;
-        StringBuilder _buf = new StringBuilder(260);
+        private readonly Bitmap _dirIcon;
 
         public FileSystem(string keyword = "")
         {
@@ -36,29 +34,32 @@ namespace WPF_Windows_Spotlight.Foundation
             Everything.Everything_SetSearchW(keyword);
             Everything.Everything_SetMax(150);
             Everything.Everything_QueryW(true);
-            List<FolderOrFile> list = GetResult();
+            Everything.Everything_SortResultsByPath();
+            var list = GetResult();
             Everything.Everything_Reset();
             return list;
         }
 
         private List<FolderOrFile> GetResult()
         {
-            List<FolderOrFile> list = new List<FolderOrFile>();
-            for (int i = 0; i < Everything.Everything_GetNumResults(); i++)
+            var list = new List<FolderOrFile>();
+            const int bufsize = 260;
+            var buf = new StringBuilder(260);
+
+            for (var i = 0; i < Everything.Everything_GetNumResults(); i++)
             {
                 // get the result's full path and file name.
-                Everything.Everything_GetResultFullPathNameW(i, _buf, _bufsize);
-                FolderOrFile folderOrFile = null;
+                Everything.Everything_GetResultFullPathNameW(i, buf, bufsize);
                 try
                 {
                     if (Everything.Everything_IsFolderResult(i))
                     {
-                        folderOrFile = new FolderOrFile(new DirectoryInfo(_buf.ToString()));
+                        var folderOrFile = new FolderOrFile(new DirectoryInfo(buf.ToString()));
                         if (folderOrFile.Exists) list.Add(folderOrFile);
                     }
                     else if (Everything.Everything_IsFileResult(i))
                     {
-                        folderOrFile = new FolderOrFile(new FileInfo(_buf.ToString()));
+                        var folderOrFile = new FolderOrFile(new FileInfo(buf.ToString()));
                         if (folderOrFile.Exists) list.Add(folderOrFile);
                     } 
                 }
@@ -72,21 +73,21 @@ namespace WPF_Windows_Spotlight.Foundation
 
         public void DoWork(object sender, DoWorkEventArgs e)
         {
-            List<FolderOrFile> results = Search();
-            List<Item> list = new List<Item>();
-            foreach (FolderOrFile result in results)
+            var results = Search();
+            var list = new List<Item>();
+            foreach (var result in results)
             {
-                BackgroundWorker bg = sender as BackgroundWorker;
+                var bg = sender as BackgroundWorker;
                 if (bg.CancellationPending)
                 {
                     e.Cancel = true;
                     return;
                 }
-                FileItem item = new FileItem(result);
+                var item = new FileItem(result);
                 if (result.IsFile)
                 {
-                    Icon ico = Icon.ExtractAssociatedIcon(result.FullName);
-                    Bitmap bmp = ico.ToBitmap();
+                    var ico = Icon.ExtractAssociatedIcon(result.FullName);
+                    var bmp = ico.ToBitmap();
                     bmp.MakeTransparent();
                     item.SetIcon(bmp);
                 }
