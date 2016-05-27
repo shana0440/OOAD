@@ -125,7 +125,6 @@ namespace WPF_Windows_Spotlight
             {
                 Item selectedItem = _adapter.QueryList[QueryList.SelectedIndex];
                 selectedItem.Open();
-                ShowFileDetail((FileItem)selectedItem);
             }
         }
 
@@ -163,6 +162,9 @@ namespace WPF_Windows_Spotlight
                     break;
                 case "AnswerItem":
                     ShowAnswerItem((AnswerItem)item);
+                    break;
+                case "TranslateItem":
+                    ShowTranslateItem((TranslateItem)item);
                     break;
                 default:
                     break;
@@ -242,6 +244,17 @@ namespace WPF_Windows_Spotlight
             answer.FontSize = 36;
             answer.HorizontalContentAlignment = HorizontalAlignment.Center;
             ContentView.Children.Add(answer);
+        }
+
+        private void ShowTranslateItem(TranslateItem item)
+        {
+            ContentView.Children.Clear();
+            WebBrowser browser = new WebBrowser();
+            browser.Width = ContentView.Width - 5;
+            browser.Height = ContentView.Height - 15;
+            browser.NavigateToString(item.Html);
+            browser.Margin = new Thickness(5, 10, 0, 5);
+            ContentView.Children.Add(browser);
         }
 
         private void SelectItem(object sender, KeyEventArgs e)

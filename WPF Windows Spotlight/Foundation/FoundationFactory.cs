@@ -15,6 +15,7 @@ namespace WPF_Windows_Spotlight.Foundation
             _foundations = new List<string>();
             _foundations.Add("Calculator");
             _foundations.Add("FileSystem");
+            _foundations.Add("Translator");
         }
 
         public IFoundation CreateFoundation(string foundationName, string arg = "")
@@ -28,6 +29,9 @@ namespace WPF_Windows_Spotlight.Foundation
                 case "FileSystem":
                     foundation = new FileSystem(arg);
                     break;
+                case "Translator":
+                    foundation = new Translator(arg);
+	                break;
 		        default:
                     foundation = null;
                     break;

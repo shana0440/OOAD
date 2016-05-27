@@ -91,6 +91,7 @@
     <Compile Include="Foundation\IFoundation.cs" />
     <Compile Include="Foundation\ItemType\AnswerItem.cs" />
     <Compile Include="Foundation\ItemType\FileItem.cs" />
+    <Compile Include="Foundation\ItemType\TranslateItem.cs" />
     <Compile Include="Foundation\Translator.cs" />
     <Compile Include="Foundation\Item.cs" />
     <Compile Include="LowLevelKeyboardListener.cs" />
