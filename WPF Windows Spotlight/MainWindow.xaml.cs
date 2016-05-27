@@ -246,7 +246,6 @@ namespace WPF_Windows_Spotlight
 
         private void SelectItem(object sender, KeyEventArgs e)
         {
-            Item item;
             switch (e.Key)
             {
                 case Key.Up:
@@ -256,7 +255,7 @@ namespace WPF_Windows_Spotlight
                     _adapter.SelectItem(_adapter.SelectedIndex + 1);
                     break;
                 case Key.Enter:
-                    item = _adapter.QueryList[_adapter.SelectedIndex];
+                    var item = _adapter.QueryList[_adapter.SelectedIndex];
                     item.Open();
                     break;
                 default:

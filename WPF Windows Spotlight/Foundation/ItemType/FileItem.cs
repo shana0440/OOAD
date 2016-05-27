@@ -10,7 +10,7 @@ namespace WPF_Windows_Spotlight.Foundation.ItemType
 {
     public class FileItem : Item
     {
-        private FolderOrFile _folderOrFile;
+        private readonly FolderOrFile _folderOrFile;
 
         public FileItem(FolderOrFile folderOrFile)
             : base(folderOrFile.Name)
@@ -25,7 +25,7 @@ namespace WPF_Windows_Spotlight.Foundation.ItemType
 
         public List<KeyValuePair<string, string>> GetProperty()
         {
-            List<KeyValuePair<string, string>> propertys = new List<KeyValuePair<string, string>>();
+            var propertys = new List<KeyValuePair<string, string>>();
             propertys.Add(new KeyValuePair<string, string>("Created", _folderOrFile.CreationDate));
             propertys.Add(new KeyValuePair<string, string>("Modified", _folderOrFile.LastWriteDate));
             propertys.Add(new KeyValuePair<string, string>("Accessed", _folderOrFile.LastAccessDate));
@@ -34,17 +34,19 @@ namespace WPF_Windows_Spotlight.Foundation.ItemType
 
         public override void Open()
         {
-            if (_folderOrFile != null)
+            try
             {
-                try
+                if (_folderOrFile != null)
                 {
                     System.Diagnostics.Process.Start(_folderOrFile.FullName);
+                    var filePriority = new FilePriority();
+                    filePriority.PriorityUp(_folderOrFile);
                 }
-                catch (Win32Exception e)
-                {
-                    throw new Exception("Can't open this file or folder");
-                }
-            }   
+            }
+            catch (Win32Exception e)
+            {
+                throw new Exception("Can't open this file or folder");
+            }
         }
     }
 }

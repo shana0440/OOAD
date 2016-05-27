@@ -12,7 +12,7 @@ namespace Windows_Spotlight_Test
     public class FileSystemTest
     {
         FileSystem _fileSystem;
-        List<Item> _list;
+        KeyValuePair<string, List<Item>> _list;
         bool _running;
         private bool _canceled;
 
@@ -42,14 +42,14 @@ namespace Windows_Spotlight_Test
             {
                 Thread.Sleep(100);
             }
-            Assert.AreEqual(1, _list.Count);
+            Assert.AreEqual(1, _list.Value.Count);
         }
 
         public void TestBackgroundWokerSearchFileComplete(object sender, RunWorkerCompletedEventArgs e)
         {
             if (!e.Cancelled)
             {
-                _list = ((List<Item>)e.Result);
+                _list = (KeyValuePair<string, List<Item>>)e.Result;
                 _running = false;
             }
             else
@@ -57,6 +57,7 @@ namespace Windows_Spotlight_Test
                 _running = false;
                 _canceled = e.Cancelled;
             }
+            _running = false;
         }
 
         [TestMethod]
@@ -76,5 +77,6 @@ namespace Windows_Spotlight_Test
             }
             Assert.AreEqual(true, _canceled);
         }
+
     }
 }

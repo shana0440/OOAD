@@ -84,6 +84,7 @@
     </Compile>
     <Compile Include="Foundation\Calculator.cs" />
     <Compile Include="Foundation\Everything.cs" />
+    <Compile Include="Foundation\FilePriority.cs" />
     <Compile Include="Foundation\FileSystem.cs" />
     <Compile Include="Foundation\FolderOrFile.cs" />
     <Compile Include="Foundation\FoundationFactory.cs" />
