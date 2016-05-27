@@ -20,15 +20,14 @@ namespace WPF_Windows_Spotlight.Foundation
             
         }
 
-        public int PriorityUp(string fileName)
+        public int PriorityUp(FolderOrFile folderOrFile)
         {
-            fileName = fileName.ToLower();
             var xml = new XmlDocument();
             var openCount = 1;
             if (File.Exists(PriorityFile))
             {
                 xml.Load(PriorityFile);
-                var node = xml.SelectSingleNode("History/File[@Name='"+ fileName +"']");
+                var node = xml.SelectSingleNode("History/File[@FullName='" + folderOrFile.FullName + "']");
                 if (node != null)
                 {
                     var count = Int32.Parse(node.Attributes["Count"].InnerText) + 1;
@@ -38,24 +37,34 @@ namespace WPF_Windows_Spotlight.Foundation
                 else
                 {
                     var history = xml.SelectSingleNode("History");
-                    history.AppendChild(CreateFileXml(xml, fileName));
+                    history.AppendChild(CreateFileXml(xml, folderOrFile));
                     xml.AppendChild(history);
                 }
             }
             else
             {
                 var history = xml.CreateElement("History");
-                history.AppendChild(CreateFileXml(xml, fileName));
+                history.AppendChild(CreateFileXml(xml, folderOrFile));
                 xml.AppendChild(history);
             }
             xml.Save(PriorityFile);
             return openCount;
         }
 
-        private XmlNode CreateFileXml(XmlDocument xml, string fileName)
+        public bool InPriorityFile(string filename)
+        {
+            var xml = new XmlDocument();
+            xml.Load(PriorityFile);
+            var query = String.Format("History/File[contains(@Name,'{0}')]", filename);
+            var node = xml.SelectSingleNode(query);
+            return node != null;
+        }
+
+        private XmlNode CreateFileXml(XmlDocument xml, FolderOrFile folderOrFile)
         {
             var ele = xml.CreateElement("File");
-            ele.SetAttribute("Name", fileName);
+            ele.SetAttribute("FullName", folderOrFile.FullName);
+            ele.SetAttribute("Name", folderOrFile.Name);
             ele.SetAttribute("Count", "1");
             return ele;
         }
