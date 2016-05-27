@@ -5,6 +5,7 @@ using System.Text;
 using System.Net;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using HtmlAgilityPack;
 using WPF_Windows_Spotlight.Foundation.ItemType;
@@ -16,12 +17,14 @@ namespace WPF_Windows_Spotlight.Foundation
         private string _word;
         private readonly string _url;
         private readonly string _xpath;
+        private readonly Bitmap _icon;
 
         public Translator(string word = "")
         {
             _word = word;
             _url = "https://tw.dictionary.search.yahoo.com/search?p=";
             _xpath = "//div[contains(@class, 'dd algo explain mt-20 lst DictionaryResults')]";
+            _icon = (Bitmap)WPF_Windows_Spotlight.Properties.Resources.dictionary;
         }
 
         public string Word
@@ -85,6 +88,7 @@ namespace WPF_Windows_Spotlight.Foundation
             if (result != "Not Found")
             {
                 var item = new TranslateItem(_word, _url + _word, result);
+                item.SetIcon(_icon);
                 list.Add(item);
             }
             var bg = sender as BackgroundWorker;
