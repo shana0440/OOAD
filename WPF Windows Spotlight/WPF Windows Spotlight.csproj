@@ -91,6 +91,7 @@
     <Compile Include="Foundation\IFoundation.cs" />
     <Compile Include="Foundation\ItemType\AnswerItem.cs" />
     <Compile Include="Foundation\ItemType\FileItem.cs" />
+    <Compile Include="Foundation\ItemType\TranslateItem.cs" />
     <Compile Include="Foundation\Translator.cs" />
     <Compile Include="Foundation\Item.cs" />
     <Compile Include="LowLevelKeyboardListener.cs" />
@@ -155,6 +156,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Everything32.dll" />
+    <None Include="Images\dictionary.png" />
+    <None Include="Resources\dirtionary.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

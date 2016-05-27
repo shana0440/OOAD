@@ -5,22 +5,26 @@ using System.Text;
 using System.Net;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using HtmlAgilityPack;
+using WPF_Windows_Spotlight.Foundation.ItemType;
 
 namespace WPF_Windows_Spotlight.Foundation
 {
     public class Translator : IFoundation
     {
         private string _word;
-        private string _url;
-        private string _xpath;
+        private readonly string _url;
+        private readonly string _xpath;
+        private readonly Bitmap _icon;
 
         public Translator(string word = "")
         {
             _word = word;
             _url = "https://tw.dictionary.search.yahoo.com/search?p=";
             _xpath = "//div[contains(@class, 'dd algo explain mt-20 lst DictionaryResults')]";
+            _icon = (Bitmap)WPF_Windows_Spotlight.Properties.Resources.dictionary;
         }
 
         public string Word
@@ -45,19 +49,55 @@ namespace WPF_Windows_Spotlight.Foundation
                 string html = stream.ReadToEnd();
                 HtmlDocument dom = new HtmlDocument();
                 dom.LoadHtml(html);
-                HtmlNode node = dom.DocumentNode.SelectSingleNode(_xpath);
-                if (node == null)
-                {
-                    return "Not Found";
-                }
-                string result = node.InnerHtml;
+                string content;
+                if ((content = GetContent(dom)) == "Not Found")
+                    return content;
+
+                string result = "<html>" 
+                    + "<head>"
+                    + "<meta http-equiv='content-type' content='text/html; charset=UTF-8'>"
+                    + GetLinks(dom)
+                    + "<style>html, body { background: #F0F0F0}</style>"
+                    + "</head><body>" 
+                    + content
+                    + "</body></html>";
                 return result;
             }
         }
 
+        private string GetLinks(HtmlDocument dom)
+        {
+            var xpath = "//head/link[@rel='stylesheet']";
+            HtmlNode node = dom.DocumentNode.SelectSingleNode(xpath);
+            return node.OuterHtml;
+        }
+
+        private string GetContent(HtmlDocument dom)
+        {
+            var xpath = "//div[contains(@class, 'dd algo explain mt-20 lst DictionaryResults')]";
+            HtmlNode node = dom.DocumentNode.SelectSingleNode(xpath);
+            if (node == null)
+                return "Not Found";
+            return node.InnerHtml;
+        }
+
         public void DoWork(object sender, DoWorkEventArgs e)
         {
-            e.Result = Translate();
+            var list = new List<Item>();
+            var result = Translate();
+            if (result != "Not Found")
+            {
+                var item = new TranslateItem(_word, _url + _word, result);
+                item.SetIcon(_icon);
+                list.Add(item);
+            }
+            var bg = sender as BackgroundWorker;
+            if (bg.CancellationPending)
+            {
+                e.Cancel = true;
+                return;
+            }
+            e.Result = new KeyValuePair<string, List<Item>>((string)e.Argument, list);
         }
     }
 }

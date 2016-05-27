@@ -231,16 +231,16 @@ namespace WPF_Windows_Spotlight.Foundation
 
         public void DoWork(object sender, DoWorkEventArgs e)
         {
-            string answer = GetResult();
-            AnswerItem item = new AnswerItem(answer, _orignalExp);
+            var answer = GetResult();
+            var item = new AnswerItem(answer, _orignalExp);
             double n;
-            BackgroundWorker bg = sender as BackgroundWorker;
+            var bg = sender as BackgroundWorker;
             if (bg.CancellationPending)
             {
                 e.Cancel = true;
                 return;
             }
-            List<Item> list = new List<Item>();
+            var list = new List<Item>();
             if (double.TryParse(answer, out n) && answer != null)
             {
                 item.SetIcon(_icon);
