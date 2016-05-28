@@ -13,9 +13,10 @@ namespace WPF_Windows_Spotlight.Foundation
         public FoundationFactory()
         {
             _foundations = new List<string>();
-            _foundations.Add("Calculator");
-            _foundations.Add("FileSystem");
-            _foundations.Add("Translator");
+            //_foundations.Add("Calculator");
+            //_foundations.Add("FileSystem");
+            //_foundations.Add("Translator");
+            _foundations.Add("SearchEngine");
         }
 
         public IFoundation CreateFoundation(string foundationName, string arg = "")
@@ -32,6 +33,9 @@ namespace WPF_Windows_Spotlight.Foundation
                 case "Translator":
                     foundation = new Translator(arg);
 	                break;
+                case "SearchEngine":
+	                foundation = new SearchEngine();
+                    break;
 		        default:
                     foundation = null;
                     break;

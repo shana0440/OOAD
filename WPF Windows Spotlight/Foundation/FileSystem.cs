@@ -14,9 +14,10 @@ namespace WPF_Windows_Spotlight.Foundation
     {
         private string _keyword;
         private readonly Bitmap _dirIcon;
+        private const int SearchMaxCount = 10;
         private readonly string[] _sortOrder = {".exe", ".lnk"};
 
-    public FileSystem(string keyword = "")
+        public FileSystem(string keyword = "")
         {
             _keyword = keyword;
             _dirIcon = (Bitmap)WPF_Windows_Spotlight.Properties.Resources.folder_icon;
@@ -33,7 +34,7 @@ namespace WPF_Windows_Spotlight.Foundation
             if (keyword == "") keyword = _keyword;
             if (keyword == "" || keyword.Length < 3) return new List<FolderOrFile>();
             Everything.Everything_SetSearchW(keyword);
-            Everything.Everything_SetMax(150);
+            Everything.Everything_SetMax(SearchMaxCount);
             Everything.Everything_QueryW(true);
             Everything.Everything_SortResultsByPath();
             var list = GetResult();
