@@ -91,6 +91,7 @@
     <Compile Include="Foundation\FoundationFactory.cs" />
     <Compile Include="Foundation\IFoundation.cs" />
     <Compile Include="Foundation\ItemType\AnswerItem.cs" />
+    <Compile Include="Foundation\ItemType\ExchangeItem.cs" />
     <Compile Include="Foundation\ItemType\FileItem.cs" />
     <Compile Include="Foundation\ItemType\TranslateItem.cs" />
     <Compile Include="Foundation\ItemType\WebSite.cs" />
@@ -159,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Everything32.dll" />
+    <None Include="Images\exchange.png" />
     <None Include="Images\web.png" />
     <None Include="Images\web.ico" />
     <None Include="Images\dictionary.png" />

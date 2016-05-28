@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using HtmlAgilityPack;
 using System.Net;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -17,11 +18,12 @@ namespace WPF_Windows_Spotlight.Foundation
     {
         private string _currency;
         private string _url = "http://rate.bot.com.tw/Pages/Static/UIP003.zh-TW.htm";
-        private string _xpath = "//table[@title=\"牌告匯率\"]";
+        private readonly Bitmap _icon;
 
         public Exchange(string currency = "")
         {
             _currency = currency;
+            _icon = (Bitmap) WPF_Windows_Spotlight.Properties.Resources.exchange;
         }
 
         public void SetKeyword(string keyword)
@@ -37,6 +39,7 @@ namespace WPF_Windows_Spotlight.Foundation
          */
         public string ExchangeCurrency(string currency)
         {
+            if (currency.Length < 4) return "";
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_url);
             request.Accept = "text/html";
             request.Method = "GET";
@@ -48,7 +51,7 @@ namespace WPF_Windows_Spotlight.Foundation
                 HtmlDocument dom = new HtmlDocument();
                 dom.LoadHtml(html);
                 var rows = GetExchangeRows(dom);
-                var convertCurrency = currency.Substring(currency.Length - 3, 3);
+                var convertCurrency = currency.ToUpper().Substring(currency.Length - 3, 3);
                 var value = currency.Substring(0, currency.Length - 3);
                 foreach (var row in rows)
                 {
@@ -102,8 +105,13 @@ namespace WPF_Windows_Spotlight.Foundation
                 e.Cancel = true;
                 return;
             }
+            if (result != "")
+            {
+                var item = new ExchangeItem(result, _currency);
+                item.SetIcon(_icon);
+                list.Add(item);
+            }
             e.Result = new KeyValuePair<string, List<Item>>((string)e.Argument, list);
-
         }
     }
 }
