@@ -76,7 +76,7 @@ namespace WPF_Windows_Spotlight.Foundation
 
         private HtmlNodeCollection GetUrls(HtmlDocument dom)
         {
-            var xpath = "//div[contains(@class, 'kv')]/cite";
+            var xpath = "//div[@class='s']/div/div[contains(@class, 'kv')]/cite";
             var nodes = dom.DocumentNode.SelectNodes(xpath);
             return nodes;
         }
