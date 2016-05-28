@@ -38,7 +38,7 @@ namespace WPF_Windows_Spotlight
             _adapter = new Adapter();
             InitializeComponent();
             ICollectionView collectionView = CollectionViewSource.GetDefaultView(_adapter.QueryList);
-            collectionView.GroupDescriptions.Add(new PropertyGroupDescription("Title"));
+            collectionView.GroupDescriptions.Add(new PropertyGroupDescription("GroupName"));
             QueryList.ItemsSource = collectionView;
             CenterWindowOnScreen();
             Height = _inputHieght;

@@ -19,11 +19,17 @@ namespace WPF_Windows_Spotlight.Foundation
         private string _currency;
         private string _url = "http://rate.bot.com.tw/Pages/Static/UIP003.zh-TW.htm";
         private readonly Bitmap _icon;
+        private readonly string _name;
 
-        public Exchange(string currency = "")
+        public Exchange(string name = "")
         {
-            _currency = currency;
+            _name = name;
             _icon = (Bitmap) WPF_Windows_Spotlight.Properties.Resources.exchange;
+        }
+
+        public string Name
+        {
+            get { return _name; }
         }
 
         public void SetKeyword(string keyword)
@@ -107,7 +113,7 @@ namespace WPF_Windows_Spotlight.Foundation
             }
             if (result != "")
             {
-                var item = new ExchangeItem(result, _currency);
+                var item = new ExchangeItem(result, _currency, _name);
                 item.SetIcon(_icon);
                 list.Add(item);
             }

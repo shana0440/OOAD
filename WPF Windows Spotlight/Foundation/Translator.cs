@@ -18,13 +18,19 @@ namespace WPF_Windows_Spotlight.Foundation
         private readonly string _url;
         private readonly string _xpath;
         private readonly Bitmap _icon;
+        private readonly string _name;
 
-        public Translator(string word = "")
+        public Translator(string name = "")
         {
-            _word = word;
+            _name = name;
             _url = "https://tw.dictionary.search.yahoo.com/search?p=";
             _xpath = "//div[contains(@class, 'dd algo explain mt-20 lst DictionaryResults')]";
             _icon = (Bitmap)WPF_Windows_Spotlight.Properties.Resources.dictionary;
+        }
+
+        public string Name
+        {
+            get { return _name; }
         }
 
         public string Word
@@ -87,7 +93,7 @@ namespace WPF_Windows_Spotlight.Foundation
             var result = Translate();
             if (result != "Not Found")
             {
-                var item = new TranslateItem(_word, _url + _word, result);
+                var item = new TranslateItem(_word, _url + _word, result, _name);
                 item.SetIcon(_icon);
                 list.Add(item);
             }

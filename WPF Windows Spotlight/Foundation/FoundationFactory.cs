@@ -13,11 +13,11 @@ namespace WPF_Windows_Spotlight.Foundation
         public FoundationFactory()
         {
             _foundations = new List<IFoundation>();
-            _foundations.Add(new Calculator());
-            _foundations.Add(new FileSystem());
-            _foundations.Add(new Translator());
-            _foundations.Add(new SearchEngine());
-            _foundations.Add(new Exchange());
+            _foundations.Add(new Calculator("計算機"));
+            _foundations.Add(new Exchange("匯率換算"));
+            _foundations.Add(new Translator("翻譯"));
+            _foundations.Add(new SearchEngine("網頁"));
+            _foundations.Add(new FileSystem("檔案或資料夾"));
         }
 
         public List<IFoundation> GetFoundations()

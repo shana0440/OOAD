@@ -18,11 +18,18 @@ namespace WPF_Windows_Spotlight.Foundation
         private string _keyword;
         private readonly string _url;
         private readonly Bitmap _icon;
+        private readonly string _name;
 
-        public SearchEngine()
+        public SearchEngine(string name = "")
         {
+            _name = name;
             _url = "https://www.google.com.tw/search?q=";
             _icon = (Bitmap)WPF_Windows_Spotlight.Properties.Resources.web;
+        }
+
+        public string Name
+        {
+            get { return _name; }
         }
 
         public List<Item> Search()
@@ -60,7 +67,7 @@ namespace WPF_Windows_Spotlight.Foundation
                 var title = WebUtility.HtmlDecode(titles[i].InnerText);
                 var intro = WebUtility.HtmlDecode(intros[i].InnerText);
                 var url = WebUtility.HtmlDecode(urls[i].InnerText);
-                var web = new WebSite(title, intro, url);
+                var web = new WebSite(title, intro, url, _name);
                 web.SetIcon(_icon);
                 result.Add(web);
             }
