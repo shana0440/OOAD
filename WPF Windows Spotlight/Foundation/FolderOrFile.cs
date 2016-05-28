@@ -9,8 +9,8 @@ namespace WPF_Windows_Spotlight.Foundation
 {
     public class FolderOrFile
     {
-        private FileInfo _file;
-        private DirectoryInfo _folder;
+        private readonly FileInfo _file;
+        private readonly DirectoryInfo _folder;
 
         public FolderOrFile(FileInfo file)
         {
