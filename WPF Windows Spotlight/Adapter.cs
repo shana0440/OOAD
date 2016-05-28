@@ -124,6 +124,7 @@ namespace WPF_Windows_Spotlight
                 {
                     _selectedIndex = 0;
                     result.Value.ForEach(_queryList.Add);
+                    
                     _queryList[0].IsSelected = true;
                 }
                 if (UpdateContentHandler != null)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,7 +37,16 @@ namespace WPF_Windows_Spotlight
         {
             _adapter = new Adapter();
             InitializeComponent();
-            QueryList.ItemsSource = _adapter.QueryList;
+            var list = new List<Item>();
+            ICollectionView tasksView = CollectionViewSource.GetDefaultView(list);
+            //QueryList.ItemsSource = _adapter.QueryList;
+            list.Add(new AnswerItem("2", "1+1"));
+            list.Add(new AnswerItem("2", "1+1"));
+            list.Add(new AnswerItem("3", "1+2"));
+            list.Add(new AnswerItem("2", "1+1"));
+            list.Add(new AnswerItem("2", "1+1"));
+            tasksView.GroupDescriptions.Add(new PropertyGroupDescription("Title"));
+            QueryList.ItemsSource = tasksView;
             CenterWindowOnScreen();
             Height = _inputHieght;
             _adapter.UpdateContentHandler += SearchOver;
