@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using WPF_Windows_Spotlight.Foundation;
 using System.Collections.ObjectModel;
+using WPF_Windows_Spotlight.Foundation.ItemType;
 
 namespace WPF_Windows_Spotlight
 {

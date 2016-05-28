@@ -5,6 +5,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Threading;
 using System.ComponentModel;
+using WPF_Windows_Spotlight.Foundation.ItemType;
 
 namespace Windows_Spotlight_Test
 {

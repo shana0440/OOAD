@@ -5,6 +5,8 @@ using System.Linq;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 using WPF_Windows_Spotlight.Foundation;
 
 namespace WPF_Windows_Spotlight.Foundation.ItemType
@@ -43,6 +45,17 @@ namespace WPF_Windows_Spotlight.Foundation.ItemType
             {
                 throw new Exception("Can't open this web site");
             }   
+        }
+
+        public override void GenerateContent(StackPanel contentView)
+        {
+            contentView.Children.Clear();
+            WebBrowser browser = new WebBrowser();
+            browser.Width = contentView.Width - 5;
+            browser.Height = contentView.Height - 15;
+            browser.NavigateToString(Html);
+            browser.Margin = new Thickness(5, 10, 0, 5);
+            contentView.Children.Add(browser);
         }
 
     }

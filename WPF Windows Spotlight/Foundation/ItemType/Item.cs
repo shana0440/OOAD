@@ -7,9 +7,11 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Media.Imaging;
 using System.IO;
+using System.Windows.Controls;
 using WPF_Windows_Spotlight;
+using WPF_Windows_Spotlight.Foundation;
 
-namespace WPF_Windows_Spotlight.Foundation
+namespace WPF_Windows_Spotlight.Foundation.ItemType
 {
     abstract public class Item : INotifyPropertyChanged
     {
@@ -67,6 +69,7 @@ namespace WPF_Windows_Spotlight.Foundation
         }
 
         abstract public void Open();
+        abstract public void GenerateContent(StackPanel contentView);
 
         public void SetIcon(Bitmap bitmap)
         {

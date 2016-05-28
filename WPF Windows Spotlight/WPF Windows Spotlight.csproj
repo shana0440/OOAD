@@ -92,8 +92,9 @@
     <Compile Include="Foundation\ItemType\AnswerItem.cs" />
     <Compile Include="Foundation\ItemType\FileItem.cs" />
     <Compile Include="Foundation\ItemType\TranslateItem.cs" />
+    <Compile Include="Foundation\SearchEngine.cs" />
     <Compile Include="Foundation\Translator.cs" />
-    <Compile Include="Foundation\Item.cs" />
+    <Compile Include="Foundation\ItemType\Item.cs" />
     <Compile Include="LowLevelKeyboardListener.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
