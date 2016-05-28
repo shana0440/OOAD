@@ -154,21 +154,22 @@ namespace WPF_Windows_Spotlight
             if (item == null) return;
             ResultIcon.Source = item.Icon;
             Height = _windowHieght;
-            string type = item.GetType().Name;
-            switch(type)
-            {
-                case "FileItem":
-                    ShowFileDetail((FileItem)item);
-                    break;
-                case "AnswerItem":
-                    ShowAnswerItem((AnswerItem)item);
-                    break;
-                case "TranslateItem":
-                    ShowTranslateItem((TranslateItem)item);
-                    break;
-                default:
-                    break;
-            }
+            item.GenerateContent(ContentView);
+            //string type = item.GetType().Name;
+            //switch(type)
+            //{
+            //    case "FileItem":
+            //        ShowFileDetail((FileItem)item);
+            //        break;
+            //    case "AnswerItem":
+            //        ShowAnswerItem((AnswerItem)item);
+            //        break;
+            //    case "TranslateItem":
+            //        ShowTranslateItem((TranslateItem)item);
+            //        break;
+            //    default:
+            //        break;
+            //}
         }
 
         private void ShowFileDetail(FileItem file)
