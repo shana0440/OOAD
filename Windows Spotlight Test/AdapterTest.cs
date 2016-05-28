@@ -4,6 +4,7 @@ using WPF_Windows_Spotlight;
 using System.Threading;
 using System.Collections.ObjectModel;
 using WPF_Windows_Spotlight.Foundation;
+using WPF_Windows_Spotlight.Foundation.ItemType;
 
 namespace Windows_Spotlight_Test
 {

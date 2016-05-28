@@ -8,8 +8,9 @@ using System.Drawing;
 using System.Windows.Media.Imaging;
 using System.IO;
 using WPF_Windows_Spotlight;
+using WPF_Windows_Spotlight.Foundation;
 
-namespace WPF_Windows_Spotlight.Foundation
+namespace WPF_Windows_Spotlight.Foundation.ItemType
 {
     abstract public class Item : INotifyPropertyChanged
     {
