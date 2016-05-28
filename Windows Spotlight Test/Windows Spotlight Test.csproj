@@ -59,6 +59,7 @@
     <Compile Include="FileItemTest.cs" />
     <Compile Include="FilePriorityTester.cs" />
     <Compile Include="SearchEngineTester.cs" />
+    <Compile Include="ExchangeTester.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WPF Windows Spotlight\WPF Windows Spotlight.csproj">
@@ -89,7 +90,7 @@
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
