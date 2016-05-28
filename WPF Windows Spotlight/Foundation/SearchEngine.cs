@@ -103,7 +103,6 @@ namespace WPF_Windows_Spotlight.Foundation
                 return;
             }
             e.Result = new KeyValuePair<string, List<Item>>((string)e.Argument, results);
-
         }
 
     }
