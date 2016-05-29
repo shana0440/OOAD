@@ -16,7 +16,7 @@ namespace WPF_Windows_Spotlight.Foundation.ItemType
         private readonly string _url;
         private readonly string _html;
 
-        public TranslateItem(string title, string url, string html, string name = "") : base(title, name)
+        public TranslateItem(string title, string url, string html, string name = "", int weight = 0) : base(title, name, weight)
         {
             _html = html;
             _url = url;
