@@ -14,8 +14,8 @@ namespace WPF_Windows_Spotlight.Foundation.ItemType
     public class AnswerItem : Item
     {
         private string _expression;
-        public AnswerItem(string title, string exprssion, string name = "")
-            : base(title, name)
+        public AnswerItem(string title, string exprssion, string name = "", int weight = 0)
+            : base(title, name, weight)
         {
             _expression = exprssion;
         }

@@ -230,7 +230,7 @@ namespace WPF_Windows_Spotlight.Foundation
         public override void DoWork(object sender, DoWorkEventArgs e)
         {
             var answer = GetResult();
-            var item = new AnswerItem(answer, _orignalExp, Name);
+            var item = new AnswerItem(answer, _orignalExp, Name, 100);
             double n;
             var bg = sender as BackgroundWorker;
             if (bg.CancellationPending)
