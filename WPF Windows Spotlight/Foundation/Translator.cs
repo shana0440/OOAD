@@ -91,7 +91,8 @@ namespace WPF_Windows_Spotlight.Foundation
             var result = Translate();
             if (result != "Not Found")
             {
-                var item = new TranslateItem(_word, _url + _word, result, Name, 40);
+                var weight = 40 - (_word.Split(' ').Length * 2);
+                var item = new TranslateItem(_word, _url + _word, result, Name, weight);
                 item.SetIcon(_icon);
                 list.Add(item);
             }
