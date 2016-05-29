@@ -39,13 +39,13 @@ namespace WPF_Windows_Spotlight.Foundation
                 string html = stream.ReadToEnd();
                 HtmlDocument dom = new HtmlDocument();
                 dom.LoadHtml(html);
-                return GetWebSite(dom, 5);
+                return GetWebSites(dom, 5);
             }
 
             return null;
         }
 
-        private List<Item> GetWebSite(HtmlDocument dom, int count)
+        private List<Item> GetWebSites(HtmlDocument dom, int count)
         {
             var result = new List<Item>();
 
