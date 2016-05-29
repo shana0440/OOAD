@@ -12,7 +12,8 @@ namespace Windows_Spotlight_Test
         public void TestPriorityUp()
         {
             var filePriority = new FilePriority();
-            var fileInfo = new FileInfo(@"C:\Users\stones\Documents\Visual Studio 2013\Projects\WPF Windows Spotlight\Windows Spotlight Test\AdapterTest.cs");
+            var fileInfo =
+                @"C:\Users\stones\Documents\Visual Studio 2013\Projects\WPF Windows Spotlight\Windows Spotlight Test\AdapterTest.cs";
             var file = new FolderOrFile(fileInfo);
             var count = filePriority.PriorityUp(file);
             Assert.AreEqual(1, count);

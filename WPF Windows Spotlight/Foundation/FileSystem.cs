@@ -28,10 +28,10 @@ namespace WPF_Windows_Spotlight.Foundation
             _keyword = keyword;
         }
 
-        public List<FolderOrFile> Search(string keyword = "")
+        public List<Item> Search(string keyword = "")
         {
             if (keyword == "" && _keyword != null) keyword = _keyword;
-            if (keyword == "" || keyword.Length < 3) return new List<FolderOrFile>();
+            if (keyword == "" || keyword.Length < 3) return new List<Item>();
             Everything.Everything_SetSearchW(keyword);
             Everything.Everything_SetMax(SearchMaxCount);
             Everything.Everything_QueryW(true);
@@ -42,9 +42,9 @@ namespace WPF_Windows_Spotlight.Foundation
             return list;
         }
 
-        private List<FolderOrFile> GetResult()
+        private List<Item> GetResult()
         {
-            var list = new List<FolderOrFile>();
+            var list = new List<Item>();
             const int bufsize = 260;
             var buf = new StringBuilder(260);
 
@@ -55,7 +55,12 @@ namespace WPF_Windows_Spotlight.Foundation
                 try
                 {
                     var folderOrFile = new FolderOrFile(buf.ToString());
-                    if (folderOrFile.IsAvailable) list.Add(folderOrFile);
+                    if (folderOrFile.IsAvailable)
+                    {
+                        var item = new FileItem(folderOrFile, Name);
+                        item.SetIcon(folderOrFile.GetIcon());
+                        list.Add(item);
+                    }
                 }
                 catch (ArgumentException e)
                 {
@@ -65,32 +70,33 @@ namespace WPF_Windows_Spotlight.Foundation
             return list;
         }
 
-        private List<FolderOrFile> Sort(IEnumerable<FolderOrFile> originList)
+        private List<Item> Sort(IEnumerable<Item> originList)
         {
-            var sortedLists = new List<List<FolderOrFile>>();
+            var sortedLists = new List<List<Item>>();
             // 定義n個要搜尋的條件，第n+1個放不存在於條件內的
             for (var i = 0; i < _sortOrder.Length + 1; i++)
             {
-                sortedLists.Add(new List<FolderOrFile>());
+                sortedLists.Add(new List<Item>());
             }
             foreach (var item in originList)
             {
+                var file = (FileItem) item;
                 var added = false;
                 for (var j = 0; j < _sortOrder.Length; j++)
                 {
-                    if (item.Name.EndsWith(_sortOrder[j]))
+                    if (file.Name.EndsWith(_sortOrder[j]))
                     {
-                        sortedLists[j].Add(item);
+                        sortedLists[j].Add(file);
                         added = true;
                     }
                 }
                 if (!added)
-                    sortedLists[_sortOrder.Length].Add(item);
+                    sortedLists[_sortOrder.Length].Add(file);
             }
-            var result = new List<FolderOrFile>();
+            var result = new List<Item>();
             foreach (var sortedList in sortedLists)
             {
-                result.AddRange(sortedList.OrderBy(item => item.Name));
+                result.AddRange(sortedList.OrderBy(item => ((FileItem)item).Name));
             }
             return result;
         }
@@ -98,30 +104,13 @@ namespace WPF_Windows_Spotlight.Foundation
         public override void DoWork(object sender, DoWorkEventArgs e)
         {
             var results = Search();
-            var list = new List<Item>();
-            foreach (var result in results)
+            var bg = sender as BackgroundWorker;
+            if (bg.CancellationPending)
             {
-                var bg = sender as BackgroundWorker;
-                if (bg.CancellationPending)
-                {
-                    e.Cancel = true;
-                    return;
-                }
-                var item = new FileItem(result, Name);
-                if (result.IsFile)
-                {
-                    var ico = Icon.ExtractAssociatedIcon(result.FullName);
-                    var bmp = ico.ToBitmap();
-                    bmp.MakeTransparent();
-                    item.SetIcon(bmp);
-                }
-                else if (result.IsFolder)
-                {
-                    item.SetIcon(_dirIcon);
-                }
-                list.Add(item);
+                e.Cancel = true;
+                return;
             }
-            e.Result = new KeyValuePair<string, List<Item>>((string)e.Argument, list);
+            e.Result = new KeyValuePair<string, List<Item>>((string)e.Argument, results);
         }
         
     }
