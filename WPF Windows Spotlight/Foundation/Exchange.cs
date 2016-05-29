@@ -109,7 +109,7 @@ namespace WPF_Windows_Spotlight.Foundation
             }
             if (result != "")
             {
-                var item = new ExchangeItem(result, _currency, Name);
+                var item = new ExchangeItem(result, _currency, Name, 100);
                 item.SetIcon(_icon);
                 list.Add(item);
             }

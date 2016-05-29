@@ -13,7 +13,7 @@ namespace WPF_Windows_Spotlight.Foundation.ItemType
     {
         private readonly string _origin;
 
-        public ExchangeItem(string title, string origin, string name = "") : base(title, name)
+        public ExchangeItem(string title, string origin, string name = "", int weight = 0) : base(title, name, weight)
         {
             _origin = origin;
         }
