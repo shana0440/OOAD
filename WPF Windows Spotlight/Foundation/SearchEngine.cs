@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using HtmlAgilityPack;
 using WPF_Windows_Spotlight.Foundation.ItemType;
 
@@ -60,7 +61,8 @@ namespace WPF_Windows_Spotlight.Foundation
                 var title = WebUtility.HtmlDecode(titles[i].InnerText);
                 var intro = WebUtility.HtmlDecode(intros[i].InnerText);
                 var url = WebUtility.HtmlDecode(urls[i].InnerText);
-                var web = new WebSite(title, intro, url, Name);
+                var weight = 40 + (count - i);
+                var web = new WebSite(title, intro, url, Name, weight);
                 web.SetIcon(_icon);
                 result.Add(web);
             }
@@ -90,7 +92,8 @@ namespace WPF_Windows_Spotlight.Foundation
         
         public override void SetKeyword(string keyword)
         {
-            _keyword = keyword;
+            keyword = keyword.Trim().Replace(" ", "+");
+            _keyword = Uri.EscapeDataString(keyword);
         }
 
         public override void DoWork(object sender, DoWorkEventArgs e)

@@ -16,7 +16,7 @@ namespace WPF_Windows_Spotlight.Foundation.ItemType
         private readonly string _url;
         private readonly string _intro;
 
-        public WebSite(string title, string intro, string url, string name = "") : base(title, name)
+        public WebSite(string title, string intro, string url, string name = "", int weight = 0) : base(title, name, weight)
         {
             _url = url;
             _intro = intro;
