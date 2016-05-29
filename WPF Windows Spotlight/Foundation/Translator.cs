@@ -58,17 +58,22 @@ namespace WPF_Windows_Spotlight.Foundation
                 string content;
                 if ((content = GetContent(dom)) == "Not Found")
                     return content;
-
-                string result = "<html>" 
-                    + "<head>"
-                    + "<meta http-equiv='content-type' content='text/html; charset=UTF-8'>"
-                    + GetLinks(dom)
-                    + "<style>html, body { background: #F0F0F0}</style>"
-                    + "</head><body>" 
-                    + content
-                    + "</body></html>";
-                return result;
+                
+                return GenerateHtml(content, GetLinks(dom));
             }
+        }
+
+        public static string GenerateHtml(string body, string head)
+        {
+            string result = "<html>"
+                + "<head>"
+                + "<meta http-equiv='content-type' content='text/html; charset=UTF-8'>"
+                + head
+                + "<style>html, body { background: #F0F0F0}</style>"
+                + "</head><body>"
+                + body
+                + "</body></html>";
+            return result;
         }
 
         private string GetLinks(HtmlDocument dom)

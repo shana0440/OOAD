@@ -37,7 +37,7 @@ namespace WPF_Windows_Spotlight.Foundation
 
         public List<FolderOrFile> Search(string keyword = "")
         {
-            if (keyword == "") keyword = _keyword;
+            if (keyword == "" && _keyword != null) keyword = _keyword;
             if (keyword == "" || keyword.Length < 3) return new List<FolderOrFile>();
             Everything.Everything_SetSearchW(keyword);
             Everything.Everything_SetMax(SearchMaxCount);
