@@ -12,8 +12,9 @@ namespace WPF_Windows_Spotlight.Foundation
     {
         private readonly FileInfo _file;
         private readonly DirectoryInfo _folder;
+        private readonly int _count;
 
-        public FolderOrFile(string path)
+        public FolderOrFile(string path, int count = 0)
         {
             if (Directory.Exists(path))
             {
@@ -23,6 +24,12 @@ namespace WPF_Windows_Spotlight.Foundation
             {
                 _file = new FileInfo(path);
             }
+            _count = count;
+        }
+
+        public int Count
+        {
+            get { return _count; }
         }
 
         public bool IsAvailable

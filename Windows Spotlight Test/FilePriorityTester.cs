@@ -23,7 +23,8 @@ namespace Windows_Spotlight_Test
         public void TestInPriorityFile()
         {
             var filePriority = new FilePriority();
-            Assert.IsTrue(filePriority.InPriorityFile("Adapter"));
+            var result = filePriority.InPriorityFile("source");
+            Assert.AreEqual(1, result.Count);
         }
 
     }

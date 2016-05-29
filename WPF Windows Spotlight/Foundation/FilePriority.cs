@@ -51,13 +51,22 @@ namespace WPF_Windows_Spotlight.Foundation
             return openCount;
         }
 
-        public bool InPriorityFile(string filename)
+        public List<FolderOrFile> InPriorityFile(string filename)
         {
             var xml = new XmlDocument();
             xml.Load(PriorityFile);
-            var query = String.Format("History/File[contains(@Name,'{0}')]", filename);
-            var node = xml.SelectSingleNode(query);
-            return node != null;
+            var query = String.Format("History/File[contains(translate(@Name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'),'{0}')]", filename.ToLower());
+            var nodes = xml.SelectNodes(query);
+            var list = new List<FolderOrFile>();
+            foreach (XmlNode node in nodes)
+            {
+                var path = node.Attributes["FullName"].Value;
+                var count = node.Attributes["Count"].Value;
+                var file = new FolderOrFile(path, Int32.Parse(count));
+                list.Add(file);
+            }
+            var result = list.OrderByDescending(item => item.Count).ToList();
+            return result;
         }
 
         private XmlNode CreateFileXml(XmlDocument xml, FolderOrFile folderOrFile)

@@ -36,10 +36,13 @@ namespace WPF_Windows_Spotlight.Foundation
             Everything.Everything_SetMax(SearchMaxCount);
             Everything.Everything_QueryW(true);
             Everything.Everything_SortResultsByPath();
+            var history = SearchOnHistory(keyword);
             var list = GetResult();
             list = Sort(list);
+            Console.WriteLine("history count: {0}", history.Count);
+            history.AddRange(list);
             Everything.Everything_Reset();
-            return list;
+            return history;
         }
 
         private List<Item> GetResult()
@@ -68,6 +71,20 @@ namespace WPF_Windows_Spotlight.Foundation
                 }
             }
             return list;
+        }
+
+        private List<Item> SearchOnHistory(string keyword)
+        {
+            var filePriority = new FilePriority();
+            var files = filePriority.InPriorityFile(keyword);
+            var result = new List<Item>();
+            foreach (var file in files)
+            {
+                var item = new FileItem(file, Name);
+                item.SetIcon(file.GetIcon());
+                result.Add(item);
+            }
+            return result;
         }
 
         private List<Item> Sort(IEnumerable<Item> originList)
