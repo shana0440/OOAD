@@ -12,6 +12,18 @@ namespace WPF_Windows_Spotlight.Foundation
         private readonly FileInfo _file;
         private readonly DirectoryInfo _folder;
 
+        public FolderOrFile(string path)
+        {
+            if (Directory.Exists(path))
+            {
+                _folder = new DirectoryInfo(path);
+            }
+            else if (File.Exists(path))
+            {
+                _file = new FileInfo(path);
+            }
+        }
+
         public FolderOrFile(FileInfo file)
         {
             _file = file;

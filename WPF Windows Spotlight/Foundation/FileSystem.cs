@@ -54,16 +54,8 @@ namespace WPF_Windows_Spotlight.Foundation
                 Everything.Everything_GetResultFullPathNameW(i, buf, bufsize);
                 try
                 {
-                    if (Everything.Everything_IsFolderResult(i))
-                    {
-                        var folderOrFile = new FolderOrFile(new DirectoryInfo(buf.ToString()));
-                        if (folderOrFile.Exists) list.Add(folderOrFile);
-                    }
-                    else if (Everything.Everything_IsFileResult(i))
-                    {
-                        var folderOrFile = new FolderOrFile(new FileInfo(buf.ToString()));
-                        if (folderOrFile.Exists) list.Add(folderOrFile);
-                    } 
+                    var folderOrFile = new FolderOrFile(buf.ToString());
+                    if (folderOrFile.Exists != null) list.Add(folderOrFile);
                 }
                 catch (ArgumentException e)
                 {
