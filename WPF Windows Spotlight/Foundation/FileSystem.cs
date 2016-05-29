@@ -85,7 +85,7 @@ namespace WPF_Windows_Spotlight.Foundation
             var result = new List<Item>();
             foreach (var file in files)
             {
-                var weight = 70 - (file.Name.Length - _keyword.Length);
+                var weight = 50 - (file.Name.Length - _keyword.Length) + file.Count;
                 var item = new FileItem(file, Name, weight);
                 item.SetIcon(file.GetIcon());
                 result.Add(item);
