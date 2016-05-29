@@ -12,7 +12,7 @@ namespace Windows_Spotlight_Test
         [TestInitialize]
         public void TestInit()
         {
-            _system = new Exchange();
+            _system = new Exchange("");
         }
 
         [TestMethod]

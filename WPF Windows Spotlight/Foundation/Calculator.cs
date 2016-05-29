@@ -20,11 +20,17 @@ namespace WPF_Windows_Spotlight.Foundation
         private string _lastResult;
         private Bitmap _icon;
         private string _orignalExp;
+        private readonly string _name;
 
-
-        public Calculator(string expression = "")
+        public Calculator(string name = "")
         {
             _icon = (Bitmap)WPF_Windows_Spotlight.Properties.Resources.calculator_icon;
+            _name = name;
+        }
+
+        public string Name
+        {
+            get { return _name; }
         }
 
         public string Expression
@@ -37,8 +43,7 @@ namespace WPF_Windows_Spotlight.Foundation
 
         public void SetKeyword(string keyword)
         {
-            _expression = keyword;
-            _expression = _expression.Replace(" ", "").ToLower();
+            _expression = keyword.Replace(" ", "").ToLower();
         }
 
         public string TransToFloat (string inputExpression)
@@ -232,7 +237,7 @@ namespace WPF_Windows_Spotlight.Foundation
         public void DoWork(object sender, DoWorkEventArgs e)
         {
             var answer = GetResult();
-            var item = new AnswerItem(answer, _orignalExp);
+            var item = new AnswerItem(answer, _orignalExp, _name);
             double n;
             var bg = sender as BackgroundWorker;
             if (bg.CancellationPending)

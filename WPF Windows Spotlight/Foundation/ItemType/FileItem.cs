@@ -15,8 +15,8 @@ namespace WPF_Windows_Spotlight.Foundation.ItemType
     {
         private readonly FolderOrFile _folderOrFile;
 
-        public FileItem(FolderOrFile folderOrFile)
-            : base(folderOrFile.Name)
+        public FileItem(FolderOrFile folderOrFile, string name = "")
+            : base(folderOrFile.Name, name)
         {
             _folderOrFile = folderOrFile;
         }

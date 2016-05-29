@@ -18,10 +18,12 @@ namespace WPF_Windows_Spotlight.Foundation.ItemType
         protected string _title;
         protected Bitmap _icon;
         protected bool _isSelected;
+        protected string _groupName;
 
-        public Item(string title)
+        protected Item(string title, string groupName)
         {
             _title = title;
+            _groupName = groupName;
         }
 
         public string Title
@@ -38,6 +40,12 @@ namespace WPF_Windows_Spotlight.Foundation.ItemType
                 _isSelected = value;
                 NotifyPropertyChanged("IsSelected");
             }
+        }
+
+        public string GroupName
+        {
+            get { return _groupName; }
+            set { _groupName = value; }
         }
 
         public BitmapImage Icon

@@ -16,12 +16,18 @@ namespace WPF_Windows_Spotlight.Foundation
         private readonly Bitmap _dirIcon;
         private const int SearchMaxCount = 10;
         private readonly string[] _sortOrder = {".exe", ".lnk"};
+        private readonly string _name;
 
-        public FileSystem(string keyword = "")
+        public FileSystem(string name = "")
         {
-            _keyword = keyword;
+            _name = name;
             _dirIcon = (Bitmap)WPF_Windows_Spotlight.Properties.Resources.folder_icon;
             _dirIcon.MakeTransparent();
+        }
+
+        public string Name
+        {
+            get { return _name; }
         }
 
         public void SetKeyword(string keyword)
@@ -116,7 +122,7 @@ namespace WPF_Windows_Spotlight.Foundation
                     e.Cancel = true;
                     return;
                 }
-                var item = new FileItem(result);
+                var item = new FileItem(result, _name);
                 if (result.IsFile)
                 {
                     var ico = Icon.ExtractAssociatedIcon(result.FullName);

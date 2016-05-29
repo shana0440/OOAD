@@ -12,7 +12,7 @@ namespace Windows_Spotlight_Test
         [TestInitialize]
         public void Init()
         {
-            _calculator = new Calculator();
+            _calculator = new Calculator("");
         }
 
         [TestMethod]

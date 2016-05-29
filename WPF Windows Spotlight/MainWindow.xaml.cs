@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,7 +37,9 @@ namespace WPF_Windows_Spotlight
         {
             _adapter = new Adapter();
             InitializeComponent();
-            QueryList.ItemsSource = _adapter.QueryList;
+            ICollectionView collectionView = CollectionViewSource.GetDefaultView(_adapter.QueryList);
+            collectionView.GroupDescriptions.Add(new PropertyGroupDescription("GroupName"));
+            QueryList.ItemsSource = collectionView;
             CenterWindowOnScreen();
             Height = _inputHieght;
             _adapter.UpdateContentHandler += SearchOver;
@@ -142,9 +145,12 @@ namespace WPF_Windows_Spotlight
             }
             else
             {
-                Item item = _adapter.QueryList[_adapter.SelectedIndex];
-                QueryList.ScrollIntoView(item);
-                ShowDetail(item);
+                if (_adapter.QueryList.Count > 0)
+                {
+                    Item item = _adapter.QueryList[_adapter.SelectedIndex];
+                    QueryList.ScrollIntoView(item);
+                    ShowDetail(item);
+                }
             }
         }
 

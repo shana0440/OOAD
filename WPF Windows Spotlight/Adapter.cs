@@ -22,6 +22,7 @@ namespace WPF_Windows_Spotlight
         public delegate void ModelChangedHandler();
         public ModelChangedHandler UpdateContentHandler;
         private string _identify;
+        private int _searchCompleted = 0;
 
         public Adapter()
         {
@@ -40,6 +41,11 @@ namespace WPF_Windows_Spotlight
             CancelBackgroundWorker();
             GetBackgroundWorkers();
             _identify = Convert.ToInt32(DateTime.UtcNow.AddHours(8).Subtract(new DateTime(1970, 1, 1)).TotalSeconds).ToString();
+            _searchCompleted = 0;
+            foreach (var list in _factory.Order)
+            {
+                list.Value.Clear();
+            }
             foreach (IFoundation foundation in _foundations)
             {
                 foundation.SetKeyword(_keyword);
@@ -117,14 +123,25 @@ namespace WPF_Windows_Spotlight
             if (!e.Cancelled && e.Result != null)
             {
                 KeyValuePair<string, List<Item>> result = ((KeyValuePair<string, List<Item>>)e.Result);
-                if (result.Key != _identify) 
+                if (result.Key != _identify)
                     return;
 
+                _searchCompleted++;
                 if (result.Value.Count > 0)
                 {
                     _selectedIndex = 0;
-                    result.Value.ForEach(_queryList.Add);
-                    _queryList[0].IsSelected = true;
+                    _factory.Order[result.Value[0].GroupName] = result.Value;
+                    if (_searchCompleted == _factory.GetFoundations().Count)
+                    {
+                        foreach (var list in _factory.Order)
+                        {
+                            if (list.Value != null && list.Value.Count > 0)
+                                list.Value.ForEach(_queryList.Add);
+                        }
+                        _queryList[0].IsSelected = true;
+                    }
+                    //result.Value[0].GroupName = "最佳搜尋結果";
+                    //result.Value.ForEach(_queryList.Add);
                 }
                 if (UpdateContentHandler != null)
                 {

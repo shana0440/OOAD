@@ -29,6 +29,31 @@
             </TextBlock.Style>
         </TextBlock>
         <ListBox BorderBrush="#FFD7D7D7" BorderThickness="0,0,1,0" x:Name="QueryList" ItemsSource="{Binding}" HorizontalAlignment="Left" Height="346" VerticalAlignment="Stretch" Width="298" Grid.Row="1" Grid.ColumnSpan="2" Background="Transparent" Margin="-1,1,0,-46" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+            <ListBox.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.ContainerStyle>
+                        <Style TargetType="GroupItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="GroupItem">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+
+                                            <StackPanel Grid.Row="0" Orientation="Horizontal" Background="#FFE5E5E5">
+                                                <TextBlock Margin="20, 0, 0, 0" Text="{Binding Name}"></TextBlock>
+                                            </StackPanel>
+                                            <ItemsPresenter Grid.Row="1"/>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </GroupStyle.ContainerStyle>
+                </GroupStyle>
+            </ListBox.GroupStyle>
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal" Margin="0, 0, 0, 0">

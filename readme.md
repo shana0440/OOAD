@@ -38,3 +38,6 @@ KeyDown Event不支援
 第二個方法我用不起來
 第三個方法好棒棒，不用額外的擴展，直接把xml放上去就會動惹，懶人專用QQ
 [source](http://stackoverflow.com/questions/833943/watermark-hint-text-placeholder-textbox-in-wpf)
+
+## 移除left padding fro wpf listbox with groupstyle
+[source](http://stackoverflow.com/questions/12814283/remove-left-padding-for-a-wpf-listboxitem-with-groupstyle-defined-for-its-listbo)
