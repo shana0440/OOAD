@@ -21,9 +21,9 @@ namespace WPF_Windows_Spotlight.Foundation.ItemType
             _folderOrFile = folderOrFile;
         }
 
-        public string FullName
+        public string Name
         {
-            get { return _folderOrFile.FullName; }
+            get { return _folderOrFile.Name; }
         }
 
         public List<KeyValuePair<string, string>> GetProperty()

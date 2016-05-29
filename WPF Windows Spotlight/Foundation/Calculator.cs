@@ -14,23 +14,16 @@ using WPF_Windows_Spotlight.Foundation.ItemType;
 
 namespace WPF_Windows_Spotlight.Foundation
 {
-    public class Calculator : IFoundation
+    public class Calculator : BaseFoundation
     {
         private string _expression;
         private string _lastResult;
         private Bitmap _icon;
         private string _orignalExp;
-        private readonly string _name;
 
-        public Calculator(string name = "")
+        public Calculator(string name = "") : base(name)
         {
             _icon = (Bitmap)WPF_Windows_Spotlight.Properties.Resources.calculator_icon;
-            _name = name;
-        }
-
-        public string Name
-        {
-            get { return _name; }
         }
 
         public string Expression
@@ -41,7 +34,7 @@ namespace WPF_Windows_Spotlight.Foundation
             } 
         }
 
-        public void SetKeyword(string keyword)
+        public override void SetKeyword(string keyword)
         {
             _expression = keyword.Replace(" ", "").ToLower();
         }
@@ -234,10 +227,10 @@ namespace WPF_Windows_Spotlight.Foundation
             }
         }
 
-        public void DoWork(object sender, DoWorkEventArgs e)
+        public override void DoWork(object sender, DoWorkEventArgs e)
         {
             var answer = GetResult();
-            var item = new AnswerItem(answer, _orignalExp, _name);
+            var item = new AnswerItem(answer, _orignalExp, Name);
             double n;
             var bg = sender as BackgroundWorker;
             if (bg.CancellationPending)

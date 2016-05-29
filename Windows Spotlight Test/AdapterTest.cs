@@ -27,7 +27,7 @@ namespace Windows_Spotlight_Test
             Thread.Sleep(1000);
 
             ObservableCollection<Item> list = _adapter.QueryList;
-            Assert.AreEqual(1, list.Count);
+            Assert.AreEqual(6, list.Count); // 五個網頁 + 一個檔案
         }
 
         [TestMethod]

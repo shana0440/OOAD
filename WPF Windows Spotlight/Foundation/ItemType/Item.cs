@@ -13,23 +13,22 @@ using WPF_Windows_Spotlight.Foundation;
 
 namespace WPF_Windows_Spotlight.Foundation.ItemType
 {
-    abstract public class Item : INotifyPropertyChanged
+    public abstract class Item : INotifyPropertyChanged
     {
-        protected string _title;
-        protected Bitmap _icon;
-        protected bool _isSelected;
-        protected string _groupName;
+        private readonly string _title;
+        private Bitmap _icon;
+        private bool _isSelected;
+        public string GroupName { get; set; }
 
         protected Item(string title, string groupName)
         {
             _title = title;
-            _groupName = groupName;
+            GroupName = groupName;
         }
 
         public string Title
         {
             get { return _title; }
-            set { _title = value; }
         }
 
         public bool IsSelected
@@ -40,12 +39,6 @@ namespace WPF_Windows_Spotlight.Foundation.ItemType
                 _isSelected = value;
                 NotifyPropertyChanged("IsSelected");
             }
-        }
-
-        public string GroupName
-        {
-            get { return _groupName; }
-            set { _groupName = value; }
         }
 
         public BitmapImage Icon
@@ -76,8 +69,8 @@ namespace WPF_Windows_Spotlight.Foundation.ItemType
             }
         }
 
-        abstract public void Open();
-        abstract public void GenerateContent(StackPanel contentView);
+        public abstract void Open();
+        public abstract void GenerateContent(StackPanel contentView);
 
         public void SetIcon(Bitmap bitmap)
         {

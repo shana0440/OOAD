@@ -14,32 +14,25 @@ using WPF_Windows_Spotlight.Foundation.ItemType;
 
 namespace WPF_Windows_Spotlight.Foundation
 {
-    public class Exchange : IFoundation
+    public class Exchange : BaseFoundation
     {
         private string _currency;
         private string _url = "http://rate.bot.com.tw/Pages/Static/UIP003.zh-TW.htm";
         private readonly Bitmap _icon;
-        private readonly string _name;
         private HtmlDocument _dom;
 
-        public Exchange(string name = "")
+        public Exchange(string name = "") : base(name)
         {
-            _name = name;
             _icon = (Bitmap) WPF_Windows_Spotlight.Properties.Resources.exchange;
         }
 
-        public string Name
-        {
-            get { return _name; }
-        }
-
-        public void SetKeyword(string keyword)
+        public override void SetKeyword(string keyword)
         {
             _currency = keyword;
-            GetExchangeDocument();
+            _dom = GetExchangeDocument();
         }
 
-        private void GetExchangeDocument()
+        private HtmlDocument GetExchangeDocument()
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_url);
             request.Accept = "text/html";
@@ -51,7 +44,7 @@ namespace WPF_Windows_Spotlight.Foundation
                 string html = stream.ReadToEnd();
                 HtmlDocument dom = new HtmlDocument();
                 dom.LoadHtml(html);
-                _dom = dom;
+                return dom;
             }
         }
 
@@ -59,6 +52,7 @@ namespace WPF_Windows_Spotlight.Foundation
         public string ExchangeCurrency(string currency)
         {
             if (currency.Length < 4) return "";
+            _dom = _dom ?? GetExchangeDocument();
             var rows = GetExchangeRows(_dom);
             var convertCurrency = currency.ToUpper().Substring(currency.Length - 3, 3);
             var value = currency.Substring(0, currency.Length - 3);
@@ -103,7 +97,7 @@ namespace WPF_Windows_Spotlight.Foundation
             return nodes;
         }
 
-        public void DoWork(object sender, DoWorkEventArgs e)
+        public override void DoWork(object sender, DoWorkEventArgs e)
         {
             var list = new List<Item>();
             var result = ExchangeCurrency(_currency);
@@ -115,7 +109,7 @@ namespace WPF_Windows_Spotlight.Foundation
             }
             if (result != "")
             {
-                var item = new ExchangeItem(result, _currency, _name);
+                var item = new ExchangeItem(result, _currency, Name);
                 item.SetIcon(_icon);
                 list.Add(item);
             }

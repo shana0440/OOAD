@@ -17,8 +17,7 @@ namespace Windows_Spotlight_Test
         {
             string currentDir = Directory.GetCurrentDirectory();
             string[] filepath = Directory.GetFiles(currentDir, "WPF Windows Spotlight.exe");
-            FileInfo fileinfo = new FileInfo(filepath[0]);
-            FolderOrFile file = new FolderOrFile(fileinfo);
+            FolderOrFile file = new FolderOrFile(filepath[0]);
             FileItem item = new FileItem(file);
             List<KeyValuePair<string, string>> propertys = item.GetProperty();
             Assert.AreEqual("Created", propertys[0].Key);
@@ -30,13 +29,12 @@ namespace Windows_Spotlight_Test
         public void TestOpen()
         {
             string currentDir = Directory.GetCurrentDirectory();
-            FileInfo fileinfo = new FileInfo(currentDir + @"\notthinginhere");
-            FolderOrFile file = new FolderOrFile(fileinfo);
+            string[] filepath = Directory.GetFiles(currentDir, "filePriority.xml");
+            FolderOrFile file = new FolderOrFile(filepath[0]);
             FileItem item = new FileItem(file);
             try
             {
                 item.Open();
-                Assert.Fail();
             }
             catch (Exception e)
             {
