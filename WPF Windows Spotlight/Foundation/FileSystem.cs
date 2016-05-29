@@ -10,27 +10,20 @@ using WPF_Windows_Spotlight.Foundation.ItemType;
 
 namespace WPF_Windows_Spotlight.Foundation
 {
-    public class FileSystem : IFoundation
+    public class FileSystem : BaseFoundation
     {
         private string _keyword;
         private readonly Bitmap _dirIcon;
         private const int SearchMaxCount = 10;
         private readonly string[] _sortOrder = {".exe", ".lnk"};
-        private readonly string _name;
 
-        public FileSystem(string name = "")
+        public FileSystem(string name = "") : base(name)
         {
-            _name = name;
             _dirIcon = (Bitmap)WPF_Windows_Spotlight.Properties.Resources.folder_icon;
             _dirIcon.MakeTransparent();
         }
 
-        public string Name
-        {
-            get { return _name; }
-        }
-
-        public void SetKeyword(string keyword)
+        public override void SetKeyword(string keyword)
         {
             _keyword = keyword;
         }
@@ -110,7 +103,7 @@ namespace WPF_Windows_Spotlight.Foundation
             return result;
         }
 
-        public void DoWork(object sender, DoWorkEventArgs e)
+        public override void DoWork(object sender, DoWorkEventArgs e)
         {
             var results = Search();
             var list = new List<Item>();
@@ -122,7 +115,7 @@ namespace WPF_Windows_Spotlight.Foundation
                     e.Cancel = true;
                     return;
                 }
-                var item = new FileItem(result, _name);
+                var item = new FileItem(result, Name);
                 if (result.IsFile)
                 {
                     var ico = Icon.ExtractAssociatedIcon(result.FullName);

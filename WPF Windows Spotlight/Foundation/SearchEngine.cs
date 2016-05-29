@@ -13,23 +13,16 @@ using WPF_Windows_Spotlight.Foundation.ItemType;
 
 namespace WPF_Windows_Spotlight.Foundation
 {
-    public class SearchEngine : IFoundation
+    public class SearchEngine : BaseFoundation
     {
         private string _keyword;
         private readonly string _url;
         private readonly Bitmap _icon;
-        private readonly string _name;
 
-        public SearchEngine(string name = "")
+        public SearchEngine(string name = "") : base(name)
         {
-            _name = name;
             _url = "https://www.google.com.tw/search?q=";
             _icon = (Bitmap)WPF_Windows_Spotlight.Properties.Resources.web;
-        }
-
-        public string Name
-        {
-            get { return _name; }
         }
 
         public List<Item> Search()
@@ -67,7 +60,7 @@ namespace WPF_Windows_Spotlight.Foundation
                 var title = WebUtility.HtmlDecode(titles[i].InnerText);
                 var intro = WebUtility.HtmlDecode(intros[i].InnerText);
                 var url = WebUtility.HtmlDecode(urls[i].InnerText);
-                var web = new WebSite(title, intro, url, _name);
+                var web = new WebSite(title, intro, url, Name);
                 web.SetIcon(_icon);
                 result.Add(web);
             }
@@ -95,12 +88,12 @@ namespace WPF_Windows_Spotlight.Foundation
             return nodes;
         }
         
-        public void SetKeyword(string keyword)
+        public override void SetKeyword(string keyword)
         {
             _keyword = keyword;
         }
 
-        public void DoWork(object sender, DoWorkEventArgs e)
+        public override void DoWork(object sender, DoWorkEventArgs e)
         {
             var results = Search();
             var bg = sender as BackgroundWorker;

@@ -43,7 +43,7 @@
                                             </Grid.RowDefinitions>
 
                                             <StackPanel Grid.Row="0" Orientation="Horizontal" Background="#FFE5E5E5">
-                                                <TextBlock Margin="20, 0, 0, 0" Text="{Binding Name}"></TextBlock>
+                                                <TextBlock Margin="15, 0, 0, 0" Text="{Binding Name}"></TextBlock>
                                             </StackPanel>
                                             <ItemsPresenter Grid.Row="1"/>
                                         </Grid>
