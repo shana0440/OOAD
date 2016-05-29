@@ -133,13 +133,21 @@ namespace WPF_Windows_Spotlight
                     _factory.Order[result.Value[0].GroupName] = result.Value;
                     if (_searchCompleted == _factory.GetFoundations().Count)
                     {
+                        var best = ChooseBestResult(_factory.Order);
                         foreach (var list in _factory.Order)
                         {
                             if (list.Value != null && list.Value.Count > 0)
+                            {
                                 list.Value.ForEach(_queryList.Add);
+                            }
+                        }
+                        for (int i = 0; i < best.Count; i++)
+                        {
+                            _queryList.Insert(i, best[i]);
                         }
                         _queryList[0].IsSelected = true;
                     }
+
                     //result.Value[0].GroupName = "最佳搜尋結果";
                     //result.Value.ForEach(_queryList.Add);
                 }
@@ -148,6 +156,45 @@ namespace WPF_Windows_Spotlight
                     UpdateContentHandler();
                 }
             }
+        }
+
+        private List<Item> ChooseBestResult(Dictionary<string, List<Item>> dictionary)
+        {
+            var bestResult = new List<Item>();
+            foreach (var list in dictionary)
+            {
+                if (list.Value != null && list.Value.Count > 0)
+                {
+                    if (bestResult.Count == 0)
+                    {
+                        bestResult.Add(list.Value[0]);
+                        list.Value.RemoveAt(0);
+                    }
+                    else
+                    {
+                        if (bestResult[0].Weight == list.Value[0].Weight)
+                        {
+                            bestResult.Add(list.Value[0]);
+                            list.Value.RemoveAt(0);
+                        }
+                        else if (bestResult[0].Weight < list.Value[0].Weight)
+                        {
+                            // 把結果加回原本的list
+                            foreach (var item in bestResult)
+                            {
+                                dictionary[item.GroupName].Insert(0, item);
+                            }
+                            bestResult.Clear();
+                            bestResult.Add(list.Value[0]);
+                        }
+                    }
+                }
+            }
+            foreach (var item in bestResult)
+            {
+                item.GroupName = "最佳搜尋結果";
+            }
+            return bestResult;
         }
 
     }

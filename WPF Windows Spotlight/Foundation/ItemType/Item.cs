@@ -19,11 +19,18 @@ namespace WPF_Windows_Spotlight.Foundation.ItemType
         private Bitmap _icon;
         private bool _isSelected;
         public string GroupName { get; set; }
+        public readonly int _weight;
 
-        protected Item(string title, string groupName)
+        protected Item(string title, string groupName, int weight = 0)
         {
             _title = title;
             GroupName = groupName;
+            _weight = weight;
+        }
+
+        public int Weight
+        {
+            get { return _weight; }
         }
 
         public string Title
