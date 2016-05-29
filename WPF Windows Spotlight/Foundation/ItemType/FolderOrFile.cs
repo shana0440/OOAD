@@ -24,16 +24,6 @@ namespace WPF_Windows_Spotlight.Foundation
             }
         }
 
-        public FolderOrFile(FileInfo file)
-        {
-            _file = file;
-        }
-
-        public FolderOrFile(DirectoryInfo dir)
-        {
-            _folder = dir;
-        }
-
         public string FullName
         {
             get
