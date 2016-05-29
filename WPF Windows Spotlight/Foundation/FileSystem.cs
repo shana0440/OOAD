@@ -55,7 +55,7 @@ namespace WPF_Windows_Spotlight.Foundation
                 try
                 {
                     var folderOrFile = new FolderOrFile(buf.ToString());
-                    if (folderOrFile.Exists != null) list.Add(folderOrFile);
+                    if (folderOrFile.IsAvailable) list.Add(folderOrFile);
                 }
                 catch (ArgumentException e)
                 {

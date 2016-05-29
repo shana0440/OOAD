@@ -24,6 +24,11 @@ namespace WPF_Windows_Spotlight.Foundation
             }
         }
 
+        public bool IsAvailable
+        {
+            get { return _file != null || _folder != null; }
+        }
+
         public string FullName
         {
             get
