@@ -20,6 +20,7 @@ namespace WPF_Windows_Spotlight.Foundation
         private string _url = "http://rate.bot.com.tw/Pages/Static/UIP003.zh-TW.htm";
         private readonly Bitmap _icon;
         private readonly string _name;
+        private HtmlDocument _dom;
 
         public Exchange(string name = "")
         {
@@ -35,17 +36,11 @@ namespace WPF_Windows_Spotlight.Foundation
         public void SetKeyword(string keyword)
         {
             _currency = keyword;
+            GetExchangeDocument();
         }
-        
-        /**
-         * DOTO 用正規表達式將currency分成數字以及幣別兩部分
-         * 透過GetTable取得臺灣銀行公告的幣別匯率
-         * 遊歷所有幣別直到找到使用者輸入的幣別
-         * 將匯率換算成台幣
-         */
-        public string ExchangeCurrency(string currency)
+
+        private void GetExchangeDocument()
         {
-            if (currency.Length < 4) return "";
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_url);
             request.Accept = "text/html";
             request.Method = "GET";
@@ -56,19 +51,26 @@ namespace WPF_Windows_Spotlight.Foundation
                 string html = stream.ReadToEnd();
                 HtmlDocument dom = new HtmlDocument();
                 dom.LoadHtml(html);
-                var rows = GetExchangeRows(dom);
-                var convertCurrency = currency.ToUpper().Substring(currency.Length - 3, 3);
-                var value = currency.Substring(0, currency.Length - 3);
-                foreach (var row in rows)
+                _dom = dom;
+            }
+        }
+
+        
+        public string ExchangeCurrency(string currency)
+        {
+            if (currency.Length < 4) return "";
+            var rows = GetExchangeRows(_dom);
+            var convertCurrency = currency.ToUpper().Substring(currency.Length - 3, 3);
+            var value = currency.Substring(0, currency.Length - 3);
+            foreach (var row in rows)
+            {
+                var currencyName = GetCurrencyName(row);
+                var sell = GetSell(row);
+                var buy = GetBuy(row);
+                if (convertCurrency == currencyName)
                 {
-                    var currencyName = GetCurrencyName(row);
-                    var sell = GetSell(row);
-                    var buy = GetBuy(row);
-                    if (convertCurrency == currencyName)
-                    {
-                        var result = Double.Parse(value)*Double.Parse(sell);
-                        return result.ToString();
-                    }
+                    var result = Double.Parse(value) * Double.Parse(sell);
+                    return result.ToString();
                 }
             }
             return "";

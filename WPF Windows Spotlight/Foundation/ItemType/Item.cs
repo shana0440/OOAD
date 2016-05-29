@@ -18,7 +18,7 @@ namespace WPF_Windows_Spotlight.Foundation.ItemType
         protected string _title;
         protected Bitmap _icon;
         protected bool _isSelected;
-        protected readonly string _groupName;
+        protected string _groupName;
 
         protected Item(string title, string groupName)
         {
@@ -45,6 +45,7 @@ namespace WPF_Windows_Spotlight.Foundation.ItemType
         public string GroupName
         {
             get { return _groupName; }
+            set { _groupName = value; }
         }
 
         public BitmapImage Icon

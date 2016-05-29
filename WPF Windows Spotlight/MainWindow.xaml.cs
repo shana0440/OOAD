@@ -145,9 +145,12 @@ namespace WPF_Windows_Spotlight
             }
             else
             {
-                Item item = _adapter.QueryList[_adapter.SelectedIndex];
-                QueryList.ScrollIntoView(item);
-                ShowDetail(item);
+                if (_adapter.QueryList.Count > 0)
+                {
+                    Item item = _adapter.QueryList[_adapter.SelectedIndex];
+                    QueryList.ScrollIntoView(item);
+                    ShowDetail(item);
+                }
             }
         }
 
