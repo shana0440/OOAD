@@ -38,8 +38,12 @@ namespace WPF_Windows_Spotlight.Foundation
             Everything.Everything_SortResultsByPath();
             var history = SearchOnHistory(keyword);
             var list = GetResult();
+            foreach (var item in history)
+            {
+                var result = list.Find(target => target.Title == item.Title);
+                list.Remove(result);
+            }
             list = Sort(list);
-            Console.WriteLine("history count: {0}", history.Count);
             history.AddRange(list);
             Everything.Everything_Reset();
             return history;
@@ -60,7 +64,8 @@ namespace WPF_Windows_Spotlight.Foundation
                     var folderOrFile = new FolderOrFile(buf.ToString());
                     if (folderOrFile.IsAvailable)
                     {
-                        var item = new FileItem(folderOrFile, Name);
+                        var weight = 50 - (folderOrFile.Name.Length - _keyword.Length);
+                        var item = new FileItem(folderOrFile, Name, weight);
                         item.SetIcon(folderOrFile.GetIcon());
                         list.Add(item);
                     }
@@ -80,7 +85,8 @@ namespace WPF_Windows_Spotlight.Foundation
             var result = new List<Item>();
             foreach (var file in files)
             {
-                var item = new FileItem(file, Name);
+                var weight = 70 - (file.Name.Length - _keyword.Length);
+                var item = new FileItem(file, Name, weight);
                 item.SetIcon(file.GetIcon());
                 result.Add(item);
             }

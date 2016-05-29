@@ -186,6 +186,7 @@ namespace WPF_Windows_Spotlight
                             }
                             bestResult.Clear();
                             bestResult.Add(list.Value[0]);
+                            list.Value.RemoveAt(0);
                         }
                     }
                 }
