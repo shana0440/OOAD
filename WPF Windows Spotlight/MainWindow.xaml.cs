@@ -26,7 +26,7 @@ namespace WPF_Windows_Spotlight
         private Adapter _adapter;
         private LowLevelKeyboardListener _listener;
         private string[] _hotKeyForHide = new string[] { "Escape" };
-        private string[] _hotKeyForOpen = new string[] { "LeftCtrl", "Space" };
+        private string[] _hotKeyForOpen = new string[] { "LeftCtrl", "W" };
         private int _hideKeyPointer = 0;
         private int _openKeyPointer = 0;
         private int _windowHieght = 400;
