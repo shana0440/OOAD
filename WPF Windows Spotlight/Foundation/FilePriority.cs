@@ -49,22 +49,22 @@ namespace WPF_Windows_Spotlight.Foundation
         public List<FolderOrFile> InPriorityFile(string filename)
         {
             var xml = new XmlDocument();
+            List<FolderOrFile> result = null;
             if (File.Exists(PriorityFile))
             {
                 xml.Load(PriorityFile);
+                var query = String.Format("History/File[contains(translate(@Name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'),'{0}')]", filename.ToLower());
+                var nodes = xml.SelectNodes(query);
+                var list = new List<FolderOrFile>();
+                foreach (XmlNode node in nodes)
+                {
+                    var path = node.Attributes["FullName"].Value;
+                    var count = node.Attributes["Count"].Value;
+                    var file = new FolderOrFile(path, Int32.Parse(count));
+                    list.Add(file);
+                }
+                result = list.OrderByDescending(item => item.Count).ToList();
             }
-            
-            var query = String.Format("History/File[contains(translate(@Name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'),'{0}')]", filename.ToLower());
-            var nodes = xml.SelectNodes(query);
-            var list = new List<FolderOrFile>();
-            foreach (XmlNode node in nodes)
-            {
-                var path = node.Attributes["FullName"].Value;
-                var count = node.Attributes["Count"].Value;
-                var file = new FolderOrFile(path, Int32.Parse(count));
-                list.Add(file);
-            }
-            var result = list.OrderByDescending(item => item.Count).ToList();
             return result;
         }
 
