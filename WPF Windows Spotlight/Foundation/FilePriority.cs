@@ -49,7 +49,11 @@ namespace WPF_Windows_Spotlight.Foundation
         public List<FolderOrFile> InPriorityFile(string filename)
         {
             var xml = new XmlDocument();
-            xml.Load(PriorityFile);
+            if (File.Exists(PriorityFile))
+            {
+                xml.Load(PriorityFile);
+            }
+            
             var query = String.Format("History/File[contains(translate(@Name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'),'{0}')]", filename.ToLower());
             var nodes = xml.SelectNodes(query);
             var list = new List<FolderOrFile>();
