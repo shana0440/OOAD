@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Media.Imaging;
 using System.IO;
 using System.Windows.Controls;
-using WPF_Windows_Spotlight;
-using WPF_Windows_Spotlight.Foundation;
 
 namespace WPF_Windows_Spotlight.Foundation.ItemType
 {

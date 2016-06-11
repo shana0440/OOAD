@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Navigation;
 using System.Xml;
-using System.Xml.Resolvers;
 
 namespace WPF_Windows_Spotlight.Foundation
 {
