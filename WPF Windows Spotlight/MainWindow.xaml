@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="WPF_Windows_Spotlight.MainWindow"
         Title="Window Spotling" Height="420" Width="700" KeyDown="HideWindow" Closed="ClosedWindow" LostKeyboardFocus="LostFocusWindow" ResizeMode="NoResize" Topmost="True" WindowStyle="None" AllowsTransparency="True" Background="Transparent">
-    <Border Margin="10" CornerRadius="0">
+    <Border Margin="10" BorderBrush="#FFD7D7D7" BorderThickness="1,1,1,1">
         <Border.Effect>
-           <DropShadowEffect BlurRadius="15" RenderingBias="Performance" ShadowDepth="1" Direction="0"/>
+            <DropShadowEffect BlurRadius="15" RenderingBias="Performance" ShadowDepth="1" Direction="0"/>
         </Border.Effect>
         <Grid Margin="0" Background="#FFF0F0F0" FocusManager.FocusedElement="{Binding ElementName=InputTextBox}">
             <Grid.RowDefinitions>
@@ -121,7 +121,7 @@
                     </Style>
                 </ListBox.ItemContainerStyle>
             </ListBox>
-            <Border BorderBrush="#FFD7D7D7" BorderThickness="0,0,0,1" HorizontalAlignment="Left" Height="1" Margin="0,0,-36,0" Grid.Row="1" VerticalAlignment="Top" Width="680" Grid.ColumnSpan="4"/>
+            <Border BorderBrush="#FFD7D7D7" BorderThickness="0,0,0,1" HorizontalAlignment="Left" Height="1" Margin="0,0,-26,0" Grid.Row="1" VerticalAlignment="Top" Width="678" Grid.ColumnSpan="4"/>
             <StackPanel x:Name="ContentView" Grid.Column="2" HorizontalAlignment="Left" Height="347" Grid.Row="1" VerticalAlignment="Top" Width="376" Margin="0,0,0,-46" Grid.ColumnSpan="3"/>
             <Image Margin="5,5,0,0" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="40" Source="Images/search.png"/>
             <Image x:Name="ResultIcon" Margin="10,10,-10,0" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="30" Grid.Column="4"/>
