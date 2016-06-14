@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -15,6 +17,10 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WPF_Windows_Spotlight.Foundation;
 using WPF_Windows_Spotlight.Foundation.ItemType;
+using ContextMenu = System.Windows.Forms.ContextMenu;
+using HorizontalAlignment = System.Windows.HorizontalAlignment;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
+using MenuItem = System.Windows.Forms.MenuItem;
 
 namespace WPF_Windows_Spotlight
 {
@@ -26,17 +32,18 @@ namespace WPF_Windows_Spotlight
         private Adapter _adapter;
         private LowLevelKeyboardListener _listener;
         private string[] _hotKeyForHide = new string[] { "Escape" };
-        private string[] _hotKeyForOpen = new string[] { "LeftCtrl", "W" };
+        private string[] _hotKeyForOpen = new string[] { "LeftCtrl", "Space" };
         private int _hideKeyPointer = 0;
         private int _openKeyPointer = 0;
-        private int _windowHieght = 400;
-        private int _inputHieght = 50;
+        private int _windowHieght = 420;
+        private int _inputHieght = 70;
         private int _hasResult;
+        private NotifyIcon _notifyIcon;
         
         public MainWindow()
         {
-            _adapter = new Adapter();
             InitializeComponent();
+            _adapter = new Adapter();
             ICollectionView collectionView = CollectionViewSource.GetDefaultView(_adapter.QueryList);
             collectionView.GroupDescriptions.Add(new PropertyGroupDescription("GroupName"));
             QueryList.ItemsSource = collectionView;
@@ -45,8 +52,34 @@ namespace WPF_Windows_Spotlight
             _adapter.UpdateContentHandler += SearchOver;
             _listener = new LowLevelKeyboardListener();
             _listener.OnKeyPressed += OpenWindow;
+            InitNotifyIcon();
+
+            // 在任務列不會出現
+            this.ShowInTaskbar = false;
             
             _listener.HookKeyboard();
+        }
+
+        // icon 出現在 state bar（右下角那塊）
+        private void InitNotifyIcon()
+        {
+            _notifyIcon = new NotifyIcon();
+            _notifyIcon.Icon = Properties.Resources.icon;
+            _notifyIcon.Visible = true;
+            
+            // Create NotifyIcon Menu (右鍵會出現的東東)
+            ContextMenu notifyMenu = new ContextMenu();
+            MenuItem notifyIconMenuItem = new MenuItem();
+            notifyIconMenuItem.Index = 0;
+            notifyIconMenuItem.Text = "結束(E&xit)";
+            notifyIconMenuItem.Click += new EventHandler(Exit);
+            notifyMenu.MenuItems.Add(notifyIconMenuItem);
+            _notifyIcon.ContextMenu = notifyMenu;
+        }
+
+        private void Exit(object sender, EventArgs e)
+        {
+            this.Close();
         }
 
         private void Search(object sender, TextChangedEventArgs e)
@@ -93,7 +126,6 @@ namespace WPF_Windows_Spotlight
                 this.Show();
                 InputTextBox.Text = "";
                 _adapter.QueryList.Clear();
-                this.Focus();
                 _openKeyPointer = 0;
             }
         }
@@ -101,13 +133,18 @@ namespace WPF_Windows_Spotlight
         // 關閉程式時將keyboard hook解除
         private void ClosedWindow(object sender, EventArgs e)
         {
+            _notifyIcon.Visible = false;
             _listener.UnHookKeyboard();
         }
 
         private void LostFocusWindow(object sender, KeyboardFocusChangedEventArgs e)
         {
-            //if (e.NewFocus == null)
-            //    this.Hide();
+            if (e.NewFocus == null)
+            {
+                this.Hide();
+                //ShowBalloonTip
+            }
+                
         }
 
         // 將視窗設定在螢幕中央
@@ -175,8 +212,11 @@ namespace WPF_Windows_Spotlight
                     _adapter.SelectItem(_adapter.SelectedIndex + 1);
                     break;
                 case Key.Enter:
-                    var item = _adapter.QueryList[_adapter.SelectedIndex];
-                    item.Open();
+                    if (_adapter.QueryList.Count > 0)
+                    {
+                        var item = _adapter.QueryList[_adapter.SelectedIndex];
+                        item.Open();
+                    }
                     break;
                 default:
                     break;
