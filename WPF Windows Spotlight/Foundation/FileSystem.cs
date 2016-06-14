@@ -12,8 +12,9 @@ namespace WPF_Windows_Spotlight.Foundation
     {
         private string _keyword;
         private readonly Bitmap _dirIcon;
-        private const int SearchMaxCount = 10;
+        private const int SearchMaxCount = 100;
         private readonly string[] _sortOrder = {".exe", ".lnk"};
+        private readonly string[] _hideExtension = {".dll"};
 
         public FileSystem(string name = "") : base(name)
         {
@@ -62,10 +63,17 @@ namespace WPF_Windows_Spotlight.Foundation
                     var folderOrFile = new FolderOrFile(buf.ToString());
                     if (folderOrFile.IsAvailable)
                     {
-                        var weight = 50 - (folderOrFile.Name.Length - _keyword.Length);
-                        var item = new FileItem(folderOrFile, Name, weight);
-                        item.SetIcon(folderOrFile.GetIcon());
-                        list.Add(item);
+                        if (!_hideExtension.Contains(folderOrFile.Extansion))
+                        {
+                            var weight = 50 - (folderOrFile.NameCount - _keyword.Length);
+                            if (_sortOrder.Contains(folderOrFile.Extansion))
+                            {
+                                weight += 10;
+                            }
+                            var item = new FileItem(folderOrFile, Name, weight);
+                            item.SetIcon(folderOrFile.GetIcon());
+                            list.Add(item);
+                        }
                     }
                 }
                 catch (ArgumentException e)
@@ -83,7 +91,11 @@ namespace WPF_Windows_Spotlight.Foundation
             var result = new List<Item>();
             foreach (var file in files)
             {
-                var weight = 50 - (file.Name.Length - _keyword.Length) + file.Count;
+                var weight = 50 - (file.NameCount - _keyword.Length) + file.Count;
+                if (_sortOrder.Contains(file.Extansion))
+                {
+                    weight += 10;
+                }
                 var item = new FileItem(file, Name, weight);
                 item.SetIcon(file.GetIcon());
                 result.Add(item);

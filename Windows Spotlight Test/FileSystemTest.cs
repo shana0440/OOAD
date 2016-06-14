@@ -26,8 +26,10 @@ namespace Windows_Spotlight_Test
         [TestMethod]
         public void TestSearchFile()
         {
-            Assert.AreEqual(1, _fileSystem.Search("AnswerItem.cs").Count);
-            Assert.AreEqual(0, _fileSystem.Search("").Count);
+            _fileSystem.SetKeyword("AnswerItem.cs");
+            Assert.AreEqual(1, _fileSystem.Search().Count);
+            _fileSystem.SetKeyword("");
+            Assert.AreEqual(0, _fileSystem.Search().Count);
         }
 
         [TestMethod]

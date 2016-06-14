@@ -48,6 +48,27 @@ namespace WPF_Windows_Spotlight.Foundation
             }
         }
 
+        public int NameCount
+        {
+            get
+            {
+                if (_file != null)
+                {
+                    return _file.Name.Length - _file.Extension.Length;
+                }
+                else
+                {
+                    return _folder.Name.Length;
+                }
+                return 0;
+            }
+        }
+
+        public string Extansion
+        {
+            get { return (_file != null) ? _file.Extension : _folder.Extension; }
+        }
+
         public bool Exists
         {
             get
