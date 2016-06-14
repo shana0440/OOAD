@@ -54,6 +54,7 @@ namespace WPF_Windows_Spotlight
             if (InputTextBox.Text.Trim() == "")
             {
                 Height = _inputHieght;
+                InputTextBox.Text = "";
             }
             else
             {
