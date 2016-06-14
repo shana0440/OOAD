@@ -54,6 +54,7 @@ namespace WPF_Windows_Spotlight.Foundation
 
             for (int i = 0; i < count; i++)
             {
+                if (i >= titles.Count) break;
                 var title = WebUtility.HtmlDecode(titles[i].InnerText);
                 var intro = WebUtility.HtmlDecode(intros[i].InnerText);
                 var url = WebUtility.HtmlDecode(urls[i].InnerText);
