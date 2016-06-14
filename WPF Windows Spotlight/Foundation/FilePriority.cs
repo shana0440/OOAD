@@ -49,7 +49,7 @@ namespace WPF_Windows_Spotlight.Foundation
         public List<FolderOrFile> InPriorityFile(string filename)
         {
             var xml = new XmlDocument();
-            List<FolderOrFile> result = null;
+            List<FolderOrFile> result = new List<FolderOrFile>();
             if (File.Exists(PriorityFile))
             {
                 xml.Load(PriorityFile);
@@ -78,9 +78,4 @@ namespace WPF_Windows_Spotlight.Foundation
         }
     }
 
-    public class FileData
-    {
-        public string FullName { get; set; }
-        public int Count { get; set; }
-    }
 }
