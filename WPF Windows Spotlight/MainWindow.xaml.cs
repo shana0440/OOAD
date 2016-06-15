@@ -83,6 +83,7 @@ namespace WPF_Windows_Spotlight
             else
             {
                 _rotate.Start();
+                ContentView.Children.Clear();
                 ResultIcon.Source = _rotate.SearchImage;
                 InputTextBoxWatermark.Text = "";
                 InputTextBoxWatermark.HorizontalAlignment = HorizontalAlignment.Left;
@@ -167,6 +168,7 @@ namespace WPF_Windows_Spotlight
             {
                 if (--_hasResult == 0)
                 {
+                    ResultIcon.Source = null;
                     Height = _inputHieght;
                     ContentView.Children.Clear();
                     InputTextBoxWatermark.Text = "— No result";
