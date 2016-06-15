@@ -74,6 +74,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="SearchRotate.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -162,6 +163,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Everything32.dll" />
+    <None Include="Images\loading.png" />
     <None Include="Images\icon.ico" />
     <None Include="Images\icon.png" />
     <None Include="Images\exchange.png" />

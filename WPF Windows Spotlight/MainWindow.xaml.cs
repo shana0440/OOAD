@@ -1,21 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using WPF_Windows_Spotlight.Foundation;
 using WPF_Windows_Spotlight.Foundation.ItemType;
 using ContextMenu = System.Windows.Forms.ContextMenu;
 using HorizontalAlignment = System.Windows.HorizontalAlignment;
@@ -39,6 +28,7 @@ namespace WPF_Windows_Spotlight
         private int _inputHieght = 70;
         private int _hasResult;
         private NotifyIcon _notifyIcon;
+        private SearchRotate _rotate = new SearchRotate { Angle = 0 };
         
         public MainWindow()
         {
@@ -54,6 +44,7 @@ namespace WPF_Windows_Spotlight
             _listener.OnKeyPressed += OpenWindow;
             InitNotifyIcon();
 
+            this.DataContext = _rotate;
             // 在任務列不會出現
             this.ShowInTaskbar = false;
             
@@ -91,7 +82,8 @@ namespace WPF_Windows_Spotlight
             }
             else
             {
-                ResultIcon.Source = null;
+                _rotate.Start();
+                ResultIcon.Source = _rotate.SearchImage;
                 InputTextBoxWatermark.Text = "";
                 InputTextBoxWatermark.HorizontalAlignment = HorizontalAlignment.Left;
                 _adapter.Search(InputTextBox.Text);
@@ -115,7 +107,6 @@ namespace WPF_Windows_Spotlight
 
         private void OpenWindow(object sender, KeyPressedArgs e)
         {
-            Console.WriteLine(e.KeyPressed.ToString());
             if (e.KeyPressed.ToString() == _hotKeyForOpen[_openKeyPointer])
                 _openKeyPointer++;
             else
@@ -123,10 +114,10 @@ namespace WPF_Windows_Spotlight
 
             if (_openKeyPointer == _hotKeyForOpen.Length)
             {
-                this.Show();
-                InputTextBox.Text = "";
+                ResultIcon.Source = null;
                 _adapter.QueryList.Clear();
                 _openKeyPointer = 0;
+                this.Show();
             }
         }
 
@@ -171,6 +162,7 @@ namespace WPF_Windows_Spotlight
 
         private void SearchOver()
         {
+            _rotate.Stop();
             if (_adapter.SelectedIndex < 0)
             {
                 if (--_hasResult == 0)
@@ -224,5 +216,4 @@ namespace WPF_Windows_Spotlight
         }
 
     }
-
 }

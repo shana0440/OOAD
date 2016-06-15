@@ -124,7 +124,11 @@
             <Border BorderBrush="#FFD7D7D7" BorderThickness="0,0,0,1" HorizontalAlignment="Left" Height="1" Margin="0,0,-26,0" Grid.Row="1" VerticalAlignment="Top" Width="678" Grid.ColumnSpan="4"/>
             <StackPanel x:Name="ContentView" Grid.Column="2" HorizontalAlignment="Left" Height="347" Grid.Row="1" VerticalAlignment="Top" Width="376" Margin="0,0,0,-46" Grid.ColumnSpan="3"/>
             <Image Margin="5,5,0,0" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="40" Source="Images/search.png"/>
-            <Image x:Name="ResultIcon" Margin="10,10,-10,0" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="30" Grid.Column="4"/>
+            <Image x:Name="ResultIcon" Margin="10,10,-10,0" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="30" Grid.Column="4" Source="Images/loading.png" RenderTransformOrigin="0.5,0.5">
+                <Image.RenderTransform>
+                    <RotateTransform Angle="{Binding Angle}"/>
+                </Image.RenderTransform>
+            </Image>
         </Grid>
     </Border>
 </Window>
