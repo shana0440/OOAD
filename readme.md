@@ -41,3 +41,6 @@ KeyDown Event不支援
 
 ## 移除left padding fro wpf listbox with groupstyle
 [source](http://stackoverflow.com/questions/12814283/remove-left-padding-for-a-wpf-listboxitem-with-groupstyle-defined-for-its-listbo)
+
+## WebBrowser 與 AllowTransparency的衝突
+[source](http://www.cnblogs.com/greed/p/5213235.html)

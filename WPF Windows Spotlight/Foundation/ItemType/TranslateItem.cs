@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,22 +9,17 @@ namespace WPF_Windows_Spotlight.Foundation.ItemType
     public class TranslateItem : Item
     {
         private readonly string _url;
-        private readonly string _html;
+        private readonly List<KeyValuePair<string, List<KeyValuePair<string, string>>>> _sections;
 
-        public TranslateItem(string title, string url, string html, string name = "", int weight = 0) : base(title, name, weight)
+        public TranslateItem(string title, string url, List<KeyValuePair<string, List<KeyValuePair<string, string>>>> sections, string name = "", int weight = 0) : base(title, name, weight)
         {
-            _html = html;
             _url = url;
+            _sections = sections;
         }
 
         public string Url
         {
             get { return _url; }
-        }
-
-        public string Html
-        {
-            get { return _html; }
         }
 
         public override void Open()
@@ -44,12 +40,23 @@ namespace WPF_Windows_Spotlight.Foundation.ItemType
         public override void GenerateContent(StackPanel contentView)
         {
             contentView.Children.Clear();
-            WebBrowser browser = new WebBrowser();
-            browser.Width = contentView.Width - 5;
-            browser.Height = contentView.Height - 15;
-            browser.NavigateToString(Html);
-            browser.Margin = new Thickness(5, 10, 0, 5);
-            contentView.Children.Add(browser);
+            foreach (var section in _sections)
+            {
+                var part = new Label {Content = section.Key};
+                contentView.Children.Add(part);
+                foreach (var pair in section.Value)
+                {
+                    var define = new Label { Content = pair.Key };
+                    define.Margin = new Thickness(10, 0, 0, 0);
+                    contentView.Children.Add(define);
+                    if (pair.Value != "")
+                    {
+                        var example = new Label { Content = pair.Value };
+                        example.Margin = new Thickness(10, 0, 0, 0);
+                        contentView.Children.Add(example);
+                    }
+                }
+            }
         }
 
     }

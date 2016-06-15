@@ -3,6 +3,7 @@ using System.Net;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Security;
 using HtmlAgilityPack;
 using WPF_Windows_Spotlight.Foundation.ItemType;
 
@@ -11,14 +12,11 @@ namespace WPF_Windows_Spotlight.Foundation
     public class Translator : BaseFoundation
     {
         private string _word;
-        private readonly string _url;
-        private readonly string _xpath;
+        private readonly string _url = "https://tw.dictionary.search.yahoo.com/search?p=";
         private readonly Bitmap _icon;
 
         public Translator(string name = "") : base(name)
         {
-            _url = "https://tw.dictionary.search.yahoo.com/search?p=";
-            _xpath = "//div[contains(@class, 'dd algo explain mt-20 lst DictionaryResults')]";
             _icon = (Bitmap)WPF_Windows_Spotlight.Properties.Resources.dictionary;
         }
 
@@ -32,7 +30,7 @@ namespace WPF_Windows_Spotlight.Foundation
             _word = keyword;
         }
 
-        public string Translate()
+        public List<KeyValuePair<string, List<KeyValuePair<string, string>>>> Translate()
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_url + _word);
             request.Accept = "text/html";
@@ -44,48 +42,48 @@ namespace WPF_Windows_Spotlight.Foundation
                 string html = stream.ReadToEnd();
                 HtmlDocument dom = new HtmlDocument();
                 dom.LoadHtml(html);
-                string content;
-                if ((content = GetContent(dom)) == "Not Found")
-                    return content;
-                
-                return GenerateHtml(content, GetLinks(dom));
+                var content = GetContent(dom);
+                return content;
             }
         }
 
-        public static string GenerateHtml(string body, string head)
+        private List<KeyValuePair<string, List<KeyValuePair<string, string>>>> GetContent(HtmlDocument dom)
         {
-            string result = "<html>"
-                + "<head>"
-                + "<meta http-equiv='content-type' content='text/html; charset=UTF-8'>"
-                + head
-                + "<style>html, body { background: #F0F0F0}</style>"
-                + "</head><body>"
-                + body
-                + "</body></html>";
-            return result;
-        }
-
-        private string GetLinks(HtmlDocument dom)
-        {
-            var xpath = "//head/link[@rel='stylesheet']";
-            HtmlNode node = dom.DocumentNode.SelectSingleNode(xpath);
-            return node.OuterHtml;
-        }
-
-        private string GetContent(HtmlDocument dom)
-        {
+            var result = new List<KeyValuePair<string, List<KeyValuePair<string, string>>>>();
             var xpath = "//div[contains(@class, 'dd algo explain mt-20 lst DictionaryResults')]";
             HtmlNode node = dom.DocumentNode.SelectSingleNode(xpath);
-            if (node == null)
-                return "Not Found";
-            return node.InnerHtml;
+            if (node != null)
+            {
+                while (node.SelectSingleNode("div[contains(@class, 'compTitle mb-10')]") != null)
+                {
+                    var part = node.SelectSingleNode("div[contains(@class, 'compTitle mb-10')]");
+                    var defineCollection = node.SelectSingleNode("ul[contains(@class, 'compArticleList mb-15 ml-10')]");
+                    var defines = defineCollection.SelectNodes("li");
+                    var defineList = new List<KeyValuePair<string, string>>();
+                    foreach (var define in defines)
+                    {
+                        var defined = define.SelectSingleNode("h4");
+                        var example = define.SelectSingleNode("span");
+                        var exampleText = (example == null) ? "" : example.InnerText.Trim();
+                        var combination = new KeyValuePair<string, string>(defined.InnerText.Trim(),
+                            exampleText);
+                        defineList.Add(combination);
+                    }
+                    var section = new KeyValuePair<string, List<KeyValuePair<string, string>>>(part.InnerText.Trim(),
+                        defineList);
+                    node.RemoveChild(part);
+                    node.RemoveChild(defineCollection);
+                    result.Add(section);
+                };
+            }
+            return result;
         }
 
         public override void DoWork(object sender, DoWorkEventArgs e)
         {
             var list = new List<Item>();
             var result = Translate();
-            if (result != "Not Found")
+            if (result.Count > 0)
             {
                 var weight = 40 - (_word.Split(' ').Length * 2);
                 var item = new TranslateItem(_word, _url + _word, result, Name, weight);
