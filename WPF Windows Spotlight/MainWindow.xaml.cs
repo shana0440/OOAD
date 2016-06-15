@@ -180,7 +180,9 @@ namespace WPF_Windows_Spotlight
                 if (_adapter.QueryList.Count > 0)
                 {
                     Item item = _adapter.QueryList[_adapter.SelectedIndex];
+                    // 不知道為啥要兩個 不用兩個他不會回到最上面
                     QueryList.ScrollIntoView(item);
+                    QueryList.ScrollIntoView(QueryList.SelectedItem);
                     ShowDetail(item);
                 }
             }
