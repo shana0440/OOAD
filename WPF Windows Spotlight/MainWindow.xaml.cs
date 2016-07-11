@@ -119,6 +119,7 @@ namespace WPF_Windows_Spotlight
                 _adapter.QueryList.Clear();
                 _openKeyPointer = 0;
                 this.Show();
+                InputTextBox.Text = "";
             }
         }
 
@@ -134,9 +135,7 @@ namespace WPF_Windows_Spotlight
             if (e.NewFocus == null)
             {
                 this.Hide();
-                //ShowBalloonTip
             }
-                
         }
 
         // 將視窗設定在螢幕中央
@@ -157,6 +156,7 @@ namespace WPF_Windows_Spotlight
             if (item != null && item.IsSelected)
             {
                 Item selectedItem = _adapter.QueryList[QueryList.SelectedIndex];
+                this.Hide();
                 selectedItem.Open();
             }
         }
@@ -211,6 +211,7 @@ namespace WPF_Windows_Spotlight
                     if (_adapter.QueryList.Count > 0)
                     {
                         var item = _adapter.QueryList[_adapter.SelectedIndex];
+                        this.Hide();
                         item.Open();
                     }
                     break;
