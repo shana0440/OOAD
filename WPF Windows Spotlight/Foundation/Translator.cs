@@ -32,6 +32,7 @@ namespace WPF_Windows_Spotlight.Foundation
 
         public List<KeyValuePair<string, List<KeyValuePair<string, string>>>> Translate()
         {
+            if (!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable()) return null;
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_url + _word);
             request.Accept = "text/html";
             request.Method = "GET";
@@ -83,20 +84,23 @@ namespace WPF_Windows_Spotlight.Foundation
         {
             var list = new List<Item>();
             var result = Translate();
-            if (result.Count > 0)
+            if (result != null)
             {
-                var weight = 40 - (_word.Split(' ').Length * 2);
-                var item = new TranslateItem(_word, _url + _word, result, Name, weight);
-                item.SetIcon(_icon);
-                list.Add(item);
+                if (result.Count > 0)
+                {
+                    var weight = 40 - (_word.Split(' ').Length * 2);
+                    var item = new TranslateItem(_word, _url + _word, result, Name, weight);
+                    item.SetIcon(_icon);
+                    list.Add(item);
+                }
+                var bg = sender as BackgroundWorker;
+                if (bg.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+                e.Result = new KeyValuePair<string, List<Item>>((string)e.Argument, list);
             }
-            var bg = sender as BackgroundWorker;
-            if (bg.CancellationPending)
-            {
-                e.Cancel = true;
-                return;
-            }
-            e.Result = new KeyValuePair<string, List<Item>>((string)e.Argument, list);
         }
     }
 }

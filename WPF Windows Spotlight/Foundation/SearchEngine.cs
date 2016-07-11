@@ -24,6 +24,7 @@ namespace WPF_Windows_Spotlight.Foundation
 
         public List<Item> Search()
         {
+            if (!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable()) return null;
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_url + _keyword);
             request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
             request.Method = "GET";
@@ -102,7 +103,10 @@ namespace WPF_Windows_Spotlight.Foundation
                 e.Cancel = true;
                 return;
             }
-            e.Result = new KeyValuePair<string, List<Item>>((string)e.Argument, results);
+            if (results != null)
+            {
+                e.Result = new KeyValuePair<string, List<Item>>((string) e.Argument, results);
+            }
         }
 
     }

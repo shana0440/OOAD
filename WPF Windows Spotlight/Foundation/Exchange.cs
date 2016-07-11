@@ -25,7 +25,7 @@ namespace WPF_Windows_Spotlight.Foundation
         public override void SetKeyword(string keyword)
         {
             _currency = keyword;
-            _dom = GetExchangeDocument();
+            //_dom = GetExchangeDocument();
         }
 
         private HtmlDocument GetExchangeDocument()
@@ -47,6 +47,7 @@ namespace WPF_Windows_Spotlight.Foundation
         
         public string ExchangeCurrency(string currency)
         {
+            if (!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable()) return "";
             if (currency.Length < 4) return "";
             _dom = _dom ?? GetExchangeDocument();
             var rows = GetExchangeRows(_dom);

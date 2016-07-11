@@ -118,6 +118,7 @@ namespace WPF_Windows_Spotlight
         {
             if (!e.Cancelled && e.Result != null)
             {
+                if (e.Result == null) return;
                 KeyValuePair<string, List<Item>> result = ((KeyValuePair<string, List<Item>>)e.Result);
                 if (result.Key != _identify)
                     return;
