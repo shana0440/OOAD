@@ -6,6 +6,7 @@ using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
 using WPF_Windows_Spotlight.Foundation.ItemType;
+using WPF_Windows_Spotlight.View;
 using ContextMenu = System.Windows.Forms.ContextMenu;
 using HorizontalAlignment = System.Windows.HorizontalAlignment;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
@@ -19,7 +20,6 @@ namespace WPF_Windows_Spotlight
     public partial class MainWindow : Window
     {
         private Adapter _adapter;
-        private LowLevelKeyboardListener _listener;
         private string[] _hotKeyForHide = new string[] { "Escape" };
         private string[] _hotKeyForOpen = new string[] { "LeftCtrl", "Space" };
         private int _hideKeyPointer = 0;
@@ -27,8 +27,8 @@ namespace WPF_Windows_Spotlight
         private int _windowHieght = 420;
         private int _inputHieght = 70;
         private int _hasResult;
-        private NotifyIcon _notifyIcon;
         private SearchRotate _rotate = new SearchRotate { Angle = 0 };
+        ViewInitialization _viewInitialization;
         
         public MainWindow()
         {
@@ -37,42 +37,17 @@ namespace WPF_Windows_Spotlight
             ICollectionView collectionView = CollectionViewSource.GetDefaultView(_adapter.QueryList);
             collectionView.GroupDescriptions.Add(new PropertyGroupDescription("GroupName"));
             QueryList.ItemsSource = collectionView;
-            CenterWindowOnScreen();
             Height = _inputHieght;
             _adapter.UpdateContentHandler += SearchOver;
-            _listener = new LowLevelKeyboardListener();
-            _listener.OnKeyPressed += OpenWindow;
-            InitNotifyIcon();
+            _viewInitialization = new ViewInitialization(this);
+            _viewInitialization.Init();
 
             this.DataContext = _rotate;
             // 在任務列不會出現
             this.ShowInTaskbar = false;
-            
-            _listener.HookKeyboard();
-        }
 
-        // icon 出現在 state bar（右下角那塊）
-        private void InitNotifyIcon()
-        {
-            _notifyIcon = new NotifyIcon();
-            _notifyIcon.Icon = Properties.Resources.icon;
-            _notifyIcon.Visible = true;
-            
-            // Create NotifyIcon Menu (右鍵會出現的東東)
-            ContextMenu notifyMenu = new ContextMenu();
-            MenuItem notifyIconMenuItem = new MenuItem();
-            notifyIconMenuItem.Index = 0;
-            notifyIconMenuItem.Text = "結束(E&xit)";
-            notifyIconMenuItem.Click += new EventHandler(Exit);
-            notifyMenu.MenuItems.Add(notifyIconMenuItem);
-            _notifyIcon.ContextMenu = notifyMenu;
         }
-
-        private void Exit(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
+        
         private void Search(object sender, TextChangedEventArgs e)
         {
             if (InputTextBox.Text.Trim() == "")
@@ -105,29 +80,12 @@ namespace WPF_Windows_Spotlight
                 _hideKeyPointer = 0;
             }
         }
-
-        private void OpenWindow(object sender, KeyPressedArgs e)
-        {
-            if (e.KeyPressed.ToString() == _hotKeyForOpen[_openKeyPointer])
-                _openKeyPointer++;
-            else
-                _openKeyPointer = 0;
-
-            if (_openKeyPointer == _hotKeyForOpen.Length)
-            {
-                ResultIcon.Source = null;
-                _adapter.QueryList.Clear();
-                _openKeyPointer = 0;
-                this.Show();
-                InputTextBox.Text = "";
-            }
-        }
-
+        
         // 關閉程式時將keyboard hook解除
         private void ClosedWindow(object sender, EventArgs e)
         {
-            _notifyIcon.Visible = false;
-            _listener.UnHookKeyboard();
+            //_notifyIcon.Visible = false;
+            //_listener.UnHookKeyboard();
         }
 
         private void LostFocusWindow(object sender, KeyboardFocusChangedEventArgs e)
@@ -136,17 +94,6 @@ namespace WPF_Windows_Spotlight
             {
                 this.Hide();
             }
-        }
-
-        // 將視窗設定在螢幕中央
-        private void CenterWindowOnScreen()
-        {
-            double screenWidth = System.Windows.SystemParameters.PrimaryScreenWidth;
-            double screenHeight = System.Windows.SystemParameters.PrimaryScreenHeight;
-            double windowWidth = this.Width;
-            double windowHeight = this.Height;
-            this.Left = (screenWidth / 2) - (windowWidth / 2);
-            this.Top = (screenHeight / 2) - (windowHeight / 2);
         }
 
         // 點擊item時開啟檔案

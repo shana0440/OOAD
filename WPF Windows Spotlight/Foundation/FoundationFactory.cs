@@ -14,7 +14,7 @@ namespace WPF_Windows_Spotlight.Foundation
             _order.Add("計算機", new List<Item>());
             _order.Add("匯率換算", new List<Item>());
             _order.Add("翻譯", new List<Item>());
-            _order.Add("網頁", new List<Item>());
+            //_order.Add("網頁", new List<Item>());
             //_order.Add("檔案或資料夾", new List<Item>());
 
             var keys = _order.Keys.ToArray();
@@ -23,7 +23,7 @@ namespace WPF_Windows_Spotlight.Foundation
             _foundations.Add(new Exchange(keys[1]));
             _foundations.Add(new Translator(keys[2]));
             //_foundations.Add(new SearchEngine(keys[3]));
-            _foundations.Add(new FileSystem(keys[4]));
+            //_foundations.Add(new FileSystem(keys[4]));
         }
 
         public List<IFoundation> GetFoundations()
