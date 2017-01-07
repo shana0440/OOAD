@@ -45,7 +45,9 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
@@ -60,15 +62,19 @@
     <Compile Include="FilePriorityTester.cs" />
     <Compile Include="SearchEngineTester.cs" />
     <Compile Include="ExchangeTester.cs" />
+    <Compile Include="CalculatorThreadTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WPF Windows Spotlight\WPF Windows Spotlight.csproj">
       <Project>{3def0abe-b839-4028-a037-91e0320124aa}</Project>
       <Name>WPF Windows Spotlight</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

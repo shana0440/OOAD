@@ -97,6 +97,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Foundation\BitmapToBitmapImage.cs" />
+    <Compile Include="Models\CalculatorThread.cs" />
+    <Compile Include="Models\Eval.cs" />
     <Compile Include="View\LoadingCircle.cs" />
     <Compile Include="View\ViewInitialization.cs" />
     <Page Include="View\MainWindow.xaml">
@@ -198,7 +200,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controller\" />
-    <Folder Include="Model\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
