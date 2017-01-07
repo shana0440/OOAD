@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="CalculatorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SearchServiceTests.cs" />
     <Compile Include="TranslatorTest.cs" />
     <Compile Include="AdapterTest.cs" />
     <Compile Include="FoundationFactoryTest.cs" />
@@ -62,7 +63,7 @@
     <Compile Include="FilePriorityTester.cs" />
     <Compile Include="SearchEngineTester.cs" />
     <Compile Include="ExchangeTester.cs" />
-    <Compile Include="CalculatorThreadTests.cs" />
+    <Compile Include="CalculatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

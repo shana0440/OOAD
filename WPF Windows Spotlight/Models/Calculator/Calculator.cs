@@ -2,23 +2,32 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace WPF_Windows_Spotlight.Models
+namespace WPF_Windows_Spotlight.Models.Calculator
 {
-    public class CalculatorThread
+    public class Calculator
     {
-
         string[] _mathOperators = { "sqrt", "sin", "cos", "tan", "log", "exp", "floor", "abs", "pow" };
 
-        static void Execute()
+        public string Execute(string expression)
         {
+            expression = TransformMathOperators(expression);
+            try
+            {
+                var result = Eval.Execute(expression);
+                return result.ToString();
+            }
+            catch (Exception e)
+            {
+                throw new ExecutionEngineException("算式有誤");
+            }
+
         }
 
         string TransformMathOperators(string expression)
         {
-            expression = clearAllSpace(expression.ToLower());
+            expression = ClearAllSpace(expression.ToLower());
             int index = 0;
             while (index < _mathOperators.Length)
             {
@@ -30,7 +39,7 @@ namespace WPF_Windows_Spotlight.Models
             return expression;
         }
 
-        string clearAllSpace(string expression)
+        string ClearAllSpace(string expression)
         {
             expression = expression.Replace(" ", string.Empty);
             return expression;
@@ -40,6 +49,5 @@ namespace WPF_Windows_Spotlight.Models
         {
             return input.First().ToString().ToUpper() + input.Substring(1);
         }
-
     }
 }

@@ -96,9 +96,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Foundation\BitmapToBitmapImage.cs" />
-    <Compile Include="Models\CalculatorThread.cs" />
+    <Compile Include="Controller\SearchService.cs" />
+    <Compile Include="Models\BitmapToBitmapImage.cs" />
+    <Compile Include="Models\Calculator\CalculatorThread.cs" />
+    <Compile Include="Models\Calculator\Calculator.cs" />
+    <Compile Include="Models\IThread.cs" />
     <Compile Include="Models\Eval.cs" />
+    <Compile Include="Models\ItemData.cs" />
+    <Compile Include="Models\ResultItemsFactory\CalculatorResultItem.cs" />
+    <Compile Include="Models\ResultItemsFactory\CalculatorResultItemsFactory.cs" />
+    <Compile Include="Models\ResultItemsFactory\IResultItem.cs" />
+    <Compile Include="Models\ResultItemsFactory\ResultItemsFactory.cs" />
+    <Compile Include="Models\ResultItemsFactory\ResultItem.cs" />
     <Compile Include="View\LoadingCircle.cs" />
     <Compile Include="View\ViewInitialization.cs" />
     <Page Include="View\MainWindow.xaml">
@@ -198,9 +207,7 @@
     <None Include="Images\dictionary.png" />
     <None Include="Resources\dirtionary.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controller\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

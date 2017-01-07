@@ -1,0 +1,43 @@
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using WPF_Windows_Spotlight.Models.Calculator;
+
+namespace Windows_Spotlight_Test
+{
+    [TestClass]
+    public class CalculatorTests
+    {
+
+        PrivateObject _obj;
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            _obj = new PrivateObject(new Calculator());
+        }
+
+        [TestMethod]
+        public void TestTransformMathOperators()
+        {
+            object[] param = { "sin(30) + sqrt(2, 3) + sqrt(2, 3)" };
+            var expression = _obj.Invoke("TransformMathOperators", param);
+            Assert.AreEqual("Math.Sin(30)+Math.Sqrt(2,3)+Math.Sqrt(2,3)", expression);
+        }
+
+        [TestMethod]
+        public void TestExecute()
+        {
+            object[] param = { "2 * 1 + sqrt(100) + pow(20, 2)" };
+            var answer = _obj.Invoke("Execute", param);
+            Assert.AreEqual("412", answer);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ExecutionEngineException), "算式有誤")]
+        public void TestExecuteError()
+        {
+            object[] param = { "2 * 1 + sqrt(100, 2) + pow(20, 2)" };
+            var answer = _obj.Invoke("Execute", param);
+        }
+    }
+}
