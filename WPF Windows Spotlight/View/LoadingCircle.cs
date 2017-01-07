@@ -11,7 +11,7 @@ using System.Windows.Threading;
 
 namespace WPF_Windows_Spotlight
 {
-    public class SearchRotate : INotifyPropertyChanged
+    public class LoadingCircle : INotifyPropertyChanged
     {
         private int _angle;
         private DispatcherTimer _incrementAngleTimer = new DispatcherTimer();

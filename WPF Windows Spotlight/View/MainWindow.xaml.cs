@@ -3,14 +3,11 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Forms;
 using System.Windows.Input;
 using WPF_Windows_Spotlight.Foundation.ItemType;
 using WPF_Windows_Spotlight.View;
-using ContextMenu = System.Windows.Forms.ContextMenu;
 using HorizontalAlignment = System.Windows.HorizontalAlignment;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
-using MenuItem = System.Windows.Forms.MenuItem;
 
 namespace WPF_Windows_Spotlight
 {
@@ -27,27 +24,46 @@ namespace WPF_Windows_Spotlight
         private int _windowHieght = 420;
         private int _inputHieght = 70;
         private int _hasResult;
-        private SearchRotate _rotate = new SearchRotate { Angle = 0 };
+        private LoadingCircle _rotate = new LoadingCircle { Angle = 0 };
         ViewInitialization _viewInitialization;
         
         public MainWindow()
         {
             InitializeComponent();
             _adapter = new Adapter();
-            ICollectionView collectionView = CollectionViewSource.GetDefaultView(_adapter.QueryList);
-            collectionView.GroupDescriptions.Add(new PropertyGroupDescription("GroupName"));
-            QueryList.ItemsSource = collectionView;
-            Height = _inputHieght;
-            _adapter.UpdateContentHandler += SearchOver;
+            
             _viewInitialization = new ViewInitialization(this);
             _viewInitialization.Init();
 
-            this.DataContext = _rotate;
-            // 在任務列不會出現
-            this.ShowInTaskbar = false;
+            Render();
 
+            _adapter.UpdateContentHandler += SearchOver;
         }
-        
+
+        public void Render()
+        {
+            InitViewHeight();
+            InitResultsListSource();
+            InitLoadingCircle();
+        }
+
+        void InitViewHeight()
+        {
+            Height = _inputHieght;
+        }
+
+        void InitResultsListSource()
+        {
+            ICollectionView collectionView = CollectionViewSource.GetDefaultView(_adapter.QueryList);
+            collectionView.GroupDescriptions.Add(new PropertyGroupDescription("GroupName"));
+            QueryList.ItemsSource = collectionView;
+        }
+
+        private void InitLoadingCircle()
+        {
+            DataContext = _rotate;
+        }
+
         private void Search(object sender, TextChangedEventArgs e)
         {
             if (InputTextBox.Text.Trim() == "")

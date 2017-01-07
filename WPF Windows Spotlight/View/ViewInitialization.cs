@@ -11,6 +11,7 @@ namespace WPF_Windows_Spotlight.View
         LowLevelKeyboardListener _listener;
         string[] _hotKeyForHide = new string[] { "Escape" };
         string[] _hotKeyForOpen = new string[] { "LeftCtrl", "Space" };
+        int _hideKeyPointer = 0;
         int _openKeyPointer = 0;
 
 
@@ -24,6 +25,7 @@ namespace WPF_Windows_Spotlight.View
             InitStateBar();
             MakeWindowOnCenterOfScreen();
             HookKeyboard();
+            HideOfTaskBar();
         }
 
         void InitStateBar()
@@ -91,6 +93,11 @@ namespace WPF_Windows_Spotlight.View
             }
         }
 
+        void HideOfTaskBar()
+        {
+            // 在任務列(alt + tab)不會出現
+            _view.ShowInTaskbar = false;
+        }
 
     }
 }
