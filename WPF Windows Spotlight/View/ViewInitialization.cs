@@ -8,7 +8,7 @@ namespace WPF_Windows_Spotlight.View
     {
         Window _view;
         NotifyIcon _notifyIcon;
-        LowLevelKeyboardListener _listener;
+        LowLevelKeyboardListener _keyboardListener;
         string[] _hotKeyForHide = new string[] { "Escape" };
         string[] _hotKeyForOpen = new string[] { "LeftCtrl", "Space" };
         int _hideKeyPointer = 0;
@@ -55,6 +55,7 @@ namespace WPF_Windows_Spotlight.View
         void CloseApp(object sender, EventArgs e)
         {
             _notifyIcon.Visible = false;
+            _keyboardListener.UnHookKeyboard();
             _view.Close();
         }
 
@@ -70,27 +71,8 @@ namespace WPF_Windows_Spotlight.View
 
         void HookKeyboard()
         {
-            _listener = new LowLevelKeyboardListener();
-            _listener.OnKeyPressed += OpenWindow;
-            _listener.HookKeyboard();
-        }
-
-
-        void OpenWindow(object sender, KeyPressedArgs e)
-        {
-            if (e.KeyPressed.ToString() == _hotKeyForOpen[_openKeyPointer])
-                _openKeyPointer++;
-            else
-                _openKeyPointer = 0;
-
-            if (_openKeyPointer == _hotKeyForOpen.Length)
-            {
-                _openKeyPointer = 0;
-                _view.Show();
-                //    ResultIcon.Source = null;
-                //    _adapter.QueryList.Clear();
-                //    InputTextBox.Text = "";
-            }
+            _keyboardListener = new LowLevelKeyboardListener();
+            _keyboardListener.HookKeyboard();
         }
 
         void HideOfTaskBar()
@@ -99,5 +81,9 @@ namespace WPF_Windows_Spotlight.View
             _view.ShowInTaskbar = false;
         }
 
+        public void SetKeyboardEvent(EventHandler<KeyPressedArgs> handler)
+        {
+            _keyboardListener.OnKeyPressed += handler;
+        }
     }
 }

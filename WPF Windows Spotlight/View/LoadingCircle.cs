@@ -54,34 +54,6 @@ namespace WPF_Windows_Spotlight
             _searching = false;
         }
 
-        public BitmapImage SearchImage
-        {
-            get
-            {
-                Bitmap searching = (Bitmap)Properties.Resources.loading;
-
-                using (MemoryStream memory = new MemoryStream())
-                {
-                    try
-                    {
-                        searching.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
-                        memory.Position = 0;
-                        BitmapImage bitmapimage = new BitmapImage();
-                        bitmapimage.BeginInit();
-                        bitmapimage.StreamSource = memory;
-                        bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmapimage.EndInit();
-                        return bitmapimage;
-                    }
-                    catch (ArgumentException e)
-                    {
-                        Console.WriteLine(e.Message);
-                        return null;
-                    }
-                }
-            }
-        }
-
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(string property)
         {

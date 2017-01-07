@@ -1,9 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using WPF_Windows_Spotlight.Foundation;
 using WPF_Windows_Spotlight.Foundation.ItemType;
 using WPF_Windows_Spotlight.View;
 using HorizontalAlignment = System.Windows.HorizontalAlignment;
@@ -19,14 +21,14 @@ namespace WPF_Windows_Spotlight
         private Adapter _adapter;
         private string[] _hotKeyForHide = new string[] { "Escape" };
         private string[] _hotKeyForOpen = new string[] { "LeftCtrl", "Space" };
-        private int _hideKeyPointer = 0;
         private int _openKeyPointer = 0;
         private int _windowHieght = 420;
         private int _inputHieght = 70;
         private int _hasResult;
         private LoadingCircle _rotate = new LoadingCircle { Angle = 0 };
         ViewInitialization _viewInitialization;
-        
+        private bool _windowVisibleState = false;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -34,17 +36,24 @@ namespace WPF_Windows_Spotlight
             
             _viewInitialization = new ViewInitialization(this);
             _viewInitialization.Init();
+            _viewInitialization.SetKeyboardEvent(WatchKeyPressedOfWindowVisible);
 
-            Render();
+            InitRender();
 
             _adapter.UpdateContentHandler += SearchOver;
         }
 
-        public void Render()
+        public void InitRender()
         {
+            RenderSearchIcon();
             InitViewHeight();
             InitResultsListSource();
             InitLoadingCircle();
+        }
+
+        void RenderSearchIcon()
+        {
+            SearchIcon.Source = BitmapToBitmapImage.Transform((Bitmap)Properties.Resources.search);
         }
 
         void InitViewHeight()
@@ -59,56 +68,52 @@ namespace WPF_Windows_Spotlight
             QueryList.ItemsSource = collectionView;
         }
 
-        private void InitLoadingCircle()
+        void InitLoadingCircle()
         {
             DataContext = _rotate;
         }
 
-        private void Search(object sender, TextChangedEventArgs e)
+        void WatchKeyPressedOfWindowVisible(object sender, KeyPressedArgs args)
         {
-            if (InputTextBox.Text.Trim() == "")
+            string keyPressed = args.KeyPressed.ToString();
+            string watchedKeyPressed = _hotKeyForOpen[_openKeyPointer];
+            _openKeyPointer = (keyPressed == watchedKeyPressed) ? _openKeyPointer + 1 : 0;
+
+            if (_openKeyPointer == _hotKeyForOpen.Length)
             {
-                Height = _inputHieght;
-                InputTextBox.Text = "";
-            }
-            else
-            {
-                _rotate.Start();
-                ContentView.Children.Clear();
-                ResultIcon.Source = _rotate.SearchImage;
-                InputTextBoxWatermark.Text = "";
-                InputTextBoxWatermark.HorizontalAlignment = HorizontalAlignment.Left;
-                _adapter.Search(InputTextBox.Text);
-                _hasResult = _adapter.GetWrokerCount();
+                _openKeyPointer = 0;
+                if (_windowVisibleState)
+                {
+                    HideWindow();
+                }
+                else
+                {
+                    OpenWindow();
+                }
             }
         }
 
-        private void HideWindow(object sender, KeyEventArgs e)
+        void OpenWindow()
         {
-            if (e.Key.ToString() == _hotKeyForHide[_hideKeyPointer])
-                _hideKeyPointer++;
-            else
-                _hideKeyPointer = 0;
-
-            if (_hideKeyPointer == _hotKeyForHide.Length)
-            {
-                this.Hide();
-                _hideKeyPointer = 0;
-            }
-        }
-        
-        // 關閉程式時將keyboard hook解除
-        private void ClosedWindow(object sender, EventArgs e)
-        {
-            //_notifyIcon.Visible = false;
-            //_listener.UnHookKeyboard();
+            _windowVisibleState = true;
+            FocusManager.SetFocusedElement(InputTextBox, InputTextBox);
+            Show();
         }
 
-        private void LostFocusWindow(object sender, KeyboardFocusChangedEventArgs e)
+        void HideWindow()
+        {
+            _windowVisibleState = false;
+            _adapter.QueryList.Clear();
+            ResultIcon.Source = null;
+            InputTextBox.Clear();
+            Hide();
+        }
+
+        void LostFocusWindow(object sender, KeyboardFocusChangedEventArgs e)
         {
             if (e.NewFocus == null)
             {
-                this.Hide();
+                HideWindow();
             }
         }
 
@@ -180,6 +185,25 @@ namespace WPF_Windows_Spotlight
                     break;
                 default:
                     break;
+            }
+        }
+
+        private void Search(object sender, TextChangedEventArgs e)
+        {
+            if (InputTextBox.Text.Trim() == "")
+            {
+                Height = _inputHieght;
+                InputTextBox.Text = "";
+            }
+            else
+            {
+                _rotate.Start();
+                ContentView.Children.Clear();
+                ResultIcon.Source = BitmapToBitmapImage.Transform((Bitmap)Properties.Resources.loading);
+                InputTextBoxWatermark.Text = "";
+                InputTextBoxWatermark.HorizontalAlignment = HorizontalAlignment.Left;
+                _adapter.Search(InputTextBox.Text);
+                _hasResult = _adapter.GetWrokerCount();
             }
         }
 
