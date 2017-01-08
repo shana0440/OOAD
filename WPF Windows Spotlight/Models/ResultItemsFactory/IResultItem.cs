@@ -11,7 +11,7 @@ namespace WPF_Windows_Spotlight.Models.ResultItemsFactory
     public interface IResultItem
     {
         string GroupName { get; set; }
-        int Weight { get; set; }
+        int Priority { get; set; }
         string Title { get; set; }
         bool IsSelected { get; set; }
         BitmapImage Icon { get; }

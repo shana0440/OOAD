@@ -15,7 +15,7 @@ namespace WPF_Windows_Spotlight.Models.ResultItemsFactory
         public string GroupName { get; set; }
         public bool IsSelected { get; set; }
         public string Title { get; set; }
-        public int Weight { get; set; }
+        public int Priority { get; set; }
 
         public abstract void GenerateContent();
         public abstract void OpenResource();

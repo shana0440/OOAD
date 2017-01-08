@@ -7,6 +7,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using WPF_Windows_Spotlight.Models.Calculator;
 using WPF_Windows_Spotlight.Foundation.ItemType;
+using WPF_Windows_Spotlight.Models;
+using WPF_Windows_Spotlight.Models.ResultItemsFactory;
 
 namespace WPF_Windows_Spotlight.Controller
 {
@@ -14,21 +16,16 @@ namespace WPF_Windows_Spotlight.Controller
     {
         int _searchCount = 0;
         List<BackgroundWorker> _workers = new List<BackgroundWorker>();
-        public delegate void SearchOverEventHandler(List<Item> results);
+        public delegate void SearchOverEventHandler(List<IResultItem> results);
         SearchOverEventHandler _searchOverEvent;
-        List<Item> _results = new List<Item>();
-
-        public SearchService()
-        {
-
-        }
+        List<IResultItem> _results = new List<IResultItem>();
 
         public void Search(string keyword)
         {
             _searchCount = 0;
-            var calculator = new CalculatorThread();
+            IThread thread = new CalculatorThread();
             BackgroundWorker calculatorWorker = new BackgroundWorker();
-            calculatorWorker.DoWork += new DoWorkEventHandler(calculator.DoWork);
+            calculatorWorker.DoWork += new DoWorkEventHandler(thread.DoWork);
             calculatorWorker.RunWorkerCompleted += SearchOver;
             calculatorWorker.WorkerSupportsCancellation = true; // support cancel
             calculatorWorker.RunWorkerAsync(keyword);
@@ -40,8 +37,8 @@ namespace WPF_Windows_Spotlight.Controller
         void SearchOver(object sender, RunWorkerCompletedEventArgs e)
         {
             // notify view, if search is over;
-            Console.Write(e.Result);
-            _results.AddRange((IEnumerable<Item>)e.Result);
+            List<IResultItem> result = (List<IResultItem>)e.Result;
+            _results.AddRange(result);
             _searchCount--;
             if (_searchCount == 0)
             {
@@ -57,7 +54,7 @@ namespace WPF_Windows_Spotlight.Controller
         {
             _searchOverEvent = handler;
         }
-        
+
         public void CancelSearch()
         {
             foreach (var worker in _workers)

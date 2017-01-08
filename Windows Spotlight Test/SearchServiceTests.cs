@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WPF_Windows_Spotlight.Controller;
 using System.Threading;
 using System.Collections.Generic;
-using WPF_Windows_Spotlight.Foundation.ItemType;
+using WPF_Windows_Spotlight.Models.ResultItemsFactory;
 
 namespace Windows_Spotlight_Test
 {
@@ -11,6 +10,7 @@ namespace Windows_Spotlight_Test
     public class SearchServiceTests
     {
         SearchService _service;
+        List<IResultItem> _items;
 
         [TestInitialize]
         public void Initialize()
@@ -22,11 +22,18 @@ namespace Windows_Spotlight_Test
         public void TestSearch()
         {
             bool isSearchOver = false;
-            SearchService.SearchOverEventHandler handler = new SearchService.SearchOverEventHandler((List<Item> items) => isSearchOver = true);
+            SearchService.SearchOverEventHandler handler = new SearchService.SearchOverEventHandler(SearchOverEvent);
             _service.SubscribeSearchOverEvent(handler);
             _service.Search("1+1");
+
             Thread.Sleep(1000);
-            Assert.IsTrue(isSearchOver);
+            Assert.AreEqual("計算機", _items[0].GroupName);
+            Assert.AreEqual("2", _items[0].Title);
+        }
+
+        void SearchOverEvent(List<IResultItem> items)
+        {
+            _items = items;
         }
     }
 }

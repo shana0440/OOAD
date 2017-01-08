@@ -13,7 +13,7 @@ namespace WPF_Windows_Spotlight.Models.ResultItemsFactory
         public CalculatorResultItem(string answer, string expression)
         {
             GroupName = "計算機";
-            Weight = 100;
+            Priority = 100;
             Title = answer;
             _expression = expression;
         }
