@@ -16,12 +16,12 @@ namespace Windows_Spotlight_Test
         public void Initialize()
         {
             _service = new SearchService();
+            _items = new List<IResultItem>();
         }
 
         [TestMethod]
         public void TestSearch()
         {
-            bool isSearchOver = false;
             SearchService.SearchOverEventHandler handler = new SearchService.SearchOverEventHandler(SearchOverEvent);
             _service.SubscribeSearchOverEvent(handler);
             _service.Search("1+1");
@@ -34,6 +34,18 @@ namespace Windows_Spotlight_Test
         void SearchOverEvent(List<IResultItem> items)
         {
             _items = items;
+        }
+
+        [TestMethod]
+        public void TestCancelSearch()
+        {
+            SearchService.SearchOverEventHandler handler = new SearchService.SearchOverEventHandler(SearchOverEvent);
+            _service.SubscribeSearchOverEvent(handler);
+            _service.Search("1+1");
+            _service.CancelSearch();
+
+            Thread.Sleep(1000);
+            Assert.AreEqual(0, _items.Count);
         }
     }
 }

@@ -103,8 +103,8 @@
     <Compile Include="Models\IThread.cs" />
     <Compile Include="Models\Eval.cs" />
     <Compile Include="Models\ItemData.cs" />
-    <Compile Include="Models\ResultItemsFactory\CalculatorResultItem.cs" />
-    <Compile Include="Models\ResultItemsFactory\CalculatorResultItemsFactory.cs" />
+    <Compile Include="Models\Calculator\CalculatorResultItem.cs" />
+    <Compile Include="Models\Calculator\CalculatorResultItemsFactory.cs" />
     <Compile Include="Models\ResultItemsFactory\IResultItem.cs" />
     <Compile Include="Models\ResultItemsFactory\IResultItemsFactory.cs" />
     <Compile Include="Models\ResultItemsFactory\ResultItem.cs" />

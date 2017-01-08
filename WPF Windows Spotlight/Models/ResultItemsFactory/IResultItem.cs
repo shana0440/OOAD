@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
 namespace WPF_Windows_Spotlight.Models.ResultItemsFactory
@@ -17,6 +18,6 @@ namespace WPF_Windows_Spotlight.Models.ResultItemsFactory
         BitmapImage Icon { get; }
 
         void OpenResource();
-        void GenerateContent();
+        void GenerateContent(StackPanel contentView);
     }
 }
