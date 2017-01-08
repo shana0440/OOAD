@@ -8,7 +8,7 @@ using System.Windows.Media.Imaging;
 
 namespace WPF_Windows_Spotlight.Models.ResultItemsFactory
 {
-    interface IResultItem
+    public interface IResultItem
     {
         string GroupName { get; set; }
         int Weight { get; set; }
