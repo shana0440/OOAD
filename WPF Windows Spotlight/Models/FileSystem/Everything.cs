@@ -83,11 +83,11 @@ namespace WPF_Windows_Spotlight.Models.FileSystem
             Everything_SetSearchW(keyword);
             Everything_SetMax(count);
             Everything_QueryW(true);
-            //Everything.Everything_SortResultsByPath();
+            //Everything_SortResultsByPath();
 
             const int bufsize = 260;
             StringBuilder buf = new StringBuilder(bufsize);
-            for (var i = 0; i < Everything.Everything_GetNumResults(); i++)
+            for (var i = 0; i < Everything_GetNumResults(); i++)
             {
                 Everything.Everything_GetResultFullPathNameW(i, buf, bufsize);
                 var pathName = buf.ToString();

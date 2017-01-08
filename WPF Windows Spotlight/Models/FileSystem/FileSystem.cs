@@ -9,7 +9,7 @@ namespace WPF_Windows_Spotlight.Models.FileSystem
 {
     public class FileSystem
     {
-        const int _searchMaxCount = 10;
+        const int _searchMaxCount = 30;
 
         public List<string> SearchFileOrFolder(string keyword)
         {
