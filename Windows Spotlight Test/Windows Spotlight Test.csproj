@@ -68,8 +68,6 @@
     <Compile Include="TranslatorTest.cs" />
     <Compile Include="AdapterTest.cs" />
     <Compile Include="FoundationFactoryTest.cs" />
-    <Compile Include="FileSystemTest.cs" />
-    <Compile Include="FileItemTest.cs" />
     <Compile Include="FilePriorityTester.cs" />
     <Compile Include="SearchEngineTester.cs" />
     <Compile Include="ExchangeTester.cs" />

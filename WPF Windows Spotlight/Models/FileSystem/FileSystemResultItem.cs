@@ -63,7 +63,7 @@ namespace WPF_Windows_Spotlight.Models.FileSystem
                 name.Content = property.Key;
                 var value = new Label();
                 value.Content = property.Value;
-                name.Width = value.Width = contentView.Width / 2;
+                name.Width = value.Width = contentView.Width / 2 - 35;
                 name.HorizontalContentAlignment = HorizontalAlignment.Right;
                 value.HorizontalContentAlignment = HorizontalAlignment.Left;
                 name.Foreground = Brushes.Gray;
