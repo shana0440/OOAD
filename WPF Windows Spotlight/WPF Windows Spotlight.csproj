@@ -112,6 +112,9 @@
     <Compile Include="Models\ItemData.cs" />
     <Compile Include="Models\Calculator\CalculatorResultItem.cs" />
     <Compile Include="Models\Calculator\CalculatorResultItemsFactory.cs" />
+    <Compile Include="Models\MyBackgroundWorker.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Models\ResultItemsFactory\IResultItem.cs" />
     <Compile Include="Models\ResultItemsFactory\IResultItemsFactory.cs" />
     <Compile Include="Models\ResultItemsFactory\ResultItem.cs" />

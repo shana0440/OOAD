@@ -43,7 +43,7 @@ namespace Windows_Spotlight_Test
             SearchService.SearchOverEventHandler handler = new SearchService.SearchOverEventHandler(SearchOverEvent);
             _service.SubscribeSearchOverEvent(handler);
             _service.Search("1+1");
-            _service.CancelSearch();
+            _service.CancelCurrentSearching();
 
             Thread.Sleep(1000);
             Assert.AreEqual(0, _items.Count);

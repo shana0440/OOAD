@@ -5,6 +5,7 @@ using WPF_Windows_Spotlight.Models;
 using WPF_Windows_Spotlight.Models.ResultItemsFactory;
 using System.Collections.ObjectModel;
 using WPF_Windows_Spotlight.Models.FileSystem;
+using System;
 
 namespace WPF_Windows_Spotlight.Controller
 {
@@ -15,6 +16,7 @@ namespace WPF_Windows_Spotlight.Controller
         public delegate void SearchOverEventHandler(ObservableCollection<IResultItem> results);
         SearchOverEventHandler _searchOverEvent;
         ObservableCollection<IResultItem> _resultList = new ObservableCollection<IResultItem>();
+        int _serialNumber = 0;
 
         public ObservableCollection<IResultItem> ResultList
         {
@@ -26,48 +28,65 @@ namespace WPF_Windows_Spotlight.Controller
 
         public void Search(string keyword)
         {
-            _resultList.Clear();
-            _searchingCount = 0;
+            CancelCurrentSearching();
+            _serialNumber = _serialNumber + 1 % 1000;
 
-            //IThread calculatorThread = new CalculatorThread();
-            //BackgroundWorker calculatorWorker = new BackgroundWorker();
-            //calculatorWorker.DoWork += new DoWorkEventHandler(calculatorThread.DoWork);
-            //calculatorWorker.RunWorkerCompleted += SearchOver;
-            //calculatorWorker.WorkerSupportsCancellation = true; // support cancel
-            //calculatorWorker.RunWorkerAsync(keyword);
-            //_searchingCount++;
-            //_workers.Add(calculatorWorker);
+            IThread calculatorThread = new CalculatorThread();
+            MyBackgroundWorker calculatorWorker = new MyBackgroundWorker(_serialNumber);
+            calculatorWorker.DoWork += new DoWorkEventHandler(calculatorThread.DoWork);
+            calculatorWorker.RunWorkerCompleted += SearchOver;
+            calculatorWorker.WorkerSupportsCancellation = true; // support cancel
+            calculatorWorker.RunWorkerAsync(keyword);
+            _searchingCount++;
+            _workers.Add(calculatorWorker);
 
             IThread fileSystemThread = new FileSystemThread();
-            BackgroundWorker fileSystemWorker = new BackgroundWorker();
+            MyBackgroundWorker fileSystemWorker = new MyBackgroundWorker(_serialNumber);
             fileSystemWorker.DoWork += new DoWorkEventHandler(fileSystemThread.DoWork);
             fileSystemWorker.RunWorkerCompleted += SearchOver;
             fileSystemWorker.WorkerSupportsCancellation = true;
             fileSystemWorker.RunWorkerAsync(keyword);
             _searchingCount++;
             _workers.Add(fileSystemWorker);
+
+            Console.WriteLine("目前有 {0} 個 worker 在運作中", _searchingCount);
+        }
+
+        public void CancelCurrentSearching()
+        {
+            foreach (var worker in _workers)
+            {
+                worker.CancelAsync();
+            }
+            _searchingCount = 0;
+            _resultList.Clear();
+            _workers.Clear();
         }
 
         void SearchOver(object sender, RunWorkerCompletedEventArgs e)
         {
-            // notify view, if search is over;
-            _searchingCount--;
-            if (!e.Cancelled && e.Result != null)
+            var worker = (MyBackgroundWorker)sender;
+            var isCurrentSearch = worker.SerialNumber == _serialNumber;
+            if (isCurrentSearch)
             {
-                List<IResultItem> result = (List<IResultItem>)e.Result;
-                AddRange(_resultList, result);
+                _searchingCount--;
+                Console.WriteLine("目前有 {0} 個 worker 在運作中", _searchingCount);
+                if (!e.Cancelled && e.Result != null)
+                {
+                    List<IResultItem> result = (List<IResultItem>)e.Result;
+                    MergeListToObservableCollection(_resultList, result);
+                }
+
                 if (_searchingCount == 0)
                 {
+                    Console.WriteLine("總共搜尋到 {0} 筆資料", _resultList.Count);
                     _workers.Clear();
-                    if (_searchOverEvent != null)
-                    {
-                        _searchOverEvent(_resultList);
-                    }
+                    _searchOverEvent?.Invoke(_resultList);
                 }
             }
         }
 
-        ObservableCollection<IResultItem> AddRange(ObservableCollection<IResultItem> target, List<IResultItem> source)
+        ObservableCollection<IResultItem> MergeListToObservableCollection(ObservableCollection<IResultItem> target, List<IResultItem> source)
         {
             foreach (var item in source)
             {
@@ -81,15 +100,5 @@ namespace WPF_Windows_Spotlight.Controller
             _searchOverEvent = handler;
         }
 
-        public void CancelSearch()
-        {
-            foreach (var worker in _workers)
-            {
-                worker.CancelAsync();
-            }
-            _searchingCount = 0;
-            _resultList.Clear();
-            _workers.Clear();
-        }
     }
 }

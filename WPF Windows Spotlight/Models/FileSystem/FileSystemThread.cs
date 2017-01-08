@@ -19,13 +19,20 @@ namespace WPF_Windows_Spotlight.Models.FileSystem
                 List<string> list = fileSystem.SearchFileOrFolder(keyword);
                 FileSystemResultItemFactory factory = new FileSystemResultItemFactory();
                 List<IResultItem> results = factory.CreateResultItems(list);
-                e.Result = results;
+                var worker = (BackgroundWorker)sender;
+                if (worker.CancellationPending)
+                {
+                    e.Cancel = true;
+                }
+                else
+                {
+                    e.Result = results;
+                }
             }
             catch (Exception)
             {
-                e.Cancel = true;
+                e.Result = null;
             }
-
         }
     }
 }

@@ -16,15 +16,21 @@ namespace WPF_Windows_Spotlight.Models.Calculator
                 var answer = calculator.Execute(expression);
                 ItemData item = new ItemData() { Title = answer, Content = expression };
                 IResultItemsFactory factory = new CalculatorResultItemsFactory();
-                List<IResultItem> list = factory.CreateResultItems(item);
-                e.Result = list;
+                List<IResultItem> results = factory.CreateResultItems(item);
+                var worker = (BackgroundWorker)sender;
+                if (worker.CancellationPending)
+                {
+                    e.Cancel = true;
+                }
+                else
+                {
+                    e.Result = results;
+                }
             }
             catch (Exception)
             {
-                e.Cancel = true;
+                e.Result = null;
             }
-
         }
-
     }
 }
