@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Windows.Controls;
 using WPF_Windows_Spotlight.Models.ResultItemsFactory;
 using System.Windows;
@@ -17,7 +16,7 @@ namespace WPF_Windows_Spotlight.Models.Calculator
             Priority = 100;
             Title = answer;
             _expression = String.Format("{0} =", expression);
-            _icon = (Bitmap)Properties.Resources.calculator_icon;
+            _icon = Properties.Resources.calculator_icon;
         }
 
         public override void GenerateContent(StackPanel contentView)
@@ -26,7 +25,7 @@ namespace WPF_Windows_Spotlight.Models.Calculator
             Label expression = new Label();
             expression.Content = _expression;
             expression.FontSize = 24;
-            var fontColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#434343");
+            var fontColor = (Color)ColorConverter.ConvertFromString("#434343");
             expression.BorderBrush = new SolidColorBrush(fontColor);
 
             expression.Foreground = expression.BorderBrush;
@@ -36,7 +35,7 @@ namespace WPF_Windows_Spotlight.Models.Calculator
             contentView.Children.Add(expression);
 
             Border hr = new Border();
-            var hrColor = (System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FFD7D7D7");
+            var hrColor = (Color)ColorConverter.ConvertFromString("#FFD7D7D7");
             hr.Height = 1;
             hr.BorderBrush = new SolidColorBrush(hrColor);
             hr.BorderThickness = new Thickness(0, 1, 0, 0);
