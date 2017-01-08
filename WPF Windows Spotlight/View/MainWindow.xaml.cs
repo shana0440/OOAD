@@ -180,11 +180,14 @@ namespace WPF_Windows_Spotlight
         void SearchOverEvent(ObservableCollection<IResultItem> items)
         {
             _rotate.Stop();
-            IResultItem item = _searchService.ResultList[0];
-            // 不知道為啥要兩個 不用兩個他不會回到最上面
-            QueryList.ScrollIntoView(item);
-            QueryList.ScrollIntoView(QueryList.SelectedItem);
-            ShowSelectdItemContent(item);
+            if (_searchService.ResultList.Count > 0)
+            {
+                IResultItem item = _searchService.ResultList[0];
+                // 不知道為啥要兩個 不用兩個他不會回到最上面
+                QueryList.ScrollIntoView(item);
+                QueryList.ScrollIntoView(QueryList.SelectedItem);
+                ShowSelectdItemContent(item);
+            }
         }
 
         void ShowSelectdItemContent(IResultItem item)

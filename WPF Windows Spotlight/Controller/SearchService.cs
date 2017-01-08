@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using WPF_Windows_Spotlight.Models.Calculator;
-using WPF_Windows_Spotlight.Foundation.ItemType;
 using WPF_Windows_Spotlight.Models;
 using WPF_Windows_Spotlight.Models.ResultItemsFactory;
 using System.Collections.ObjectModel;
+using WPF_Windows_Spotlight.Models.FileSystem;
 
 namespace WPF_Windows_Spotlight.Controller
 {
@@ -33,15 +28,24 @@ namespace WPF_Windows_Spotlight.Controller
         {
             _resultList.Clear();
             _searchingCount = 0;
-            IThread thread = new CalculatorThread();
-            BackgroundWorker calculatorWorker = new BackgroundWorker();
-            calculatorWorker.DoWork += new DoWorkEventHandler(thread.DoWork);
-            calculatorWorker.RunWorkerCompleted += SearchOver;
-            calculatorWorker.WorkerSupportsCancellation = true; // support cancel
-            calculatorWorker.RunWorkerAsync(keyword);
 
+            //IThread calculatorThread = new CalculatorThread();
+            //BackgroundWorker calculatorWorker = new BackgroundWorker();
+            //calculatorWorker.DoWork += new DoWorkEventHandler(calculatorThread.DoWork);
+            //calculatorWorker.RunWorkerCompleted += SearchOver;
+            //calculatorWorker.WorkerSupportsCancellation = true; // support cancel
+            //calculatorWorker.RunWorkerAsync(keyword);
+            //_searchingCount++;
+            //_workers.Add(calculatorWorker);
+
+            IThread fileSystemThread = new FileSystemThread();
+            BackgroundWorker fileSystemWorker = new BackgroundWorker();
+            fileSystemWorker.DoWork += new DoWorkEventHandler(fileSystemThread.DoWork);
+            fileSystemWorker.RunWorkerCompleted += SearchOver;
+            fileSystemWorker.WorkerSupportsCancellation = true;
+            fileSystemWorker.RunWorkerAsync(keyword);
             _searchingCount++;
-            _workers.Add(calculatorWorker);
+            _workers.Add(fileSystemWorker);
         }
 
         void SearchOver(object sender, RunWorkerCompletedEventArgs e)

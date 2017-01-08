@@ -8,6 +8,6 @@ namespace WPF_Windows_Spotlight.Models.ResultItemsFactory
 {
     interface IResultItemsFactory
     {
-        List<IResultItem> CreateResultItems(ItemData item);
+        List<IResultItem> CreateResultItems(object result);
     }
 }

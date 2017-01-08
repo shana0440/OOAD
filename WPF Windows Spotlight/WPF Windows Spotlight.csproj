@@ -100,6 +100,13 @@
     <Compile Include="Models\BitmapToBitmapImage.cs" />
     <Compile Include="Models\Calculator\CalculatorThread.cs" />
     <Compile Include="Models\Calculator\Calculator.cs" />
+    <Compile Include="Models\FileSystem\Everything.cs" />
+    <Compile Include="Models\FileSystem\FileSystem.cs" />
+    <Compile Include="Models\FileSystem\FileSystemResultFileItem.cs" />
+    <Compile Include="Models\FileSystem\FileSystemResultFolderItem.cs" />
+    <Compile Include="Models\FileSystem\FileSystemResultItem.cs" />
+    <Compile Include="Models\FileSystem\FileSystemResultItemFactory.cs" />
+    <Compile Include="Models\FileSystem\FileSystemThread.cs" />
     <Compile Include="Models\IThread.cs" />
     <Compile Include="Models\Eval.cs" />
     <Compile Include="Models\ItemData.cs" />
@@ -121,14 +128,12 @@
     </Compile>
     <Compile Include="Foundation\BaseFoundation.cs" />
     <Compile Include="Foundation\Exchange.cs" />
-    <Compile Include="Foundation\Calculator.cs" />
     <Compile Include="Foundation\Everything.cs" />
     <Compile Include="Foundation\FilePriority.cs" />
     <Compile Include="Foundation\FileSystem.cs" />
     <Compile Include="Foundation\ItemType\FolderOrFile.cs" />
     <Compile Include="Foundation\FoundationFactory.cs" />
     <Compile Include="Foundation\IFoundation.cs" />
-    <Compile Include="Foundation\ItemType\AnswerItem.cs" />
     <Compile Include="Foundation\ItemType\ExchangeItem.cs" />
     <Compile Include="Foundation\ItemType\FileItem.cs" />
     <Compile Include="Foundation\ItemType\TranslateItem.cs" />

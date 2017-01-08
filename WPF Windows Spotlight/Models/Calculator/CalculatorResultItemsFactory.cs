@@ -9,8 +9,9 @@ namespace WPF_Windows_Spotlight.Models.Calculator
 {
     class CalculatorResultItemsFactory : IResultItemsFactory
     {
-        public List<IResultItem> CreateResultItems(ItemData item)
+        public List<IResultItem> CreateResultItems(object result)
         {
+            var item = (ItemData)result;
             List<IResultItem> resultItems = new List<IResultItem>();
             ResultItem resultItem = new CalculatorResultItem(item.Title, item.Content);
             resultItems.Add(resultItem);
