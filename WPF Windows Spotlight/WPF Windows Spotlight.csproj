@@ -205,7 +205,6 @@
     <Resource Include="Images\calculator_icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Everything32.dll" />
     <None Include="Images\loading.png" />
     <None Include="Images\icon.ico" />
     <None Include="Images\icon.png" />

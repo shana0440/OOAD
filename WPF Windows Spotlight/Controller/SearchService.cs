@@ -81,6 +81,7 @@ namespace WPF_Windows_Spotlight.Controller
                 {
                     Console.WriteLine("總共搜尋到 {0} 筆資料", _resultList.Count);
                     _workers.Clear();
+                    SortBestResult(_resultList);
                     _searchOverEvent?.Invoke(_resultList);
                 }
             }
@@ -98,6 +99,21 @@ namespace WPF_Windows_Spotlight.Controller
         public void SubscribeSearchOverEvent(SearchOverEventHandler handler)
         {
             _searchOverEvent = handler;
+        }
+
+        void SortBestResult(ObservableCollection<IResultItem> results)
+        {
+            IResultItem bestSolution = null;
+            foreach (var item in results)
+            {
+                if (bestSolution == null || bestSolution.Priority < item.Priority)
+                {
+                    bestSolution = item;
+                }
+            }
+            bestSolution.GroupName = "最佳搜尋結果";
+            results.Remove(bestSolution);
+            results.Insert(0, bestSolution);
         }
 
     }

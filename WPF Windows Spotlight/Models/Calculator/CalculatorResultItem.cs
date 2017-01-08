@@ -13,7 +13,7 @@ namespace WPF_Windows_Spotlight.Models.Calculator
         public CalculatorResultItem(string answer, string expression)
         {
             GroupName = "計算機";
-            Priority = 100;
+            Priority = 999;
             Title = answer;
             _expression = String.Format("{0} =", expression);
             _icon = Properties.Resources.calculator_icon;
