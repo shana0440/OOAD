@@ -22,7 +22,6 @@ namespace WPF_Windows_Spotlight
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Adapter _adapter;
         private string[] _hotKeyForHide = new string[] { "Escape" };
         private string[] _hotKeyForOpen = new string[] { "LeftCtrl", "Space" };
         private int _openKeyPointer = 0;
@@ -37,15 +36,12 @@ namespace WPF_Windows_Spotlight
         public MainWindow()
         {
             InitializeComponent();
-            _adapter = new Adapter();
-            
+
             _viewInitialization = new ViewInitialization(this);
             _viewInitialization.Init();
             _viewInitialization.SetKeyboardEvent(WatchKeyPressedOfWindowVisible);
 
             InitRender();
-
-            _adapter.UpdateContentHandler += SearchOver;
         }
 
         public void InitRender()
@@ -109,7 +105,7 @@ namespace WPF_Windows_Spotlight
         void HideWindow()
         {
             _windowVisibleState = false;
-            _adapter.QueryList.Clear();
+            _searchService.ResultList.Clear();
             ResultIcon.Source = null;
             InputTextBox.Clear();
             Hide();
@@ -129,46 +125,10 @@ namespace WPF_Windows_Spotlight
             var item = sender as ListBoxItem;
             if (item != null && item.IsSelected)
             {
-                Item selectedItem = _adapter.QueryList[QueryList.SelectedIndex];
-                this.Hide();
-                selectedItem.Open();
+                //Item selectedItem = _adapter.QueryList[QueryList.SelectedIndex];
+                //selectedItem.Open();
+                HideWindow();
             }
-        }
-
-        private void SearchOver()
-        {
-            _rotate.Stop();
-            if (_adapter.SelectedIndex < 0)
-            {
-                if (--_hasResult == 0)
-                {
-                    ResultIcon.Source = null;
-                    Height = _inputHieght;
-                    ContentView.Children.Clear();
-                    InputTextBoxWatermark.Text = "— No result";
-                    InputTextBoxWatermark.HorizontalAlignment = HorizontalAlignment.Right;
-                }
-            }
-            else
-            {
-                if (_adapter.QueryList.Count > 0)
-                {
-                    Item item = _adapter.QueryList[_adapter.SelectedIndex];
-                    // 不知道為啥要兩個 不用兩個他不會回到最上面
-                    QueryList.ScrollIntoView(item);
-                    QueryList.ScrollIntoView(QueryList.SelectedItem);
-                    ShowDetail(item);
-                }
-            }
-        }
-
-        // 分配要用哪個ShowXXXXDetail來顯示Item的詳細資料
-        private void ShowDetail(Item item)
-        {
-            if (item == null) return;
-            ResultIcon.Source = item.Icon;
-            Height = _windowHieght;
-            item.GenerateContent(ContentView);
         }
 
         private void SelectItem(object sender, KeyEventArgs e)
@@ -176,18 +136,18 @@ namespace WPF_Windows_Spotlight
             switch (e.Key)
             {
                 case Key.Up:
-                    _adapter.SelectItem(_adapter.SelectedIndex - 1);
+                    //_adapter.SelectItem(_adapter.SelectedIndex - 1);
                     break;
                 case Key.Down:
-                    _adapter.SelectItem(_adapter.SelectedIndex + 1);
+                    //_adapter.SelectItem(_adapter.SelectedIndex + 1);
                     break;
                 case Key.Enter:
-                    if (_adapter.QueryList.Count > 0)
-                    {
-                        var item = _adapter.QueryList[_adapter.SelectedIndex];
-                        this.Hide();
-                        item.Open();
-                    }
+                    //if (_adapter.QueryList.Count > 0)
+                    //{
+                    //    var item = _adapter.QueryList[_adapter.SelectedIndex];
+                    //    HideWindow();
+                    //    item.Open();
+                    //}
                     break;
                 default:
                     break;

@@ -11,13 +11,13 @@ namespace Windows_Spotlight_Test
     public class SearchServiceTests
     {
         SearchService _service;
-        List<IResultItem> _items;
+        ObservableCollection<IResultItem> _items;
 
         [TestInitialize]
         public void Initialize()
         {
             _service = new SearchService();
-            _items = new List<IResultItem>();
+            _items = new ObservableCollection<IResultItem>();
         }
 
         [TestMethod]
