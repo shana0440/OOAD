@@ -9,20 +9,30 @@ using WPF_Windows_Spotlight.Models.Calculator;
 using WPF_Windows_Spotlight.Foundation.ItemType;
 using WPF_Windows_Spotlight.Models;
 using WPF_Windows_Spotlight.Models.ResultItemsFactory;
+using System.Collections.ObjectModel;
 
 namespace WPF_Windows_Spotlight.Controller
 {
     public class SearchService
     {
-        int _searchCount = 0;
+        int _searchingCount = 0;
         List<BackgroundWorker> _workers = new List<BackgroundWorker>();
-        public delegate void SearchOverEventHandler(List<IResultItem> results);
+        public delegate void SearchOverEventHandler(ObservableCollection<IResultItem> results);
         SearchOverEventHandler _searchOverEvent;
-        List<IResultItem> _results = new List<IResultItem>();
+        ObservableCollection<IResultItem> _resultList = new ObservableCollection<IResultItem>();
+
+        public ObservableCollection<IResultItem> ResultList
+        {
+            get
+            {
+                return _resultList;
+            }
+        }
 
         public void Search(string keyword)
         {
-            _searchCount = 0;
+            _resultList.Clear();
+            _searchingCount = 0;
             IThread thread = new CalculatorThread();
             BackgroundWorker calculatorWorker = new BackgroundWorker();
             calculatorWorker.DoWork += new DoWorkEventHandler(thread.DoWork);
@@ -30,24 +40,36 @@ namespace WPF_Windows_Spotlight.Controller
             calculatorWorker.WorkerSupportsCancellation = true; // support cancel
             calculatorWorker.RunWorkerAsync(keyword);
 
-            _searchCount++;
+            _searchingCount++;
             _workers.Add(calculatorWorker);
         }
 
         void SearchOver(object sender, RunWorkerCompletedEventArgs e)
         {
             // notify view, if search is over;
-            List<IResultItem> result = (List<IResultItem>)e.Result;
-            _results.AddRange(result);
-            _searchCount--;
-            if (_searchCount == 0)
+            _searchingCount--;
+            if (!e.Cancelled && e.Result != null)
             {
-                _workers.Clear();
-                if (_searchOverEvent != null)
+                List<IResultItem> result = (List<IResultItem>)e.Result;
+                AddRange(_resultList, result);
+                if (_searchingCount == 0)
                 {
-                    _searchOverEvent(_results);
+                    _workers.Clear();
+                    if (_searchOverEvent != null)
+                    {
+                        _searchOverEvent(_resultList);
+                    }
                 }
             }
+        }
+
+        ObservableCollection<IResultItem> AddRange(ObservableCollection<IResultItem> target, List<IResultItem> source)
+        {
+            foreach (var item in source)
+            {
+                target.Add(item);
+            }
+            return target;
         }
 
         public void SubscribeSearchOverEvent(SearchOverEventHandler handler)
@@ -61,8 +83,8 @@ namespace WPF_Windows_Spotlight.Controller
             {
                 worker.CancelAsync();
             }
-            _searchCount = 0;
-            _results.Clear();
+            _searchingCount = 0;
+            _resultList.Clear();
             _workers.Clear();
         }
     }

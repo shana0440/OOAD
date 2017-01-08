@@ -22,7 +22,6 @@ namespace WPF_Windows_Spotlight.Models.Calculator
             {
                 throw new ExecutionEngineException("算式有誤");
             }
-
         }
 
         string TransformMathOperators(string expression)

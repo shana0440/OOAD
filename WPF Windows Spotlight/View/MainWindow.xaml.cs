@@ -1,12 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using WPF_Windows_Spotlight.Controller;
 using WPF_Windows_Spotlight.Foundation;
 using WPF_Windows_Spotlight.Foundation.ItemType;
+using WPF_Windows_Spotlight.Models.ResultItemsFactory;
 using WPF_Windows_Spotlight.View;
 using HorizontalAlignment = System.Windows.HorizontalAlignment;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
@@ -28,6 +32,7 @@ namespace WPF_Windows_Spotlight
         private LoadingCircle _rotate = new LoadingCircle { Angle = 0 };
         ViewInitialization _viewInitialization;
         private bool _windowVisibleState = false;
+        SearchService _searchService = new SearchService();
 
         public MainWindow()
         {
@@ -63,7 +68,8 @@ namespace WPF_Windows_Spotlight
 
         void InitResultsListSource()
         {
-            ICollectionView collectionView = CollectionViewSource.GetDefaultView(_adapter.QueryList);
+            //ICollectionView collectionView = CollectionViewSource.GetDefaultView(_adapter.QueryList);
+            ICollectionView collectionView = CollectionViewSource.GetDefaultView(_searchService.ResultList);
             collectionView.GroupDescriptions.Add(new PropertyGroupDescription("GroupName"));
             QueryList.ItemsSource = collectionView;
         }
@@ -202,9 +208,31 @@ namespace WPF_Windows_Spotlight
                 ResultIcon.Source = BitmapToBitmapImage.Transform((Bitmap)Properties.Resources.loading);
                 InputTextBoxWatermark.Text = "";
                 InputTextBoxWatermark.HorizontalAlignment = HorizontalAlignment.Left;
-                _adapter.Search(InputTextBox.Text);
-                _hasResult = _adapter.GetWrokerCount();
+
+                _searchService.Search(InputTextBox.Text);
+                _searchService.SubscribeSearchOverEvent(SearchOverEvent);
+
+                //_adapter.Search(InputTextBox.Text);
+                //_hasResult = _adapter.GetWrokerCount();
             }
+        }
+
+        void SearchOverEvent(ObservableCollection<IResultItem> items)
+        {
+            _rotate.Stop();
+            IResultItem item = _searchService.ResultList[0];
+            // 不知道為啥要兩個 不用兩個他不會回到最上面
+            QueryList.ScrollIntoView(item);
+            QueryList.ScrollIntoView(QueryList.SelectedItem);
+            ShowSelectdItemContent(item);
+        }
+
+        void ShowSelectdItemContent(IResultItem item)
+        {
+            if (item == null) return;
+            ResultIcon.Source = item.Icon;
+            Height = _windowHieght;
+            item.GenerateContent(ContentView);
         }
 
     }

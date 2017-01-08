@@ -16,7 +16,7 @@ namespace WPF_Windows_Spotlight.Models.Calculator
             GroupName = "計算機";
             Priority = 100;
             Title = answer;
-            _expression = expression;
+            _expression = String.Format("{0} =", expression);
             _icon = (Bitmap)Properties.Resources.calculator_icon;
         }
 

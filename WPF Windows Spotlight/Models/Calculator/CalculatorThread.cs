@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using WPF_Windows_Spotlight.Models.ResultItemsFactory;
 
@@ -10,12 +11,19 @@ namespace WPF_Windows_Spotlight.Models.Calculator
         {
             var expression = (string)e.Argument;
             Calculator calculator = new Calculator();
-            var answer = calculator.Execute(expression);
+            try
+            {
+                var answer = calculator.Execute(expression);
+                ItemData item = new ItemData() { Title = answer, Content = expression };
+                IResultItemsFactory factory = new CalculatorResultItemsFactory();
+                List<IResultItem> list = factory.CreateResultItems(item);
+                e.Result = list;
+            }
+            catch (Exception)
+            {
+                e.Cancel = true;
+            }
 
-            ItemData item = new ItemData() { Title = answer, Content= expression };
-            IResultItemsFactory factory = new CalculatorResultItemsFactory();
-            List<IResultItem> list = factory.CreateResultItems(item);
-            e.Result = list;
         }
 
     }

@@ -3,6 +3,7 @@ using WPF_Windows_Spotlight.Controller;
 using System.Threading;
 using System.Collections.Generic;
 using WPF_Windows_Spotlight.Models.ResultItemsFactory;
+using System.Collections.ObjectModel;
 
 namespace Windows_Spotlight_Test
 {
@@ -31,7 +32,7 @@ namespace Windows_Spotlight_Test
             Assert.AreEqual("2", _items[0].Title);
         }
 
-        void SearchOverEvent(List<IResultItem> items)
+        void SearchOverEvent(ObservableCollection<IResultItem> items)
         {
             _items = items;
         }
