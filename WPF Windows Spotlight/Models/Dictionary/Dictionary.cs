@@ -14,19 +14,10 @@ namespace WPF_Windows_Spotlight.Models.Dictionary
     {
         const string _directoryUrl = "https://tw.dictionary.search.yahoo.com/search?p=";
 
-        public Dictionary()
-        {
-            var isNetWorkAvailable = NetworkInterface.GetIsNetworkAvailable();
-            if (!isNetWorkAvailable)
-            {
-                throw new WebException("沒有連接至網際網路");
-            }
-        }
-
         public List<ExplanationSection> Search(string keyword)
         {
             string url = String.Format("{0}{1}", _directoryUrl, keyword);
-            string html = GetResponse(url);
+            string html = Crawler.GetResponse(url);
             return ParseHTML(html);
         }
 
@@ -61,20 +52,6 @@ namespace WPF_Windows_Spotlight.Models.Dictionary
                 result.Add(section);
             };
             return result;
-        }
-
-        string GetResponse(string url)
-        {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            request.Accept = "text/html";
-            request.Method = "GET";
-
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            using (StreamReader stream = new StreamReader(response.GetResponseStream()))
-            {
-                string html = stream.ReadToEnd();
-                return html;
-            }
         }
 
     }

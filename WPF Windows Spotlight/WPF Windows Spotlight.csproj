@@ -100,6 +100,7 @@
     <Compile Include="Models\BitmapToBitmapImage.cs" />
     <Compile Include="Models\Calculator\CalculatorThread.cs" />
     <Compile Include="Models\Calculator\Calculator.cs" />
+    <Compile Include="Models\Crawler.cs" />
     <Compile Include="Models\Dictionary\Dictionary.cs" />
     <Compile Include="Models\Dictionary\DictionaryResultItem.cs" />
     <Compile Include="Models\Dictionary\DictionaryResultItemFactory.cs" />

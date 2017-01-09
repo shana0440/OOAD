@@ -17,7 +17,8 @@ namespace Windows_Spotlight_Test
         {
             Mock.SetupStatic(typeof(NetworkInterface), Behavior.Strict, StaticConstructor.Mocked);
             Mock.Arrange(() => NetworkInterface.GetIsNetworkAvailable()).Returns(false);
-            Dictionary directory = new Dictionary();
+            Dictionary dictionary = new Dictionary();
+            List<ExplanationSection> results = dictionary.Search("apple");
             Assert.Fail();
         }
 
