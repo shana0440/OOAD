@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using WPF_Windows_Spotlight.Models.FileSystem;
 using System;
 using WPF_Windows_Spotlight.Models.Dictionary;
+using WPF_Windows_Spotlight.Models.CurrencyConverter;
 
 namespace WPF_Windows_Spotlight.Controller
 {
@@ -32,32 +33,41 @@ namespace WPF_Windows_Spotlight.Controller
             CancelCurrentSearching();
             _serialNumber = _serialNumber + 1 % 1000;
 
-            IThread calculatorThread = new CalculatorThread();
-            MyBackgroundWorker calculatorWorker = new MyBackgroundWorker(_serialNumber);
-            calculatorWorker.DoWork += new DoWorkEventHandler(calculatorThread.DoWork);
-            calculatorWorker.RunWorkerCompleted += SearchOver;
-            calculatorWorker.WorkerSupportsCancellation = true; // support cancel
-            calculatorWorker.RunWorkerAsync(keyword);
-            _searchingCount++;
-            _workers.Add(calculatorWorker);
+            //IThread calculatorThread = new CalculatorThread();
+            //MyBackgroundWorker calculatorWorker = new MyBackgroundWorker(_serialNumber);
+            //calculatorWorker.DoWork += new DoWorkEventHandler(calculatorThread.DoWork);
+            //calculatorWorker.RunWorkerCompleted += SearchOver;
+            //calculatorWorker.WorkerSupportsCancellation = true; // support cancel
+            //calculatorWorker.RunWorkerAsync(keyword);
+            //_searchingCount++;
+            //_workers.Add(calculatorWorker);
 
-            IThread fileSystemThread = new FileSystemThread();
-            MyBackgroundWorker fileSystemWorker = new MyBackgroundWorker(_serialNumber);
-            fileSystemWorker.DoWork += new DoWorkEventHandler(fileSystemThread.DoWork);
-            fileSystemWorker.RunWorkerCompleted += SearchOver;
-            fileSystemWorker.WorkerSupportsCancellation = true;
-            fileSystemWorker.RunWorkerAsync(keyword);
-            _searchingCount++;
-            _workers.Add(fileSystemWorker);
+            //IThread fileSystemThread = new FileSystemThread();
+            //MyBackgroundWorker fileSystemWorker = new MyBackgroundWorker(_serialNumber);
+            //fileSystemWorker.DoWork += new DoWorkEventHandler(fileSystemThread.DoWork);
+            //fileSystemWorker.RunWorkerCompleted += SearchOver;
+            //fileSystemWorker.WorkerSupportsCancellation = true;
+            //fileSystemWorker.RunWorkerAsync(keyword);
+            //_searchingCount++;
+            //_workers.Add(fileSystemWorker);
 
-            IThread directoryThread = new DictionaryThread();
-            MyBackgroundWorker directoryWorker = new MyBackgroundWorker(_serialNumber);
-            directoryWorker.DoWork += new DoWorkEventHandler(directoryThread.DoWork);
-            directoryWorker.RunWorkerCompleted += SearchOver;
-            directoryWorker.WorkerSupportsCancellation = true;
-            directoryWorker.RunWorkerAsync(keyword);
+            //IThread directoryThread = new DictionaryThread();
+            //MyBackgroundWorker directoryWorker = new MyBackgroundWorker(_serialNumber);
+            //directoryWorker.DoWork += new DoWorkEventHandler(directoryThread.DoWork);
+            //directoryWorker.RunWorkerCompleted += SearchOver;
+            //directoryWorker.WorkerSupportsCancellation = true;
+            //directoryWorker.RunWorkerAsync(keyword);
+            //_searchingCount++;
+            //_workers.Add(directoryWorker);
+
+            IThread currencyThread = new CurrencyConverterThread();
+            MyBackgroundWorker currencyWorker = new MyBackgroundWorker(_serialNumber);
+            currencyWorker.DoWork += new DoWorkEventHandler(currencyThread.DoWork);
+            currencyWorker.RunWorkerCompleted += SearchOver;
+            currencyWorker.WorkerSupportsCancellation = true;
+            currencyWorker.RunWorkerAsync(keyword);
             _searchingCount++;
-            _workers.Add(directoryWorker);
+            _workers.Add(currencyWorker);
 
             Console.WriteLine("目前有 {0} 個 worker 在運作中", _searchingCount);
         }

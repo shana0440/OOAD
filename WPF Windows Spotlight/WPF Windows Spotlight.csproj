@@ -107,6 +107,10 @@
     <Compile Include="Models\Dictionary\DictionaryThread.cs" />
     <Compile Include="Models\Dictionary\Explanation.cs" />
     <Compile Include="Models\Dictionary\ExplanationSection.cs" />
+    <Compile Include="Models\CurrencyConverter\CurrencyConverter.cs" />
+    <Compile Include="Models\CurrencyConverter\CurrencyConverterResultItem.cs" />
+    <Compile Include="Models\CurrencyConverter\CurrencyConverterResultItemFactory.cs" />
+    <Compile Include="Models\CurrencyConverter\CurrencyConverterThread.cs" />
     <Compile Include="Models\FileSystem\Everything.cs" />
     <Compile Include="Models\FileSystem\FileSystem.cs" />
     <Compile Include="Models\FileSystem\FileSystemResultFileItem.cs" />
@@ -146,7 +150,6 @@
     <Compile Include="Foundation\ItemType\TranslateItem.cs" />
     <Compile Include="Foundation\ItemType\WebSite.cs" />
     <Compile Include="Foundation\SearchEngine.cs" />
-    <Compile Include="Foundation\Translator.cs" />
     <Compile Include="Foundation\ItemType\Item.cs" />
     <Compile Include="LowLevelKeyboardListener.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
