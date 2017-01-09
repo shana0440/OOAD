@@ -1,46 +1,49 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WPF_Windows_Spotlight.Models.CurrencyConverter;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.ComponentModel;
+using WPF_Windows_Spotlight.Models.Dictionary;
 using System.Threading;
 using System.Collections.Generic;
 using WPF_Windows_Spotlight.Models.ResultItemsFactory;
 using Telerik.JustMock;
 using System.Net.NetworkInformation;
-using System.Net;
 
 namespace Windows_Spotlight_Test
 {
     [TestClass]
-    public class CurrencyConverterThreadTests
+    public class DictionaryThreadTests
     {
         object _threadResult;
 
         [TestMethod]
         public void TestDoWorkSuccess()
         {
-            CurrencyConverterThread thread = new CurrencyConverterThread();
+            DictionaryThread thread = new DictionaryThread();
             BackgroundWorker worker = new BackgroundWorker();
             worker.DoWork += thread.DoWork;
             worker.RunWorkerCompleted += WorkerCompleted;
-            worker.RunWorkerAsync("1000JPY");
+            worker.RunWorkerAsync("apple");
 
-            Thread.Sleep(1000);
+            while (worker.IsBusy)
+            {
+                Thread.Sleep(1000);
+            }
             List<IResultItem> result = (List<IResultItem>)_threadResult;
             Assert.AreEqual(1, result.Count);
-            Assert.AreEqual("275.9000 TWD", result[0].Title);
         }
 
         [TestMethod]
-        public void TestDoWorkWhenKeywordLengthLess4()
+        public void TestDoWorkFail()
         {
-            CurrencyConverterThread thread = new CurrencyConverterThread();
+            DictionaryThread thread = new DictionaryThread();
             BackgroundWorker worker = new BackgroundWorker();
             worker.DoWork += thread.DoWork;
             worker.RunWorkerCompleted += WorkerCompleted;
-            worker.RunWorkerAsync("JPY");
+            worker.RunWorkerAsync("googleqweoirjwflszjksdhf;laewoijfdz;sldkfj");
 
-            Thread.Sleep(1000);
+            while (worker.IsBusy)
+            {
+                Thread.Sleep(1000);
+            }
             List<IResultItem> result = (List<IResultItem>)_threadResult;
             Assert.IsNull(result);
         }
@@ -48,12 +51,13 @@ namespace Windows_Spotlight_Test
         [TestMethod]
         public void TestNetworkAvailable()
         {
+            Mock.SetupStatic(typeof(NetworkInterface), Behavior.Strict, StaticConstructor.Mocked);
             Mock.Arrange(() => NetworkInterface.GetIsNetworkAvailable()).Returns(false);
 
-            CurrencyConverterThread thread = new CurrencyConverterThread();
-            DoWorkEventArgs e = new DoWorkEventArgs("1000JPY");
+            DictionaryThread thread = new DictionaryThread();
+            DoWorkEventArgs e = new DoWorkEventArgs("keyword");
             thread.DoWork("0.0", e);
-
+            
             Thread.Sleep(1000);
             List<IResultItem> result = (List<IResultItem>)_threadResult;
             Assert.IsNull(result);

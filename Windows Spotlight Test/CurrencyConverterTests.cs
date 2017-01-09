@@ -13,7 +13,7 @@ namespace Windows_Spotlight_Test
         {
             CurrencyConverter converter = new CurrencyConverter();
             string result = converter.Convert("1000", "JPY");
-            Assert.AreEqual("275.1000 TWD", result);
+            Assert.AreEqual("275.9000 TWD", result);
         }
 
         [TestMethod]

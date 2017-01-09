@@ -27,8 +27,8 @@ namespace Windows_Spotlight_Test
             _service.SubscribeSearchOverEvent(handler);
             _service.Search("1+1");
 
-            Thread.Sleep(1000);
-            Assert.AreEqual("計算機", _items[0].GroupName);
+            Thread.Sleep(10000);
+            Assert.AreEqual("最佳搜尋結果", _items[0].GroupName);
             Assert.AreEqual("2", _items[0].Title);
         }
 

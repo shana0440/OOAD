@@ -22,7 +22,10 @@ namespace Windows_Spotlight_Test
             worker.RunWorkerCompleted += WorkerCompleted;
             worker.RunWorkerAsync("TestFileSystemFiles");
             
-            Thread.Sleep(1000);
+            while(worker.IsBusy)
+            {
+                Thread.Sleep(1000);
+            }
             List<IResultItem> result = (List<IResultItem>)_threadResult;
             Assert.AreEqual(7, result.Count);
             foreach (var item in result)

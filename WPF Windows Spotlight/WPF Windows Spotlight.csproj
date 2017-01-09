@@ -129,6 +129,9 @@
     <Compile Include="Models\ResultItemsFactory\IResultItem.cs" />
     <Compile Include="Models\ResultItemsFactory\IResultItemsFactory.cs" />
     <Compile Include="Models\ResultItemsFactory\ResultItem.cs" />
+    <Compile Include="Models\SearchEngine\SearchEngine.cs" />
+    <Compile Include="Models\SearchEngine\SearchEngineResultItem.cs" />
+    <Compile Include="Models\SearchEngine\SearchEngineThread.cs" />
     <Compile Include="View\LoadingCircle.cs" />
     <Compile Include="View\ViewInitialization.cs" />
     <Page Include="View\MainWindow.xaml">

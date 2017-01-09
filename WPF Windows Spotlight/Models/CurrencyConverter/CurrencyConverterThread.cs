@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net;
 
 namespace WPF_Windows_Spotlight.Models.CurrencyConverter
 {
@@ -29,8 +26,14 @@ namespace WPF_Windows_Spotlight.Models.CurrencyConverter
                     e.Result = null;
                 }
             }
+            catch (WebException exception)
+            {
+                Console.WriteLine(exception.Message);
+                e.Result = null;
+            }
             catch (Exception exception)
             {
+                Console.WriteLine(exception.Message);
                 e.Result = null;
             }
         }
