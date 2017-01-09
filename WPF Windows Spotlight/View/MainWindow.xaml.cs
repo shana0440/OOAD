@@ -166,7 +166,7 @@ namespace WPF_Windows_Spotlight
                 ResultIcon.Visibility = Visibility.Visible;
                 _rotate.Start();
                 ContentView.Children.Clear();
-                ResultIcon.Source = BitmapToBitmapImage.Transform((Bitmap)Properties.Resources.loading);
+                ResultIcon.Source = BitmapToBitmapImage.Transform(Properties.Resources.loading);
                 InputTextBoxWatermark.Text = "";
                 InputTextBoxWatermark.HorizontalAlignment = HorizontalAlignment.Left;
 
