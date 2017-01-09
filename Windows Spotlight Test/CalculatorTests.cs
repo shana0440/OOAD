@@ -30,6 +30,7 @@ namespace Windows_Spotlight_Test
         {
             object[] param = { "2 * 1 + sqrt(100, 2) + pow(20, 2)" };
             var answer = _obj.Invoke("Execute", param);
+            Assert.Fail();
         }
 
         [TestMethod]

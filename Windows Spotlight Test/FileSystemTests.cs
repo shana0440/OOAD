@@ -2,7 +2,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WPF_Windows_Spotlight.Models.FileSystem;
 using System.Collections.Generic;
-using Moq;
 
 namespace Windows_Spotlight_Test
 {
