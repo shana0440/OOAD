@@ -28,7 +28,7 @@ namespace Windows_Spotlight_Test
             Thread.Sleep(1000);
             List<IResultItem> result = (List<IResultItem>)_threadResult;
             Assert.AreEqual(1, result.Count);
-            Assert.AreEqual("275.9000 TWD", result[0].Title);
+            Assert.AreEqual("276.2000 TWD", result[0].Title);
         }
 
         [TestMethod]

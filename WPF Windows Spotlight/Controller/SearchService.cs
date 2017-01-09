@@ -8,6 +8,7 @@ using WPF_Windows_Spotlight.Models.FileSystem;
 using System;
 using WPF_Windows_Spotlight.Models.Dictionary;
 using WPF_Windows_Spotlight.Models.CurrencyConverter;
+using WPF_Windows_Spotlight.Models.SearchEngine;
 
 namespace WPF_Windows_Spotlight.Controller
 {
@@ -68,6 +69,15 @@ namespace WPF_Windows_Spotlight.Controller
             currencyWorker.RunWorkerAsync(keyword);
             _searchingCount++;
             _workers.Add(currencyWorker);
+
+            IThread searchEngineThread = new SearchEngineThread();
+            MyBackgroundWorker searchEngineWorker = new MyBackgroundWorker(_serialNumber);
+            searchEngineWorker.DoWork += new DoWorkEventHandler(searchEngineThread.DoWork);
+            searchEngineWorker.RunWorkerCompleted += SearchOver;
+            searchEngineWorker.WorkerSupportsCancellation = true;
+            searchEngineWorker.RunWorkerAsync(keyword);
+            _searchingCount++;
+            _workers.Add(searchEngineWorker);
 
             Console.WriteLine("目前有 {0} 個 worker 在運作中", _searchingCount);
         }
