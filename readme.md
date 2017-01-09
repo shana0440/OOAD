@@ -1,5 +1,11 @@
 # Windows Spotlight
 
+## Dependency [Everything](https://www.voidtools.com/)
+
+## Mock Tools [JustMock](http://www.telerik.com/justmock/free-mocking)
+
+--------------------------------------------------
+
 ## ListBox.Template
 [參考](https://blogs.msdn.microsoft.com/ericsk/2013/04/18/windows-store-app-windows-phone-app-listview-listbox-2/)
 ## ListBox Binding
