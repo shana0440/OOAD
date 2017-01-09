@@ -61,7 +61,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="CalculatorThreadTests.cs" />
-    <Compile Include="DirectoryTests.cs" />
+    <Compile Include="DictionaryTests.cs" />
     <Compile Include="FileSystemTests.cs" />
     <Compile Include="FileSystemThreadTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

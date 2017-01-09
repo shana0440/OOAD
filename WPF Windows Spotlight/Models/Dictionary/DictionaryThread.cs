@@ -33,6 +33,11 @@ namespace WPF_Windows_Spotlight.Models.Dictionary
                 Console.WriteLine(exception.Message);
                 e.Result = null;
             }
+            catch (ArgumentException exception)
+            {
+                Console.WriteLine(exception.Message);
+                e.Result = null;
+            }
         }
     }
 }

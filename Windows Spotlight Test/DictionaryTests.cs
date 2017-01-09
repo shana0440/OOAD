@@ -31,5 +31,14 @@ namespace Windows_Spotlight_Test
             Assert.AreEqual("1. 蘋果[C]", results[0].Interpretations[0].Interpretation);
             Assert.AreEqual("An apple a day keeps the doctor away. 一日一蘋果，醫生不登門。", results[0].Interpretations[0].Example);
         }
+        
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException), "沒有找到符合的結果")]
+        public void TestSearchNoResult()
+        {
+            Dictionary dictionary = new Dictionary();
+            List<ExplanationSection> results = dictionary.Search("abcasd");
+            Assert.Fail();
+        }
     }
 }
