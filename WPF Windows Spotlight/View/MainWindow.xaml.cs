@@ -163,6 +163,7 @@ namespace WPF_Windows_Spotlight
             }
             else
             {
+                ResultIcon.Visibility = Visibility.Visible;
                 _rotate.Start();
                 ContentView.Children.Clear();
                 ResultIcon.Source = BitmapToBitmapImage.Transform((Bitmap)Properties.Resources.loading);
@@ -171,9 +172,6 @@ namespace WPF_Windows_Spotlight
 
                 _searchService.Search(InputTextBox.Text);
                 _searchService.SubscribeSearchOverEvent(SearchOverEvent);
-
-                //_adapter.Search(InputTextBox.Text);
-                //_hasResult = _adapter.GetWrokerCount();
             }
         }
 
@@ -187,6 +185,9 @@ namespace WPF_Windows_Spotlight
                 QueryList.ScrollIntoView(item);
                 QueryList.ScrollIntoView(QueryList.SelectedItem);
                 ShowSelectdItemContent(item);
+            } else
+            {
+                ResultIcon.Visibility = Visibility.Hidden;
             }
         }
 
