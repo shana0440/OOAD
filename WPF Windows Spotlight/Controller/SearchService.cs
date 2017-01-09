@@ -32,23 +32,23 @@ namespace WPF_Windows_Spotlight.Controller
             CancelCurrentSearching();
             _serialNumber = _serialNumber + 1 % 1000;
 
-            //IThread calculatorThread = new CalculatorThread();
-            //MyBackgroundWorker calculatorWorker = new MyBackgroundWorker(_serialNumber);
-            //calculatorWorker.DoWork += new DoWorkEventHandler(calculatorThread.DoWork);
-            //calculatorWorker.RunWorkerCompleted += SearchOver;
-            //calculatorWorker.WorkerSupportsCancellation = true; // support cancel
-            //calculatorWorker.RunWorkerAsync(keyword);
-            //_searchingCount++;
-            //_workers.Add(calculatorWorker);
+            IThread calculatorThread = new CalculatorThread();
+            MyBackgroundWorker calculatorWorker = new MyBackgroundWorker(_serialNumber);
+            calculatorWorker.DoWork += new DoWorkEventHandler(calculatorThread.DoWork);
+            calculatorWorker.RunWorkerCompleted += SearchOver;
+            calculatorWorker.WorkerSupportsCancellation = true; // support cancel
+            calculatorWorker.RunWorkerAsync(keyword);
+            _searchingCount++;
+            _workers.Add(calculatorWorker);
 
-            //IThread fileSystemThread = new FileSystemThread();
-            //MyBackgroundWorker fileSystemWorker = new MyBackgroundWorker(_serialNumber);
-            //fileSystemWorker.DoWork += new DoWorkEventHandler(fileSystemThread.DoWork);
-            //fileSystemWorker.RunWorkerCompleted += SearchOver;
-            //fileSystemWorker.WorkerSupportsCancellation = true;
-            //fileSystemWorker.RunWorkerAsync(keyword);
-            //_searchingCount++;
-            //_workers.Add(fileSystemWorker);
+            IThread fileSystemThread = new FileSystemThread();
+            MyBackgroundWorker fileSystemWorker = new MyBackgroundWorker(_serialNumber);
+            fileSystemWorker.DoWork += new DoWorkEventHandler(fileSystemThread.DoWork);
+            fileSystemWorker.RunWorkerCompleted += SearchOver;
+            fileSystemWorker.WorkerSupportsCancellation = true;
+            fileSystemWorker.RunWorkerAsync(keyword);
+            _searchingCount++;
+            _workers.Add(fileSystemWorker);
 
             IThread directoryThread = new DictionaryThread();
             MyBackgroundWorker directoryWorker = new MyBackgroundWorker(_serialNumber);
