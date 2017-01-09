@@ -1,24 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net;
 using WPF_Windows_Spotlight.Models.ResultItemsFactory;
 
-namespace WPF_Windows_Spotlight.Models.FileSystem
+namespace WPF_Windows_Spotlight.Models.Dictionary
 {
-    public class FileSystemThread : IThread
+    public class DictionaryThread : IThread
     {
         public void DoWork(object sender, DoWorkEventArgs e)
         {
             string keyword = (string)e.Argument;
-            FileSystem fileSystem = new FileSystem();
             try
             {
-                List<string> list = fileSystem.Search(keyword);
-                FileSystemResultItemFactory factory = new FileSystemResultItemFactory();
-                List<IResultItem> results = factory.CreateResultItems(list);
+                Dictionary directory = new Dictionary();
+                List<ExplanationSection> sections = directory.Search(keyword);
+                DictionaryResultItemFactory factory = new DictionaryResultItemFactory();
+                var DTO = new KeyValuePair<string, List<ExplanationSection>>(keyword, sections);
+                List<IResultItem> results = factory.CreateResultItems(DTO);
                 var worker = (BackgroundWorker)sender;
                 if (worker.CancellationPending)
                 {
@@ -29,8 +28,9 @@ namespace WPF_Windows_Spotlight.Models.FileSystem
                     e.Result = results;
                 }
             }
-            catch (Exception)
+            catch (WebException exception)
             {
+                Console.WriteLine(exception.Message);
                 e.Result = null;
             }
         }

@@ -8,13 +8,13 @@ using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WPF_Windows_Spotlight.Models.Directory
+namespace WPF_Windows_Spotlight.Models.Dictionary
 {
-    public class Directory
+    public class Dictionary
     {
         const string _directoryUrl = "https://tw.dictionary.search.yahoo.com/search?p=";
 
-        public Directory()
+        public Dictionary()
         {
             var isNetWorkAvailable = NetworkInterface.GetIsNetworkAvailable();
             if (!isNetWorkAvailable)

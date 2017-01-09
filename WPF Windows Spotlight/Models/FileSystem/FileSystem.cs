@@ -11,7 +11,7 @@ namespace WPF_Windows_Spotlight.Models.FileSystem
     {
         const int _searchMaxCount = 30;
 
-        public List<string> SearchFileOrFolder(string keyword)
+        public List<string> Search(string keyword)
         {
             List<string> results = Everything.Search(keyword, _searchMaxCount);
             return results;

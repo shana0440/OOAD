@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WPF_Windows_Spotlight.Models.FileSystem;
 using System.Collections.Generic;
+using Telerik.JustMock;
 
 namespace Windows_Spotlight_Test
 {
@@ -9,20 +10,16 @@ namespace Windows_Spotlight_Test
     public class FileSystemTests
     {
         [TestMethod]
-        public void TestSearchFile()
+        public void TestSearch()
         {
             var fileSystem = new FileSystem();
-            List<string> results = fileSystem.SearchFileOrFolder("FileSystemTests.cs");
-            Assert.AreEqual(1, results.Count);
-        }
+            List<string> fakeResults = new List<string>() { "object1" };
+            Mock.SetupStatic(typeof(Everything), Behavior.Strict, StaticConstructor.Mocked);
+            Mock.Arrange(() => Everything.Search("keyword", 30)).Returns(fakeResults);
 
-        [TestMethod]
-        public void TestSearchFolder()
-        {
-            var fileSystem = new FileSystem();
-            List<string> results = fileSystem.SearchFileOrFolder("TestFileSystemFiles2");
-            // 除了資料夾以外還有一個捷徑
-            Assert.AreEqual(2, results.Count);
+            List<string> results = fileSystem.Search("keyword");
+
+            Assert.AreEqual(1, results.Count);
         }
     }
 }

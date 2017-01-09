@@ -100,9 +100,12 @@
     <Compile Include="Models\BitmapToBitmapImage.cs" />
     <Compile Include="Models\Calculator\CalculatorThread.cs" />
     <Compile Include="Models\Calculator\Calculator.cs" />
-    <Compile Include="Models\Directory\Directory.cs" />
-    <Compile Include="Models\Directory\Explanation.cs" />
-    <Compile Include="Models\Directory\ExplanationSection.cs" />
+    <Compile Include="Models\Dictionary\Dictionary.cs" />
+    <Compile Include="Models\Dictionary\DictionaryResultItem.cs" />
+    <Compile Include="Models\Dictionary\DictionaryResultItemFactory.cs" />
+    <Compile Include="Models\Dictionary\DictionaryThread.cs" />
+    <Compile Include="Models\Dictionary\Explanation.cs" />
+    <Compile Include="Models\Dictionary\ExplanationSection.cs" />
     <Compile Include="Models\FileSystem\Everything.cs" />
     <Compile Include="Models\FileSystem\FileSystem.cs" />
     <Compile Include="Models\FileSystem\FileSystemResultFileItem.cs" />

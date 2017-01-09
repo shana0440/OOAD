@@ -89,7 +89,7 @@ namespace WPF_Windows_Spotlight.Models.FileSystem
             StringBuilder buf = new StringBuilder(bufsize);
             for (var i = 0; i < Everything_GetNumResults(); i++)
             {
-                Everything.Everything_GetResultFullPathNameW(i, buf, bufsize);
+                Everything_GetResultFullPathNameW(i, buf, bufsize);
                 var pathName = buf.ToString();
                 results.Add(pathName);
             }

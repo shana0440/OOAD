@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WPF_Windows_Spotlight.Models.Directory
+namespace WPF_Windows_Spotlight.Models.Dictionary
 {
     public class ExplanationSection
     {
