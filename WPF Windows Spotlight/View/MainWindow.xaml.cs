@@ -190,6 +190,11 @@ namespace WPF_Windows_Spotlight
                     HideWindow();
                     break;
             }
+            if (_searchService.ResultList.Count > 0)
+            {
+                ResultList.ScrollIntoView(ResultList.SelectedItem);
+                ShowSelectdItemContent(_searchService.ResultList[_searchService.SelectedIndex]);
+            }
         }
 
     }
