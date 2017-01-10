@@ -9,8 +9,8 @@ namespace WPF_Windows_Spotlight.Models.Dictionary
 
         public List<ExplanationSection> Search(string keyword)
         {
-            string url = String.Format(Config.DirectoryUrl, keyword);
-            string html = Crawler.GetResponse(url);
+            string url = String.Format(Config.DirectoryUrl, Uri.EscapeDataString(keyword));
+            string html = Crawler.GetResponse(url); 
             return ParseHTML(html);
         }
 

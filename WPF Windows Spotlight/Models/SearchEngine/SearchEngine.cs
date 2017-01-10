@@ -15,7 +15,7 @@ namespace WPF_Windows_Spotlight.Models.SearchEngine
         
         public List<IResultItem> Search(string keyword)
         {
-            string url = String.Format(Config.SearchEngineUrl, keyword);
+            string url = String.Format(Config.SearchEngineUrl, Uri.EscapeDataString(keyword));
             string html = Crawler.GetResponse(url);
             return ParseHTML(html);
         }

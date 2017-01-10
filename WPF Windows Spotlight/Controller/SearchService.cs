@@ -119,6 +119,7 @@ namespace WPF_Windows_Spotlight.Controller
                     }
                     SelectItem(0);
                     _searchOverEvent?.Invoke(_resultList);
+                    GC.Collect();
                 }
             }
         }
