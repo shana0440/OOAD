@@ -15,7 +15,7 @@ namespace WPF_Windows_Spotlight.Models.CurrencyConverter
 
         public string Convert(string amount, string curreny)
         {
-            string url = String.Format(_convertUrl, amount, curreny.ToLower());
+            string url = String.Format(_convertUrl, amount, curreny.ToUpper());
             try
             {
                 string html = Crawler.GetResponse(url);

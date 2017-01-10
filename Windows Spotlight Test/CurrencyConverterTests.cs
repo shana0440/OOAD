@@ -1,7 +1,10 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WPF_Windows_Spotlight.Models.CurrencyConverter;
+using System.Net;
 using Telerik.JustMock;
+using System.Net.NetworkInformation;
+using WPF_Windows_Spotlight.Models;
 
 namespace Windows_Spotlight_Test
 {
@@ -11,9 +14,12 @@ namespace Windows_Spotlight_Test
         [TestMethod]
         public void TestConvert()
         {
+            var url = "https://www.google.com/finance/converter?a=1000&from=JPY&to=TWD";
+            Mock.SetupStatic(typeof(Crawler), Behavior.Strict, StaticConstructor.Mocked);
+            Mock.Arrange(() => Crawler.GetResponse(url)).Returns("<span class=bld>277.2000 TWD</span>");
             CurrencyConverter converter = new CurrencyConverter();
             string result = converter.Convert("1000", "JPY");
-            Assert.AreEqual("276.2000 TWD", result);
+            Assert.AreEqual("277.2000 TWD", result);
         }
 
         [TestMethod]
@@ -22,6 +28,19 @@ namespace Windows_Spotlight_Test
         {
             CurrencyConverter converter = new CurrencyConverter();
             string result = converter.Convert("1000", "NotThisCurrency");
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(WebException), "沒有連接至網際網路")]
+        public void TestNetworkAvailable()
+        {
+            Mock.SetupStatic(typeof(NetworkInterface), Behavior.Strict, StaticConstructor.Mocked);
+            Mock.Arrange(() => NetworkInterface.GetIsNetworkAvailable()).Returns(false);
+            CurrencyConverter converter = new CurrencyConverter();
+
+            string result = converter.Convert("1000", "NotThisCurrency");
+
             Assert.Fail();
         }
 

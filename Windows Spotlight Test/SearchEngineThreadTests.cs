@@ -50,12 +50,11 @@ namespace Windows_Spotlight_Test
 
             SearchEngineThread thread = new SearchEngineThread();
             BackgroundWorker worker = new BackgroundWorker();
-            DoWorkEventArgs e = new DoWorkEventArgs("1000JPY");
+            DoWorkEventArgs e = new DoWorkEventArgs("google");
             thread.DoWork("0.0", e);
 
             Thread.Sleep(1000);
-            List<IResultItem> result = (List<IResultItem>)_threadResult;
-            Assert.IsNull(result);
+            Assert.IsNull(e.Result);
         }
 
         private void WorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

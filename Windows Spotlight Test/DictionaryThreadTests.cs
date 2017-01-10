@@ -59,8 +59,7 @@ namespace Windows_Spotlight_Test
             thread.DoWork("0.0", e);
             
             Thread.Sleep(1000);
-            List<IResultItem> result = (List<IResultItem>)_threadResult;
-            Assert.IsNull(result);
+            Assert.IsNull(e.Result);
         }
 
         private void WorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

@@ -4,7 +4,7 @@ using System.Net.NetworkInformation;
 
 namespace WPF_Windows_Spotlight.Models
 {
-    class Crawler
+    public class Crawler
     {
         public static string GetResponse(string url)
         {
