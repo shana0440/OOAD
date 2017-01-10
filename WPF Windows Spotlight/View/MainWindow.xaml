@@ -19,7 +19,7 @@
                 <ColumnDefinition Width="30"/>
             </Grid.ColumnDefinitions>
             <TextBox x:Name="InputTextBox" Margin="0,12,8,11" FontSize="23" FontFamily="Arial" TextChanged="Search" Grid.ColumnSpan="2" Grid.Column="1" VerticalAlignment="Center" BorderThickness="0" Background="Transparent" PreviewKeyDown="SelectItem" Height="28"/>
-            <TextBlock x:Name="InputTextBoxWatermark" Margin="2,12,8,11" IsHitTestVisible="False" Text="Enter Search Term Here" VerticalAlignment="Center" Foreground="DarkGray" Grid.ColumnSpan="2" Grid.Column="1" FontSize="23" FontFamily="Arial" Background="Transparent" Height="28" Panel.ZIndex="-1">
+            <TextBlock x:Name="InputTextBoxWatermark" Margin="2,12,8,11" IsHitTestVisible="False" Text="Quick Search" VerticalAlignment="Center" Foreground="DarkGray" Grid.ColumnSpan="2" Grid.Column="1" FontSize="23" FontFamily="Arial" Background="Transparent" Height="28" Panel.ZIndex="-1">
                 <TextBlock.Style>
                     <Style TargetType="{x:Type TextBlock}">
                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -32,7 +32,7 @@
                     </Style>
                 </TextBlock.Style>
             </TextBlock>
-            <ListBox BorderBrush="#FFD7D7D7" BorderThickness="0,0,1,0" x:Name="QueryList" ItemsSource="{Binding}" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="298" Grid.Row="1" Grid.ColumnSpan="2" Background="Transparent" Margin="-1,1,0,-46" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+            <ListBox BorderBrush="#FFD7D7D7" BorderThickness="0,0,1,0" x:Name="ResultList" ItemsSource="{Binding}" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="298" Grid.Row="1" Grid.ColumnSpan="2" Background="Transparent" Margin="-1,1,0,-46" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
                 <ListBox.GroupStyle>
                     <GroupStyle>
                         <GroupStyle.ContainerStyle>

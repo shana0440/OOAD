@@ -17,14 +17,14 @@ namespace Windows_Spotlight_Test
         public void TestSearch()
         {
             SearchEngine engine = new SearchEngine();
-            List<IResultItem> results = engine.Search("google");
+            List<IResultItem> results = engine.Search("facebook");
 
             Assert.AreEqual(5, results.Count);
-            Assert.AreEqual("Google", results[0].Title);
-            Assert.AreEqual("登入- Google 帳戶 - Google Accounts", results[1].Title);
-            Assert.AreEqual("Google", results[2].Title);
-            Assert.AreEqual("Google - YouTube", results[3].Title);
-            Assert.AreEqual("Google | Facebook", results[4].Title);
+            Assert.AreEqual("登入Facebook | Facebook", results[0].Title);
+            Assert.AreEqual("歡迎來到Facebook －登入、註冊或瞭解更多", results[1].Title);
+            Assert.AreEqual("Facebook - Log In or Sign Up", results[2].Title);
+            Assert.AreEqual("Log into Facebook | Facebook", results[3].Title);
+            Assert.AreEqual("Log in to Facebook | Facebook", results[4].Title);
         }
 
         [TestMethod]

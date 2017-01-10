@@ -20,6 +20,7 @@ namespace WPF_Windows_Spotlight.Controller
         SearchOverEventHandler _searchOverEvent;
         ObservableCollection<IResultItem> _resultList = new ObservableCollection<IResultItem>();
         int _serialNumber = 0;
+        public int SelectedIndex { get; internal set; }
 
         public ObservableCollection<IResultItem> ResultList
         {
@@ -88,6 +89,7 @@ namespace WPF_Windows_Spotlight.Controller
             {
                 worker.CancelAsync();
             }
+            SelectedIndex = 0;
             _searchingCount = 0;
             _resultList.Clear();
             _workers.Clear();
@@ -115,6 +117,7 @@ namespace WPF_Windows_Spotlight.Controller
                     {
                         SortBestResult(_resultList);
                     }
+                    SelectItem(0);
                     _searchOverEvent?.Invoke(_resultList);
                 }
             }
@@ -149,9 +152,28 @@ namespace WPF_Windows_Spotlight.Controller
             results.Insert(0, bestSolution);
         }
 
-        internal void OpenItemResource(int selectedIndex)
+        internal void OpenSelectedItemResource()
+        {
+            _resultList[SelectedIndex].OpenResource();
+        }
+
+        public void OpenItemResource(int selectedIndex)
         {
             _resultList[selectedIndex].OpenResource();
         }
+
+        public void SelectItem(int selectedIndex)
+        {
+            if (selectedIndex >= 0 && selectedIndex < _resultList.Count)
+            {
+                foreach (var item in _resultList)
+                {
+                    item.IsSelected = false;
+                }
+                SelectedIndex = selectedIndex;
+                _resultList[SelectedIndex].IsSelected = true;
+            }
+        }
+
     }
 }

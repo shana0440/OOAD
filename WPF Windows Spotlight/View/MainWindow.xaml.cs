@@ -24,7 +24,6 @@ namespace WPF_Windows_Spotlight
         private int _openKeyPointer = 0;
         private int _windowHieght = 420;
         private int _inputHieght = 70;
-        private int _hasResult;
         private LoadingCircle _rotate = new LoadingCircle { Angle = 0 };
         ViewInitialization _viewInitialization;
         private bool _windowVisibleState = false;
@@ -51,7 +50,7 @@ namespace WPF_Windows_Spotlight
 
         void RenderSearchIcon()
         {
-            SearchIcon.Source = BitmapToBitmapImage.Transform((Bitmap)Properties.Resources.search);
+            SearchIcon.Source = BitmapToBitmapImage.Transform(Properties.Resources.search);
         }
 
         void InitViewHeight()
@@ -61,10 +60,9 @@ namespace WPF_Windows_Spotlight
 
         void InitResultsListSource()
         {
-            //ICollectionView collectionView = CollectionViewSource.GetDefaultView(_adapter.QueryList);
             ICollectionView collectionView = CollectionViewSource.GetDefaultView(_searchService.ResultList);
             collectionView.GroupDescriptions.Add(new PropertyGroupDescription("GroupName"));
-            QueryList.ItemsSource = collectionView;
+            ResultList.ItemsSource = collectionView;
         }
 
         void InitLoadingCircle()
@@ -122,6 +120,8 @@ namespace WPF_Windows_Spotlight
             {
                 Height = _inputHieght;
                 InputTextBox.Text = "";
+                InputTextBoxWatermark.Text = "Quick Search";
+                InputTextBoxWatermark.HorizontalAlignment = HorizontalAlignment.Left;
             }
             else
             {
@@ -130,10 +130,9 @@ namespace WPF_Windows_Spotlight
                 ContentView.Children.Clear();
                 ResultIcon.Source = BitmapToBitmapImage.Transform(Properties.Resources.loading);
                 InputTextBoxWatermark.Text = "";
-                InputTextBoxWatermark.HorizontalAlignment = HorizontalAlignment.Left;
 
-                _searchService.Search(InputTextBox.Text);
                 _searchService.SubscribeSearchOverEvent(SearchOverEvent);
+                _searchService.Search(InputTextBox.Text);
             }
         }
 
@@ -144,13 +143,17 @@ namespace WPF_Windows_Spotlight
             {
                 IResultItem item = _searchService.ResultList[0];
                 // 不知道為啥要兩個 不用兩個他不會回到最上面
-                QueryList.ScrollIntoView(item);
-                QueryList.ScrollIntoView(QueryList.SelectedItem);
+                ResultList.ScrollIntoView(item);
+                ResultList.ScrollIntoView(ResultList.SelectedItem);
                 ShowSelectdItemContent(item);
             }
             else
             {
                 ResultIcon.Visibility = Visibility.Hidden;
+                Height = _inputHieght;
+                ContentView.Children.Clear();
+                InputTextBoxWatermark.Text = "— 沒有結果";
+                InputTextBoxWatermark.HorizontalAlignment = HorizontalAlignment.Right;
             }
         }
 
@@ -167,7 +170,7 @@ namespace WPF_Windows_Spotlight
             var item = sender as ListBoxItem;
             if (item != null && item.IsSelected)
             {
-                _searchService.OpenItemResource(QueryList.SelectedIndex);
+                _searchService.OpenItemResource(ResultList.SelectedIndex);
                 HideWindow();
             }
         }
@@ -177,20 +180,14 @@ namespace WPF_Windows_Spotlight
             switch (e.Key)
             {
                 case Key.Up:
-                    //_adapter.SelectItem(_adapter.SelectedIndex - 1);
+                    _searchService.SelectItem(_searchService.SelectedIndex - 1);
                     break;
                 case Key.Down:
-                    //_adapter.SelectItem(_adapter.SelectedIndex + 1);
+                    _searchService.SelectItem(_searchService.SelectedIndex + 1);
                     break;
                 case Key.Enter:
-                    //if (_adapter.QueryList.Count > 0)
-                    //{
-                    //    var item = _adapter.QueryList[_adapter.SelectedIndex];
-                    //    HideWindow();
-                    //    item.Open();
-                    //}
-                    break;
-                default:
+                    _searchService.OpenSelectedItemResource();
+                    HideWindow();
                     break;
             }
         }
