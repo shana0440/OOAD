@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,7 +49,8 @@ namespace WPF_Windows_Spotlight.Models.Dictionary
 
         public override void OpenResource()
         {
-            throw new NotImplementedException();
+            var url = String.Format(Config.DirectoryUrl, _word);
+            Process.Start(url);
         }
     }
 }

@@ -96,6 +96,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Config.cs" />
     <Compile Include="Controller\SearchService.cs" />
     <Compile Include="Models\BitmapToBitmapImage.cs" />
     <Compile Include="Models\Calculator\CalculatorThread.cs" />
@@ -143,14 +144,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Foundation\BaseFoundation.cs" />
-    <Compile Include="Foundation\FilePriority.cs" />
-    <Compile Include="Foundation\FoundationFactory.cs" />
-    <Compile Include="Foundation\IFoundation.cs" />
-    <Compile Include="Foundation\ItemType\TranslateItem.cs" />
-    <Compile Include="Foundation\ItemType\WebSite.cs" />
-    <Compile Include="Foundation\SearchEngine.cs" />
-    <Compile Include="Foundation\ItemType\Item.cs" />
     <Compile Include="LowLevelKeyboardListener.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -214,12 +207,9 @@
   <ItemGroup>
     <None Include="Images\loading.png" />
     <None Include="Images\icon.ico" />
-    <None Include="Images\icon.png" />
     <None Include="Images\exchange.png" />
     <None Include="Images\web.png" />
-    <None Include="Images\web.ico" />
     <None Include="Images\dictionary.png" />
-    <None Include="Resources\dirtionary.png" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

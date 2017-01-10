@@ -1,22 +1,15 @@
 ﻿using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WPF_Windows_Spotlight.Models.Dictionary
 {
     public class Dictionary
     {
-        const string _directoryUrl = "https://tw.dictionary.search.yahoo.com/search?p=";
 
         public List<ExplanationSection> Search(string keyword)
         {
-            string url = String.Format("{0}{1}", _directoryUrl, keyword);
+            string url = String.Format(Config.DirectoryUrl, keyword);
             string html = Crawler.GetResponse(url);
             return ParseHTML(html);
         }

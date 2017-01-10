@@ -11,11 +11,10 @@ namespace WPF_Windows_Spotlight.Models.CurrencyConverter
 {
     public class CurrencyConverter
     {
-        string _convertUrl = "https://www.google.com/finance/converter?a={0}&from={1}&to=TWD";
 
         public string Convert(string amount, string curreny)
         {
-            string url = String.Format(_convertUrl, amount, curreny.ToUpper());
+            string url = String.Format(Config.CurrencyConvertUrl, amount, curreny.ToUpper());
             try
             {
                 string html = Crawler.GetResponse(url);

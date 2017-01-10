@@ -52,7 +52,7 @@ namespace WPF_Windows_Spotlight.Models.Calculator
 
         public override void OpenResource()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Don't to anything");
         }
     }
 }

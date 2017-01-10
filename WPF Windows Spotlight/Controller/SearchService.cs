@@ -149,5 +149,9 @@ namespace WPF_Windows_Spotlight.Controller
             results.Insert(0, bestSolution);
         }
 
+        internal void OpenItemResource(int selectedIndex)
+        {
+            _resultList[selectedIndex].OpenResource();
+        }
     }
 }

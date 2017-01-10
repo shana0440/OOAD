@@ -11,12 +11,11 @@ namespace WPF_Windows_Spotlight.Models.SearchEngine
 {
     public class SearchEngine
     {
-        string _url = "https://www.google.com.tw/search?q={0}";
         int _searchResultCount = 5;
         
         public List<IResultItem> Search(string keyword)
         {
-            string url = String.Format(_url, keyword);
+            string url = String.Format(Config.SearchEngineUrl, keyword);
             string html = Crawler.GetResponse(url);
             return ParseHTML(html);
         }

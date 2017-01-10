@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -76,7 +77,7 @@ namespace WPF_Windows_Spotlight.Models.FileSystem
 
         public override void OpenResource()
         {
-            throw new NotImplementedException();
+            Process.Start(_filePath);
         }
     }
 }

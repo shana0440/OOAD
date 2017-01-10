@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows;
@@ -8,8 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using WPF_Windows_Spotlight.Controller;
-using WPF_Windows_Spotlight.Foundation;
-using WPF_Windows_Spotlight.Foundation.ItemType;
+using WPF_Windows_Spotlight.Models;
 using WPF_Windows_Spotlight.Models.ResultItemsFactory;
 using WPF_Windows_Spotlight.View;
 using HorizontalAlignment = System.Windows.HorizontalAlignment;
@@ -119,41 +116,6 @@ namespace WPF_Windows_Spotlight
             }
         }
 
-        // 點擊item時開啟檔案
-        private void ClickListViewItem(object sender, MouseButtonEventArgs e)
-        {
-            var item = sender as ListBoxItem;
-            if (item != null && item.IsSelected)
-            {
-                //Item selectedItem = _adapter.QueryList[QueryList.SelectedIndex];
-                //selectedItem.Open();
-                HideWindow();
-            }
-        }
-
-        private void SelectItem(object sender, KeyEventArgs e)
-        {
-            switch (e.Key)
-            {
-                case Key.Up:
-                    //_adapter.SelectItem(_adapter.SelectedIndex - 1);
-                    break;
-                case Key.Down:
-                    //_adapter.SelectItem(_adapter.SelectedIndex + 1);
-                    break;
-                case Key.Enter:
-                    //if (_adapter.QueryList.Count > 0)
-                    //{
-                    //    var item = _adapter.QueryList[_adapter.SelectedIndex];
-                    //    HideWindow();
-                    //    item.Open();
-                    //}
-                    break;
-                default:
-                    break;
-            }
-        }
-
         private void Search(object sender, TextChangedEventArgs e)
         {
             if (InputTextBox.Text.Trim() == "")
@@ -185,7 +147,8 @@ namespace WPF_Windows_Spotlight
                 QueryList.ScrollIntoView(item);
                 QueryList.ScrollIntoView(QueryList.SelectedItem);
                 ShowSelectdItemContent(item);
-            } else
+            }
+            else
             {
                 ResultIcon.Visibility = Visibility.Hidden;
             }
@@ -197,6 +160,39 @@ namespace WPF_Windows_Spotlight
             ResultIcon.Source = item.Icon;
             Height = _windowHieght;
             item.GenerateContent(ContentView);
+        }
+
+        private void OpenItemResource(object sender, MouseButtonEventArgs e)
+        {
+            var item = sender as ListBoxItem;
+            if (item != null && item.IsSelected)
+            {
+                _searchService.OpenItemResource(QueryList.SelectedIndex);
+                HideWindow();
+            }
+        }
+
+        private void SelectItem(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Up:
+                    //_adapter.SelectItem(_adapter.SelectedIndex - 1);
+                    break;
+                case Key.Down:
+                    //_adapter.SelectItem(_adapter.SelectedIndex + 1);
+                    break;
+                case Key.Enter:
+                    //if (_adapter.QueryList.Count > 0)
+                    //{
+                    //    var item = _adapter.QueryList[_adapter.SelectedIndex];
+                    //    HideWindow();
+                    //    item.Open();
+                    //}
+                    break;
+                default:
+                    break;
+            }
         }
 
     }
