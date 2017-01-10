@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF Windows Spotlight", "WPF Windows Spotlight\WPF Windows Spotlight.csproj", "{3DEF0ABE-B839-4028-A037-91E0320124AA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickSearch", "WPF Windows Spotlight\QuickSearch.csproj", "{3DEF0ABE-B839-4028-A037-91E0320124AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Windows Spotlight Test", "Windows Spotlight Test\Windows Spotlight Test.csproj", "{5A12A89E-104B-42C4-A08B-DA89A37FB07B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickSearchTest", "Windows Spotlight Test\QuickSearchTest.csproj", "{5A12A89E-104B-42C4-A08B-DA89A37FB07B}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "QuickSearchSetup", "QuickSearchSetup\QuickSearchSetup.vdproj", "{628F0389-3C4A-42BC-BFB1-F6325A656E18}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{5A12A89E-104B-42C4-A08B-DA89A37FB07B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A12A89E-104B-42C4-A08B-DA89A37FB07B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5A12A89E-104B-42C4-A08B-DA89A37FB07B}.Release|x64.ActiveCfg = Release|Any CPU
+		{628F0389-3C4A-42BC-BFB1-F6325A656E18}.Debug|Any CPU.ActiveCfg = Debug
+		{628F0389-3C4A-42BC-BFB1-F6325A656E18}.Debug|x64.ActiveCfg = Debug
+		{628F0389-3C4A-42BC-BFB1-F6325A656E18}.Release|Any CPU.ActiveCfg = Release
+		{628F0389-3C4A-42BC-BFB1-F6325A656E18}.Release|x64.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

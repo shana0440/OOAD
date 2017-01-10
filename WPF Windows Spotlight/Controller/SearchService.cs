@@ -36,7 +36,7 @@ namespace WPF_Windows_Spotlight.Controller
             _serialNumber = _serialNumber + 1 % 1000;
 
             IThread calculatorThread = new CalculatorThread();
-            MyBackgroundWorker calculatorWorker = new MyBackgroundWorker(_serialNumber);
+            MyBackgroundWorker calculatorWorker = new MyBackgroundWorker(_serialNumber, "計算機");
             calculatorWorker.DoWork += new DoWorkEventHandler(calculatorThread.DoWork);
             calculatorWorker.RunWorkerCompleted += SearchOver;
             calculatorWorker.WorkerSupportsCancellation = true; // support cancel
@@ -45,7 +45,7 @@ namespace WPF_Windows_Spotlight.Controller
             _workers.Add(calculatorWorker);
 
             IThread fileSystemThread = new FileSystemThread();
-            MyBackgroundWorker fileSystemWorker = new MyBackgroundWorker(_serialNumber);
+            MyBackgroundWorker fileSystemWorker = new MyBackgroundWorker(_serialNumber, "檔案系統");
             fileSystemWorker.DoWork += new DoWorkEventHandler(fileSystemThread.DoWork);
             fileSystemWorker.RunWorkerCompleted += SearchOver;
             fileSystemWorker.WorkerSupportsCancellation = true;
@@ -54,7 +54,7 @@ namespace WPF_Windows_Spotlight.Controller
             _workers.Add(fileSystemWorker);
 
             IThread directoryThread = new DictionaryThread();
-            MyBackgroundWorker directoryWorker = new MyBackgroundWorker(_serialNumber);
+            MyBackgroundWorker directoryWorker = new MyBackgroundWorker(_serialNumber, "字典");
             directoryWorker.DoWork += new DoWorkEventHandler(directoryThread.DoWork);
             directoryWorker.RunWorkerCompleted += SearchOver;
             directoryWorker.WorkerSupportsCancellation = true;
@@ -63,7 +63,7 @@ namespace WPF_Windows_Spotlight.Controller
             _workers.Add(directoryWorker);
 
             IThread currencyThread = new CurrencyConverterThread();
-            MyBackgroundWorker currencyWorker = new MyBackgroundWorker(_serialNumber);
+            MyBackgroundWorker currencyWorker = new MyBackgroundWorker(_serialNumber, "匯率轉換");
             currencyWorker.DoWork += new DoWorkEventHandler(currencyThread.DoWork);
             currencyWorker.RunWorkerCompleted += SearchOver;
             currencyWorker.WorkerSupportsCancellation = true;
@@ -72,15 +72,13 @@ namespace WPF_Windows_Spotlight.Controller
             _workers.Add(currencyWorker);
 
             IThread searchEngineThread = new SearchEngineThread();
-            MyBackgroundWorker searchEngineWorker = new MyBackgroundWorker(_serialNumber);
+            MyBackgroundWorker searchEngineWorker = new MyBackgroundWorker(_serialNumber, "網頁搜尋");
             searchEngineWorker.DoWork += new DoWorkEventHandler(searchEngineThread.DoWork);
             searchEngineWorker.RunWorkerCompleted += SearchOver;
             searchEngineWorker.WorkerSupportsCancellation = true;
             searchEngineWorker.RunWorkerAsync(keyword);
             _searchingCount++;
             _workers.Add(searchEngineWorker);
-
-            Console.WriteLine("目前有 {0} 個 worker 在運作中", _searchingCount);
         }
 
         public void CancelCurrentSearching()
@@ -98,20 +96,21 @@ namespace WPF_Windows_Spotlight.Controller
         void SearchOver(object sender, RunWorkerCompletedEventArgs e)
         {
             var worker = (MyBackgroundWorker)sender;
+            
             var isCurrentSearch = worker.SerialNumber == _serialNumber;
             if (isCurrentSearch)
             {
                 _searchingCount--;
-                Console.WriteLine("目前有 {0} 個 worker 在運作中", _searchingCount);
                 if (!e.Cancelled && e.Result != null)
                 {
                     List<IResultItem> result = (List<IResultItem>)e.Result;
                     MergeListToObservableCollection(_resultList, result);
                 }
 
+                var spendTime = worker.Watch.ElapsedMilliseconds;
+                Console.WriteLine(String.Format("{0} 運作了 {1} 毫秒", worker.Owner, spendTime));
                 if (_searchingCount == 0)
                 {
-                    Console.WriteLine("總共搜尋到 {0} 筆資料", _resultList.Count);
                     _workers.Clear();
                     if (_resultList.Count > 0)
                     {

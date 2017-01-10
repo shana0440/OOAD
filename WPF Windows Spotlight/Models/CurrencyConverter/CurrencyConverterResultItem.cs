@@ -66,7 +66,6 @@ namespace WPF_Windows_Spotlight.Models.CurrencyConverter
 
         public override void OpenResource()
         {
-            Console.WriteLine("Don't to anything");
         }
     }
 }

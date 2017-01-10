@@ -80,9 +80,9 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WPF Windows Spotlight\WPF Windows Spotlight.csproj">
+    <ProjectReference Include="..\WPF Windows Spotlight\QuickSearch.csproj">
       <Project>{3def0abe-b839-4028-a037-91e0320124aa}</Project>
-      <Name>WPF Windows Spotlight</Name>
+      <Name>QuickSearch</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
