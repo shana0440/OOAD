@@ -11,13 +11,13 @@ namespace Windows_Spotlight_Test
     public class SearchServiceTests
     {
         SearchService _service;
-        ObservableCollection<IResultItem> _items;
+        bool _isSearchOver = false;
 
         [TestInitialize]
         public void Initialize()
         {
             _service = new SearchService();
-            _items = new ObservableCollection<IResultItem>();
+            _isSearchOver = false;
         }
 
         [TestMethod]
@@ -28,13 +28,12 @@ namespace Windows_Spotlight_Test
             _service.Search("1+1");
 
             Thread.Sleep(10000);
-            Assert.AreEqual("最佳搜尋結果", _items[0].GroupName);
-            Assert.AreEqual("2", _items[0].Title);
+            Assert.IsTrue(_isSearchOver);
         }
 
-        void SearchOverEvent(ObservableCollection<IResultItem> items)
+        void SearchOverEvent()
         {
-            _items = items;
+            _isSearchOver = true;
         }
 
         [TestMethod]
@@ -46,7 +45,7 @@ namespace Windows_Spotlight_Test
             _service.CancelCurrentSearching();
 
             Thread.Sleep(1000);
-            Assert.AreEqual(0, _items.Count);
+            Assert.IsFalse(_isSearchOver);
         }
     }
 }
