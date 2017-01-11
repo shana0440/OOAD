@@ -100,7 +100,7 @@ namespace WPF_Windows_Spotlight
         void HideWindow()
         {
             _windowVisibleState = false;
-            _searchService.ResultList.Clear();
+            _searchService.CancelCurrentSearching();
             ResultIcon.Source = null;
             InputTextBox.Clear();
             Hide();
@@ -119,9 +119,17 @@ namespace WPF_Windows_Spotlight
             if (InputTextBox.Text.Trim() == "")
             {
                 Height = _inputHieght;
-                InputTextBox.Text = "";
-                InputTextBoxWatermark.Text = "Quick Search";
-                InputTextBoxWatermark.HorizontalAlignment = HorizontalAlignment.Left;
+                if (InputTextBox.Text == "")
+                {
+                    InputTextBoxWatermark.Text = "Quick Search";
+                    InputTextBoxWatermark.HorizontalAlignment = HorizontalAlignment.Left;
+                    _searchService.CancelCurrentSearching();
+                    ResultIcon.Visibility = Visibility.Hidden;
+                }
+                else
+                {
+                    InputTextBoxWatermark.Text = "";
+                }
             }
             else
             {
@@ -136,7 +144,7 @@ namespace WPF_Windows_Spotlight
             }
         }
 
-        void SearchOverEvent(ObservableCollection<IResultItem> items)
+        void SearchOverEvent()
         {
             _rotate.Stop();
             if (_searchService.ResultList.Count > 0)

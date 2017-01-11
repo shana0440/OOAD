@@ -16,7 +16,7 @@ namespace WPF_Windows_Spotlight.Controller
     {
         int _searchingCount = 0;
         List<BackgroundWorker> _workers = new List<BackgroundWorker>();
-        public delegate void SearchOverEventHandler(ObservableCollection<IResultItem> results);
+        public delegate void SearchOverEventHandler();
         SearchOverEventHandler _searchOverEvent;
         ObservableCollection<IResultItem> _resultList = new ObservableCollection<IResultItem>();
         int _serialNumber = 0;
@@ -91,6 +91,7 @@ namespace WPF_Windows_Spotlight.Controller
             _searchingCount = 0;
             _resultList.Clear();
             _workers.Clear();
+            _serialNumber++;
         }
 
         void SearchOver(object sender, RunWorkerCompletedEventArgs e)
@@ -117,7 +118,7 @@ namespace WPF_Windows_Spotlight.Controller
                         SortBestResult(_resultList);
                     }
                     SelectItem(0);
-                    _searchOverEvent?.Invoke(_resultList);
+                    _searchOverEvent?.Invoke();
                     GC.Collect();
                 }
             }
