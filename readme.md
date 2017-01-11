@@ -6,6 +6,23 @@
 
 --------------------------------------------------
 
+## 焦點問題
+WPF 分為邏輯焦點以及鍵盤焦點
+FocusManager是掌控邏輯焦點
+Keyboard.Focus()是掌控鍵盤焦點
+有鍵盤焦點才可以接收鍵盤輸入的資訊
+視窗開啟時，可能沒有活躍，焦點事件沒有效果
+要使用window.Activate()之後才可以使用焦點事件
+且要等到視窗render完後，鍵盤事件才有效果
+因此要用下列程式，等待Render結束後才執行焦點程式
+```
+Dispatcher.BeginInvoke((Action)delegate
+{
+    FocusManager.SetFocusedElement(this, InputTextBox);
+    Keyboard.Focus(InputTextBox);
+}, DispatcherPriority.Render);
+```
+
 ## ListBox.Template
 [參考](https://blogs.msdn.microsoft.com/ericsk/2013/04/18/windows-store-app-windows-phone-app-listview-listbox-2/)
 ## ListBox Binding

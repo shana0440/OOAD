@@ -1,10 +1,10 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
 using System.ComponentModel;
-using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Threading;
 using WPF_Windows_Spotlight.Controller;
 using WPF_Windows_Spotlight.Models;
 using WPF_Windows_Spotlight.Models.ResultItemsFactory;
@@ -26,7 +26,7 @@ namespace WPF_Windows_Spotlight
         private int _inputHieght = 70;
         private LoadingCircle _rotate = new LoadingCircle { Angle = 0 };
         ViewInitialization _viewInitialization;
-        private bool _windowVisibleState = false;
+        bool _isWindowVisible = false;
         SearchService _searchService = new SearchService();
 
         public MainWindow()
@@ -79,7 +79,7 @@ namespace WPF_Windows_Spotlight
             if (_openKeyPointer == _hotKeyForOpen.Length)
             {
                 _openKeyPointer = 0;
-                if (_windowVisibleState)
+                if (_isWindowVisible)
                 {
                     HideWindow();
                 }
@@ -92,14 +92,19 @@ namespace WPF_Windows_Spotlight
 
         void OpenWindow()
         {
-            _windowVisibleState = true;
-            FocusManager.SetFocusedElement(InputTextBox, InputTextBox);
+            _isWindowVisible = true;
+            Activate();
+            Dispatcher.BeginInvoke((Action)delegate
+            {
+                FocusManager.SetFocusedElement(this, InputTextBox);
+                Keyboard.Focus(InputTextBox);
+            }, DispatcherPriority.Render);
             Show();
         }
 
         void HideWindow()
         {
-            _windowVisibleState = false;
+            _isWindowVisible = false;
             _searchService.CancelCurrentSearching();
             ResultIcon.Source = null;
             InputTextBox.Clear();
@@ -204,6 +209,5 @@ namespace WPF_Windows_Spotlight
                 ShowSelectdItemContent(_searchService.ResultList[_searchService.SelectedIndex]);
             }
         }
-
     }
 }
