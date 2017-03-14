@@ -9,11 +9,6 @@ namespace WPF_Windows_Spotlight.View
         Window _view;
         NotifyIcon _notifyIcon;
         LowLevelKeyboardListener _keyboardListener;
-        string[] _hotKeyForHide = new string[] { "Escape" };
-        string[] _hotKeyForOpen = new string[] { "LeftCtrl", "Space" };
-        int _hideKeyPointer = 0;
-        int _openKeyPointer = 0;
-
 
         public ViewInitialization(Window view)
         {

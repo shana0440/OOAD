@@ -89,6 +89,15 @@ namespace WPF_Windows_Spotlight
             }
         }
 
+        void HideWindow()
+        {
+            _isWindowVisible = false;
+            _searchService.CancelCurrentSearching();
+            ResultIcon.Source = null;
+            InputTextBox.Clear();
+            Hide();
+        }
+
         void OpenWindow()
         {
             _isWindowVisible = true;
@@ -100,16 +109,7 @@ namespace WPF_Windows_Spotlight
             }, DispatcherPriority.Render);
             Show();
         }
-
-        void HideWindow()
-        {
-            _isWindowVisible = false;
-            _searchService.CancelCurrentSearching();
-            ResultIcon.Source = null;
-            InputTextBox.Clear();
-            Hide();
-        }
-
+        
         void LostFocusWindow(object sender, KeyboardFocusChangedEventArgs e)
         {
             if (e.NewFocus == null)
