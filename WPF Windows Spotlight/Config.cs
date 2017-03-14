@@ -11,5 +11,8 @@ namespace WPF_Windows_Spotlight
         public const string DirectoryUrl = "https://tw.dictionary.search.yahoo.com/search?p={0}";
         public const string CurrencyConvertUrl = "https://www.google.com/finance/converter?a={0}&from={1}&to=TWD";
         public const string SearchEngineUrl = "https://www.google.com.tw/search?q={0}";
+
+        public static string[] HotKeyForHide = { "Escape" };
+        public static string[] HotKeyForOpen = { "LeftCtrl", "Space" };
     }
 }

@@ -19,15 +19,14 @@ namespace WPF_Windows_Spotlight
     /// </summary>
     public partial class MainWindow : Window
     {
-        private string[] _hotKeyForHide = new string[] { "Escape" };
-        private string[] _hotKeyForOpen = new string[] { "LeftCtrl", "Space" };
-        private int _openKeyPointer = 0;
-        private int _windowHieght = 420;
-        private int _inputHieght = 70;
-        private LoadingCircle _rotate = new LoadingCircle { Angle = 0 };
+        int _openKeyPointer = 0;
+        int _windowHieght = 420;
+        int _inputHieght = 70;
+        LoadingCircle _rotate = new LoadingCircle { Angle = 0 };
         ViewInitialization _viewInitialization;
         bool _isWindowVisible = false;
         SearchService _searchService = new SearchService();
+        bool _isSearching = false;
 
         public MainWindow()
         {
@@ -73,10 +72,10 @@ namespace WPF_Windows_Spotlight
         void WatchKeyPressedOfWindowVisible(object sender, KeyPressedArgs args)
         {
             string keyPressed = args.KeyPressed.ToString();
-            string watchedKeyPressed = _hotKeyForOpen[_openKeyPointer];
+            string watchedKeyPressed = Config.HotKeyForOpen[_openKeyPointer];
             _openKeyPointer = (keyPressed == watchedKeyPressed) ? _openKeyPointer + 1 : 0;
 
-            if (_openKeyPointer == _hotKeyForOpen.Length)
+            if (_openKeyPointer == Config.HotKeyForOpen.Length)
             {
                 _openKeyPointer = 0;
                 if (_isWindowVisible)
@@ -138,6 +137,7 @@ namespace WPF_Windows_Spotlight
             }
             else
             {
+                _isSearching = true;
                 ResultIcon.Visibility = Visibility.Visible;
                 _rotate.Start();
                 ContentView.Children.Clear();
@@ -152,6 +152,7 @@ namespace WPF_Windows_Spotlight
         void SearchOverEvent()
         {
             _rotate.Stop();
+            _isSearching = false;
             if (_searchService.ResultList.Count > 0)
             {
                 IResultItem item = _searchService.ResultList[0];
@@ -173,7 +174,10 @@ namespace WPF_Windows_Spotlight
         void ShowSelectdItemContent(IResultItem item)
         {
             if (item == null) return;
-            ResultIcon.Source = item.Icon;
+            if (!_isSearching)
+            {
+                ResultIcon.Source = item.Icon;
+            }
             Height = _windowHieght;
             item.GenerateContent(ContentView);
         }
