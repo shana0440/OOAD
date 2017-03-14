@@ -54,7 +54,19 @@ namespace WPF_Windows_Spotlight
 
         void InitViewHeight()
         {
-            Height = _inputHieght;
+            ResizeHeight();
+        }
+
+        void ResizeHeight()
+        {
+            if (_searchService.ResultList.Count > 0)
+            {
+                Application.Current.Resources["BorderClipRect"] = new Rect(0, 0, 680, 400);
+            }
+            else
+            {
+                Application.Current.Resources["BorderClipRect"] = new Rect(0, 0, 680, 50);
+            }
         }
 
         void InitResultsListSource()
@@ -122,7 +134,6 @@ namespace WPF_Windows_Spotlight
         {
             if (InputTextBox.Text.Trim() == "")
             {
-                Height = _inputHieght;
                 if (InputTextBox.Text == "")
                 {
                     InputTextBoxWatermark.Text = "Quick Search";
@@ -134,6 +145,7 @@ namespace WPF_Windows_Spotlight
                 {
                     InputTextBoxWatermark.Text = "";
                 }
+                ResizeHeight();
             }
             else
             {
@@ -164,7 +176,7 @@ namespace WPF_Windows_Spotlight
             else
             {
                 ResultIcon.Visibility = Visibility.Hidden;
-                Height = _inputHieght;
+                ResizeHeight();
                 ContentView.Children.Clear();
                 InputTextBoxWatermark.Text = "— 沒有結果";
                 InputTextBoxWatermark.HorizontalAlignment = HorizontalAlignment.Right;
@@ -178,7 +190,7 @@ namespace WPF_Windows_Spotlight
             {
                 ResultIcon.Source = item.Icon;
             }
-            Height = _windowHieght;
+            ResizeHeight();
             item.GenerateContent(ContentView);
         }
 
