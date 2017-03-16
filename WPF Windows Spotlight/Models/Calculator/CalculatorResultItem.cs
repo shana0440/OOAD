@@ -25,17 +25,15 @@ namespace WPF_Windows_Spotlight.Models.Calculator
             Label expression = new Label();
             expression.Content = _expression;
             expression.FontSize = 24;
-            var fontColor = (Color)ColorConverter.ConvertFromString("#434343");
-            expression.BorderBrush = new SolidColorBrush(fontColor);
 
-            expression.Foreground = expression.BorderBrush;
+            expression.Foreground = Brushes.LightGray;
             expression.HorizontalContentAlignment = HorizontalAlignment.Center;
             Thickness expMargin = new Thickness(0, 100, 0, 10);
             expression.Margin = expMargin;
             contentView.Children.Add(expression);
 
             Border hr = new Border();
-            var hrColor = (Color)ColorConverter.ConvertFromString("#FFD7D7D7");
+            var hrColor = (Color)ColorConverter.ConvertFromString(Config.SearchbarBorderColor);
             hr.Height = 1;
             hr.BorderBrush = new SolidColorBrush(hrColor);
             hr.BorderThickness = new Thickness(0, 1, 0, 0);
@@ -47,6 +45,7 @@ namespace WPF_Windows_Spotlight.Models.Calculator
             answer.Content = Title;
             answer.FontSize = 36;
             answer.HorizontalContentAlignment = HorizontalAlignment.Center;
+            answer.Foreground = Brushes.White;
             contentView.Children.Add(answer);
         }
 

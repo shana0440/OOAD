@@ -16,9 +16,12 @@ namespace WPF_Windows_Spotlight
         public static string[] HotKeyForHide = { "Escape" };
         public static string[] HotKeyForOpen = { "LeftCtrl", "Space" };
 
-        public static int SearchbarWidth = 700;
-        public static int SearchbarHeight = 420;
-        public static int InputHieght = 50;
+        public const int SearchbarWidth = 700;
+        public const int SearchbarHeight = 420;
+        public const int InputHieght = 50;
+
+        public const string SearchbarColor = "#FF252525";
+        public const string SearchbarBorderColor = "#FF3a3a3a";
 
     }
 }

@@ -29,17 +29,15 @@ namespace WPF_Windows_Spotlight.Models.CurrencyConverter
             Label expression = new Label();
             expression.Content = _origin.ToUpper() + "=";
             expression.FontSize = 24;
-            Color fontColor = (Color)ColorConverter.ConvertFromString("#434343");
-            expression.BorderBrush = new SolidColorBrush(fontColor);
 
-            expression.Foreground = expression.BorderBrush;
+            expression.Foreground = Brushes.LightGray;
             expression.HorizontalContentAlignment = HorizontalAlignment.Center;
             Thickness expMargin = new Thickness(0, 100, 0, 10);
             expression.Margin = expMargin;
             contentView.Children.Add(expression);
 
             Border hr = new Border();
-            Color hrColor = (Color)ColorConverter.ConvertFromString("#FFD7D7D7");
+            Color hrColor = (Color)ColorConverter.ConvertFromString(Config.SearchbarBorderColor);
             hr.Height = 1;
             hr.BorderBrush = new SolidColorBrush(hrColor);
             hr.BorderThickness = new Thickness(0, 1, 0, 0);
@@ -51,16 +49,16 @@ namespace WPF_Windows_Spotlight.Models.CurrencyConverter
             answer.Content = Title;
             answer.FontSize = 24;
             answer.HorizontalContentAlignment = HorizontalAlignment.Center;
+            answer.Foreground = Brushes.White;
             contentView.Children.Add(answer);
             
             Label copyright = new Label();
             copyright.Content = "資料來源 GOOGLE";
             copyright.FontSize = 12;
             copyright.HorizontalContentAlignment = HorizontalAlignment.Center;
-            Color copyrightFontColor = (Color)ColorConverter.ConvertFromString("#888888");
             Thickness copyrightMargin = new Thickness(0, 100, 0, 0);
             copyright.Margin = copyrightMargin;
-            copyright.Foreground = new SolidColorBrush(copyrightFontColor);
+            copyright.Foreground = Brushes.Gray;
             contentView.Children.Add(copyright);
         }
 

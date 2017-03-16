@@ -40,17 +40,18 @@ namespace WPF_Windows_Spotlight.Models.SearchEngine
             title.Content = Title;
             title.FontSize = 24;
             title.HorizontalContentAlignment = HorizontalAlignment.Center;
+            title.Foreground = Brushes.White;
             contentView.Children.Add(title);
 
             var url = new Label();
             url.Content = _url;
             url.FontSize = 18;
             url.HorizontalContentAlignment = HorizontalAlignment.Center;
-            url.Foreground = Brushes.Gray;
+            url.Foreground = Brushes.LightGray;
             contentView.Children.Add(url);
 
             var hr = new Border();
-            var hrColor = (Color)ColorConverter.ConvertFromString("#FFD7D7D7");
+            var hrColor = (Color)ColorConverter.ConvertFromString(Config.SearchbarBorderColor);
             hr.Height = 1;
             hr.BorderBrush = new SolidColorBrush(hrColor);
             hr.BorderThickness = new Thickness(0, 1, 0, 0);
@@ -65,7 +66,7 @@ namespace WPF_Windows_Spotlight.Models.SearchEngine
             intro.Text = _intro;
             intro.HorizontalAlignment = HorizontalAlignment.Center;
             intro.Padding = new Thickness(20, 10, 20, 10);
-            intro.Foreground = Brushes.Gray;
+            intro.Foreground = Brushes.LightGray;
 
             wrap.Children.Add(intro);
             contentView.Children.Add(wrap);

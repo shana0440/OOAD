@@ -4,11 +4,13 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using WPF_Windows_Spotlight.Controller;
 using WPF_Windows_Spotlight.Models;
 using WPF_Windows_Spotlight.Models.ResultItemsFactory;
 using WPF_Windows_Spotlight.View;
+using Xceed.Wpf.Toolkit.Core.Utilities;
 using HorizontalAlignment = System.Windows.HorizontalAlignment;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 
@@ -44,6 +46,8 @@ namespace WPF_Windows_Spotlight
             InitResultsListSource();
             InitLoadingCircle();
             MakeSearchBarToCenter();
+            Application.Current.Resources["SearchbarColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Config.SearchbarColor));
+            Application.Current.Resources["SearchbarBorderColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Config.SearchbarBorderColor));
         }
 
         void RenderSearchIcon()
@@ -64,7 +68,7 @@ namespace WPF_Windows_Spotlight
             }
             else
             {
-                Application.Current.Resources["BorderClipRect"] = new Rect(0, 0, 680, 49);
+                Application.Current.Resources["BorderClipRect"] = new Rect(0, 0, 680, 52);
             }
         }
 
@@ -224,6 +228,10 @@ namespace WPF_Windows_Spotlight
             {
                 case Key.Up:
                     _searchService.SelectItem(_searchService.SelectedIndex - 1);
+                    if (_searchService.SelectedIndex - 1 < 0)
+                    {
+                        VisualTreeHelperEx.FindDescendantByType<ScrollViewer>(ResultList)?.ScrollToTop();
+                    }
                     break;
                 case Key.Down:
                     _searchService.SelectItem(_searchService.SelectedIndex + 1);

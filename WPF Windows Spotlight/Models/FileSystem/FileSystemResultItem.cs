@@ -46,10 +46,11 @@ namespace WPF_Windows_Spotlight.Models.FileSystem
             title.Content = Title;
             title.FontSize = 24;
             title.HorizontalContentAlignment = HorizontalAlignment.Center;
+            title.Foreground = Brushes.White;
             contentView.Children.Add(title);
 
             var hr = new Border();
-            var hrColor = (Color)ColorConverter.ConvertFromString("#FFD7D7D7");
+            var hrColor = (Color)ColorConverter.ConvertFromString(Config.SearchbarBorderColor);
             hr.Height = 1;
             hr.BorderBrush = new SolidColorBrush(hrColor);
             hr.BorderThickness = new Thickness(0, 1, 0, 0);
@@ -67,7 +68,8 @@ namespace WPF_Windows_Spotlight.Models.FileSystem
                 name.Width = value.Width = contentView.Width / 2 - 35;
                 name.HorizontalContentAlignment = HorizontalAlignment.Right;
                 value.HorizontalContentAlignment = HorizontalAlignment.Left;
-                name.Foreground = Brushes.Gray;
+                name.Foreground = Brushes.LightGray;
+                value.Foreground = Brushes.White;
 
                 wrap.Children.Add(name);
                 wrap.Children.Add(value);
