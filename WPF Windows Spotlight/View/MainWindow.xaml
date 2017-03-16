@@ -4,132 +4,138 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="WPF_Windows_Spotlight.MainWindow"
     Title="QuickSearch" Height="420" Width="700" ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="True" Background="Transparent" 
     FocusManager.IsFocusScope="True" FocusManager.FocusedElement="{Binding ElementName=InputTextBox}"  LostKeyboardFocus="LostFocusWindow" Topmost="True">
-    <Border Margin="10" BorderBrush="#FFD7D7D7" BorderThickness="1,1,1,1">
-        <Border.Effect>
-            <DropShadowEffect BlurRadius="15" RenderingBias="Performance" ShadowDepth="1" Direction="0"/>
-        </Border.Effect>
-        <Border.Clip>
-            <RectangleGeometry RadiusX="5" RadiusY="5" Rect="{DynamicResource BorderClipRect}"></RectangleGeometry>
-        </Border.Clip>
-        <Grid Margin="0" Background="#FFF0F0F0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
-                <RowDefinition Height="300"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="50"/>
-                <ColumnDefinition Width="203.663"/>
-                <ColumnDefinition Width="47.337"/>
-                <ColumnDefinition Width="323"/>
-                <ColumnDefinition Width="30"/>
-            </Grid.ColumnDefinitions>
-            <TextBox x:Name="InputTextBox" Margin="0,12,8,11" FontSize="23" FontFamily="Arial" TextChanged="Search" Grid.ColumnSpan="3" Grid.Column="1" VerticalAlignment="Center" BorderThickness="0" Background="Transparent" PreviewKeyDown="SelectItem" Height="28"/>
-            <TextBlock x:Name="InputTextBoxWatermark" Margin="2,12,8,11" IsHitTestVisible="False" Text="Quick Search" VerticalAlignment="Center" Foreground="DarkGray" Grid.ColumnSpan="3" Grid.Column="1" FontSize="23" FontFamily="Arial" Background="Transparent" Height="28" Panel.ZIndex="-1">
-                <TextBlock.Style>
-                    <Style TargetType="{x:Type TextBlock}">
-                        <Setter Property="Visibility" Value="Collapsed"/>
-                        <Setter Property="Visibility" Value="Visible"/>
-                    </Style>
-                </TextBlock.Style>
-            </TextBlock>
-            <ListBox BorderBrush="#FFD7D7D7" BorderThickness="0,0,1,0" x:Name="ResultList" ItemsSource="{Binding}" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="298" Grid.Row="1" Grid.ColumnSpan="3" Background="Transparent" Margin="-1,1,0,-46" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
-                <ListBox.GroupStyle>
-                    <GroupStyle>
-                        <GroupStyle.ContainerStyle>
-                            <Style TargetType="{x:Type GroupItem}">
+    <Grid>
+        <Canvas>
+            <Border x:Name="ContainerBorder" Margin="10" BorderBrush="#FFD7D7D7" BorderThickness="1,1,1,1">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="15" RenderingBias="Performance" ShadowDepth="1" Direction="0"/>
+                </Border.Effect>
+                <Border.Clip>
+                    <RectangleGeometry RadiusX="5" RadiusY="5" Rect="{DynamicResource BorderClipRect}"></RectangleGeometry>
+                </Border.Clip>
+                <Grid Margin="0" Background="#FFF0F0F0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="300"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="203.663"/>
+                        <ColumnDefinition Width="47.337"/>
+                        <ColumnDefinition Width="323"/>
+                        <ColumnDefinition Width="30"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="InputTextBox" Margin="0,12,8,11" FontSize="23" FontFamily="Arial" TextChanged="Search" Grid.ColumnSpan="3" Grid.Column="1" VerticalAlignment="Center" BorderThickness="0" Background="Transparent" PreviewKeyDown="SelectItem" Height="28"/>
+                    <TextBlock x:Name="InputTextBoxWatermark" Margin="2,12,8,11" IsHitTestVisible="False" Text="Quick Search" VerticalAlignment="Center" Foreground="DarkGray" Grid.ColumnSpan="3" Grid.Column="1" FontSize="23" FontFamily="Arial" Background="Transparent" Height="28" Panel.ZIndex="-1">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <ListBox BorderBrush="#FFD7D7D7" BorderThickness="0,0,1,0" x:Name="ResultList" ItemsSource="{Binding}" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="298" Grid.Row="1" Grid.ColumnSpan="3" Background="Transparent" Margin="-1,1,0,-46" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+                        <ListBox.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.ContainerStyle>
+                                    <Style TargetType="{x:Type GroupItem}">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type GroupItem}">
+                                                    <Grid>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition/>
+                                                            <RowDefinition/>
+                                                        </Grid.RowDefinitions>
+
+                                                        <StackPanel Grid.Row="0" Orientation="Horizontal" Background="#FFE5E5E5">
+                                                            <TextBlock Margin="15, 0, 0, 0" Text="{Binding Name}"/>
+                                                        </StackPanel>
+                                                        <ItemsPresenter Grid.Row="1"/>
+                                                    </Grid>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </GroupStyle.ContainerStyle>
+                            </GroupStyle>
+                        </ListBox.GroupStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Margin="0, 0, 0, 0">
+                                    <Image Width="20" Height="20" Margin="10, 0, 10, 0" Source="{Binding Icon}" />
+                                    <StackPanel Orientation="Vertical" Margin="5, 0">
+                                        <TextBlock Text="{Binding Title}" FontSize="18"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListBoxItem}">
+                                <EventSetter Event="UIElement.PreviewMouseLeftButtonUp" Handler="OpenItemResource" />
+                                <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
                                 <Setter Property="Template">
                                     <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type GroupItem}">
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition/>
-                                                    <RowDefinition/>
-                                                </Grid.RowDefinitions>
-
-                                                <StackPanel Grid.Row="0" Orientation="Horizontal" Background="#FFE5E5E5">
-                                                    <TextBlock Margin="15, 0, 0, 0" Text="{Binding Name}"/>
-                                                </StackPanel>
-                                                <ItemsPresenter Grid.Row="1"/>
-                                            </Grid>
+                                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                            <Border BorderThickness="{TemplateBinding Border.BorderThickness}"
+									            Padding="{TemplateBinding Padding}"
+									            BorderBrush="{TemplateBinding Border.BorderBrush}"
+									            Background="{TemplateBinding Panel.Background}"
+									            x:Name="Bd"
+									            SnapsToDevicePixels="True">
+                                                <ContentPresenter Content="{TemplateBinding Content}"
+										            ContentTemplate="{TemplateBinding ContentTemplate}"
+										            ContentStringFormat="{TemplateBinding ContentStringFormat}"
+										            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+										            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+										            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsSelected" Value="True">
+                                                    <Setter Property="Background">
+                                                        <Setter.Value>
+                                                            <SolidColorBrush>#FF0068DA</SolidColorBrush>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Setter Property="Foreground" Value="White"/>
+                                                </Trigger>
+                                                <MultiTrigger>
+                                                    <MultiTrigger.Conditions>
+                                                        <Condition Property="Selector.IsSelectionActive" Value="True"/>
+                                                        <Condition Property="Selector.IsSelected" Value="True"/>
+                                                    </MultiTrigger.Conditions>
+                                                    <Setter Property="Panel.Background" TargetName="Bd" Value="Transparent"/>
+                                                    <Setter Property="BorderBrush" TargetName="Bd">
+                                                        <Setter.Value>
+                                                            <SolidColorBrush>#FF26A0DA</SolidColorBrush>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </MultiTrigger>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="TextElement.Foreground" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
                                         </ControlTemplate>
                                     </Setter.Value>
                                 </Setter>
                             </Style>
-                        </GroupStyle.ContainerStyle>
-                    </GroupStyle>
-                </ListBox.GroupStyle>
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal" Margin="0, 0, 0, 0">
-                            <Image Width="20" Height="20" Margin="10, 0, 10, 0" Source="{Binding Icon}" />
-                            <StackPanel Orientation="Vertical" Margin="5, 0">
-                                <TextBlock Text="{Binding Title}" FontSize="18"/>
-                            </StackPanel>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListBoxItem}">
-                        <EventSetter Event="UIElement.PreviewMouseLeftButtonUp" Handler="OpenItemResource" />
-                        <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                    <Border BorderThickness="{TemplateBinding Border.BorderThickness}"
-									    Padding="{TemplateBinding Padding}"
-									    BorderBrush="{TemplateBinding Border.BorderBrush}"
-									    Background="{TemplateBinding Panel.Background}"
-									    x:Name="Bd"
-									    SnapsToDevicePixels="True">
-                                        <ContentPresenter Content="{TemplateBinding Content}"
-										    ContentTemplate="{TemplateBinding ContentTemplate}"
-										    ContentStringFormat="{TemplateBinding ContentStringFormat}"
-										    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-										    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-										    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsSelected" Value="True">
-                                            <Setter Property="Background">
-                                                <Setter.Value>
-                                                    <SolidColorBrush>#FF0068DA</SolidColorBrush>
-                                                </Setter.Value>
-                                            </Setter>
-                                            <Setter Property="Foreground" Value="White"/>
-                                        </Trigger>
-                                        <MultiTrigger>
-                                            <MultiTrigger.Conditions>
-                                                <Condition Property="Selector.IsSelectionActive" Value="True"/>
-                                                <Condition Property="Selector.IsSelected" Value="True"/>
-                                            </MultiTrigger.Conditions>
-                                            <Setter Property="Panel.Background" TargetName="Bd" Value="Transparent"/>
-                                            <Setter Property="BorderBrush" TargetName="Bd">
-                                                <Setter.Value>
-                                                    <SolidColorBrush>#FF26A0DA</SolidColorBrush>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </MultiTrigger>
-                                        <Trigger Property="IsEnabled" Value="False">
-                                            <Setter Property="TextElement.Foreground" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-            </ListBox>
-            <Border BorderBrush="#FFD7D7D7" BorderThickness="0,0,0,1" HorizontalAlignment="Left" Height="1" Margin="0,0,-21,0" Grid.Row="1" VerticalAlignment="Top" Width="678" Grid.ColumnSpan="5"/>
-            <Image x:Name="SearchIcon" Margin="5,5,0,0" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="40"/>
-            <Image x:Name="ResultIcon" Margin="10,10,-9,0" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="30" Grid.Column="4" RenderTransformOrigin="0.5,0.5">
-                <Image.RenderTransform>
-                    <RotateTransform Angle="{Binding Angle}"/>
-                </Image.RenderTransform>
-            </Image>
-            <ScrollViewer Grid.Column="3" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" Height="347" Grid.Row="1" VerticalAlignment="Top" Width="376" Grid.ColumnSpan="2" Margin="0,1,-21,-47">
-                <StackPanel x:Name="ContentView" HorizontalAlignment="Left" VerticalAlignment="Top" Width="376"/>
-            </ScrollViewer>
-        </Grid>
-    </Border>
-    
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
+                    <Border BorderBrush="#FFD7D7D7" BorderThickness="0,0,0,1" HorizontalAlignment="Left" Height="1" Margin="0,0,-21,0" Grid.Row="1" VerticalAlignment="Top" Width="678" Grid.ColumnSpan="5"/>
+                    <Image x:Name="SearchIcon" Margin="5,5,0,0" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="40"/>
+                    <Image x:Name="ResultIcon" Margin="10,10,-9,0" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="30" Grid.Column="4" RenderTransformOrigin="0.5,0.5">
+                        <Image.RenderTransform>
+                            <RotateTransform Angle="{Binding Angle}"/>
+                        </Image.RenderTransform>
+                    </Image>
+                    <ScrollViewer Grid.Column="3" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" Height="347" Grid.Row="1" VerticalAlignment="Top" Width="376" Grid.ColumnSpan="2" Margin="0,1,-21,-47">
+                        <StackPanel x:Name="ContentView" HorizontalAlignment="Left" VerticalAlignment="Top" Width="376"/>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Canvas>
+        <Canvas x:Name="DecorateCanvas">
+            <Image x:Name="DecorateImage" Width="300" Source="C:\Users\kw\Documents\Visual Studio 2015\Projects\QuickSearch\WPF Windows Spotlight\Images\DecorateImage2.png"></Image>
+        </Canvas>
+    </Grid>
 </Window>

@@ -20,8 +20,6 @@ namespace WPF_Windows_Spotlight
     public partial class MainWindow : Window
     {
         int _openKeyPointer = 0;
-        int _windowHieght = 420;
-        int _inputHieght = 70;
         LoadingCircle _rotate = new LoadingCircle { Angle = 0 };
         ViewInitialization _viewInitialization;
         bool _isWindowVisible = false;
@@ -45,6 +43,7 @@ namespace WPF_Windows_Spotlight
             InitViewHeight();
             InitResultsListSource();
             InitLoadingCircle();
+            MakeSearchBarToCenter();
         }
 
         void RenderSearchIcon()
@@ -65,7 +64,7 @@ namespace WPF_Windows_Spotlight
             }
             else
             {
-                Application.Current.Resources["BorderClipRect"] = new Rect(0, 0, 680, 50);
+                Application.Current.Resources["BorderClipRect"] = new Rect(0, 0, 680, 49);
             }
         }
 
@@ -79,6 +78,21 @@ namespace WPF_Windows_Spotlight
         void InitLoadingCircle()
         {
             DataContext = _rotate;
+        }
+
+        private void MakeSearchBarToCenter()
+        {
+            var searchbarTop = (SystemParameters.PrimaryScreenHeight / 2) - (Config.SearchbarHeight / 2);
+            var searchbarLeft = (SystemParameters.PrimaryScreenWidth / 2) - (Config.SearchbarWidth / 2);
+
+            ContainerBorder.Width = Config.SearchbarWidth - 20;
+            ContainerBorder.Height = Config.SearchbarHeight - 20;
+            Canvas.SetTop(ContainerBorder, searchbarTop);
+            Canvas.SetLeft(ContainerBorder, searchbarLeft);
+            
+            DecorateImage.Width = 300;
+            Canvas.SetTop(DecorateImage, searchbarTop - 176);
+            Canvas.SetLeft(DecorateImage, searchbarLeft + Config.SearchbarWidth - 195);
         }
 
         void WatchKeyPressedOfWindowVisible(object sender, KeyPressedArgs args)

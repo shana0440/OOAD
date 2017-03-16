@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace WPF_Windows_Spotlight
 {
@@ -14,5 +15,10 @@ namespace WPF_Windows_Spotlight
 
         public static string[] HotKeyForHide = { "Escape" };
         public static string[] HotKeyForOpen = { "LeftCtrl", "Space" };
+
+        public static int SearchbarWidth = 700;
+        public static int SearchbarHeight = 420;
+        public static int InputHieght = 50;
+
     }
 }

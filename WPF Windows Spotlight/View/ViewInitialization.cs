@@ -18,7 +18,7 @@ namespace WPF_Windows_Spotlight.View
         public void Init()
         {
             InitStateBar();
-            MakeWindowOnCenterOfScreen();
+            MakeWindowToFullScreen();
             HookKeyboard();
             HideOfTaskBar();
         }
@@ -54,14 +54,12 @@ namespace WPF_Windows_Spotlight.View
             _view.Close();
         }
 
-        void MakeWindowOnCenterOfScreen()
+        void MakeWindowToFullScreen()
         {
-            double screenWidth = SystemParameters.PrimaryScreenWidth;
-            double screenHeight = SystemParameters.PrimaryScreenHeight;
-            double windowWidth = _view.Width;
-            double windowHeight = _view.Height;
-            _view.Left = (screenWidth / 2) - (windowWidth / 2);
-            _view.Top = (screenHeight / 2) - (windowHeight / 2);
+            _view.Width = SystemParameters.PrimaryScreenWidth;
+            _view.Height = SystemParameters.PrimaryScreenHeight;
+            _view.Left = 0;
+            _view.Top = 0;
         }
 
         void HookKeyboard()
