@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FMUtils.KeyboardHook;
+using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,12 +22,12 @@ namespace WPF_Windows_Spotlight
     /// </summary>
     public partial class MainWindow : Window
     {
-        int _openKeyPointer = 0;
         LoadingCircle _rotate = new LoadingCircle { Angle = 0 };
         ViewInitialization _viewInitialization;
         bool _isWindowVisible = false;
         SearchService _searchService = new SearchService();
         bool _isSearching = false;
+        HookKeyMatch _hookKeyMatch = new HookKeyMatch();
 
         public MainWindow()
         {
@@ -34,7 +35,7 @@ namespace WPF_Windows_Spotlight
 
             _viewInitialization = new ViewInitialization(this);
             _viewInitialization.Init();
-            _viewInitialization.SetKeyboardEvent(WatchKeyPressedOfWindowVisible);
+            _hookKeyMatch.PlusKeyDownEvent(SearchbarVisable);
 
             InitRender();
         }
@@ -99,15 +100,10 @@ namespace WPF_Windows_Spotlight
             Canvas.SetLeft(DecorateImage, searchbarLeft + Config.SearchbarWidth - 195);
         }
 
-        void WatchKeyPressedOfWindowVisible(object sender, KeyPressedArgs args)
+        void SearchbarVisable(KeyboardHookEventArgs args)
         {
-            string keyPressed = args.KeyPressed.ToString();
-            string watchedKeyPressed = Config.HotKeyForOpen[_openKeyPointer];
-            _openKeyPointer = (keyPressed == watchedKeyPressed) ? _openKeyPointer + 1 : 0;
-
-            if (_openKeyPointer == Config.HotKeyForOpen.Length)
+            if (_hookKeyMatch.MatchKey(Config.KeyForOpenAndHide))
             {
-                _openKeyPointer = 0;
                 if (_isWindowVisible)
                 {
                     HideWindow();
@@ -116,6 +112,10 @@ namespace WPF_Windows_Spotlight
                 {
                     OpenWindow();
                 }
+            }
+            else if (_hookKeyMatch.MatchKey(Config.KeyForHide))
+            {
+                HideWindow();
             }
         }
 
