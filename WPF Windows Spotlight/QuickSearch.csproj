@@ -131,12 +131,12 @@
     <Compile Include="Models\Calculator\CalculatorThread.cs" />
     <Compile Include="Models\Calculator\Calculator.cs" />
     <Compile Include="Models\Crawler.cs" />
+    <Compile Include="Models\Dictionary\Definiton.cs" />
     <Compile Include="Models\Dictionary\Dictionary.cs" />
     <Compile Include="Models\Dictionary\DictionaryResultItem.cs" />
     <Compile Include="Models\Dictionary\DictionaryResultItemFactory.cs" />
     <Compile Include="Models\Dictionary\DictionaryThread.cs" />
-    <Compile Include="Models\Dictionary\Explanation.cs" />
-    <Compile Include="Models\Dictionary\ExplanationSection.cs" />
+    <Compile Include="Models\Dictionary\Example.cs" />
     <Compile Include="Models\CurrencyConverter\CurrencyConverter.cs" />
     <Compile Include="Models\CurrencyConverter\CurrencyConverterResultItem.cs" />
     <Compile Include="Models\CurrencyConverter\CurrencyConverterResultItemFactory.cs" />

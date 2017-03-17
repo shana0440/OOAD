@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace WPF_Windows_Spotlight.Models
+namespace QuickSearch.Models
 {
     public interface IThread
     {

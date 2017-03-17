@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace WPF_Windows_Spotlight
+namespace QuickSearch
 {
     public class HookKeyMatch
     {

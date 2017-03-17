@@ -1,50 +1,56 @@
 ﻿using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
-namespace WPF_Windows_Spotlight.Models.Dictionary
+namespace QuickSearch.Models.Dictionary
 {
     public class Dictionary
     {
 
-        public List<ExplanationSection> Search(string keyword)
+        public Definition Search(string keyword)
         {
             string url = String.Format(Config.DirectoryUrl, Uri.EscapeDataString(keyword));
             string html = Crawler.GetResponse(url); 
             return ParseHTML(html);
         }
 
-        List<ExplanationSection> ParseHTML(string html)
+        Definition ParseHTML(string html)
         {
             HtmlDocument dom = new HtmlDocument();
             dom.LoadHtml(html);
-            List<ExplanationSection> result = new List<ExplanationSection>();
-            string xpath = "//div[contains(@class, 'dd algo explain mt-20 lst DictionaryResults')]";
+            string xpath = "//div[@id='definition']";
             HtmlNode node = dom.DocumentNode.SelectSingleNode(xpath);
             if (node == null)
             {
                 throw new ArgumentException("沒有找到符合的結果");
             }
-            while (node.SelectSingleNode("div[contains(@class, 'compTitle mb-10')]") != null)
+
+            Definition definition = new Definition();
+            var content = node.InnerHtml.Replace("\n", "").Trim();
+            content = Regex.Replace(content, @"</?a.*?>", "");
+            const string explanationsPattern = @"(</h3>(?<explanations>.*?)<h3>)";
+            Match explanationsMatch = Regex.Match(content, explanationsPattern, RegexOptions.IgnoreCase);
+            var explanations = Regex.Split(explanationsMatch.Groups["explanations"].Value, @"<br><br>");
+
+            const string examplePattern = @"(</h3>(?<examples>.*?)$)";
+            Match exampleMatch = Regex.Match(content, examplePattern, RegexOptions.IgnoreCase | RegexOptions.RightToLeft);
+            var examples = Regex.Split(exampleMatch.Groups["examples"].Value, @"<br><br>");
+
+            foreach (var explanation in explanations)
             {
-                var part = node.SelectSingleNode("div[contains(@class, 'compTitle mb-10')]");
-                var defineCollection = node.SelectSingleNode("ul[contains(@class, 'compArticleList mb-15 ml-10')]");
-                var defines = defineCollection.SelectNodes("li");
-                var interpretations = new List<Explanation>();
-                foreach (var define in defines)
-                {
-                    var defined = define.SelectSingleNode("h4");
-                    var example = define.SelectSingleNode("span");
-                    var exampleText = (example == null) ? "" : example.InnerText.Trim();
-                    var combination = new Explanation() { Interpretation = defined.InnerText.Trim(), Example = exampleText };
-                    interpretations.Add(combination);
-                }
-                var section = new ExplanationSection() { PartOfSpeech = part.InnerText.Trim(), Interpretations = interpretations };
-                node.RemoveChild(part);
-                node.RemoveChild(defineCollection);
-                result.Add(section);
-            };
-            return result;
+                if (explanation == "") break;
+                definition.explanations.Add(explanation);
+            }
+
+            foreach (var example in examples)
+            {
+                var sentences = Regex.Split(example, "<br>");
+                if (sentences.Length != 2) break;
+                definition.examples.Add(new Example { origin = sentences[0], translated = sentences[1] });
+            }
+
+            return definition;
         }
 
     }

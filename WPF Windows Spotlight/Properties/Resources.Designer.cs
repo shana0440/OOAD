@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WPF_Windows_Spotlight.Properties {
+namespace QuickSearch.Properties {
     using System;
     
     

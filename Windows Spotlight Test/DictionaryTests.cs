@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WPF_Windows_Spotlight.Models.Dictionary;
+using QuickSearch.Models.Dictionary;
 using System.Collections.Generic;
 using System.Net;
 using Telerik.JustMock;
@@ -18,7 +18,7 @@ namespace Windows_Spotlight_Test
             Mock.SetupStatic(typeof(NetworkInterface), Behavior.Strict, StaticConstructor.Mocked);
             Mock.Arrange(() => NetworkInterface.GetIsNetworkAvailable()).Returns(false);
             Dictionary dictionary = new Dictionary();
-            List<ExplanationSection> results = dictionary.Search("apple");
+            Definition results = dictionary.Search("apple");
             Assert.Fail();
         }
 
@@ -27,10 +27,10 @@ namespace Windows_Spotlight_Test
         public void TestSearch()
         {
             Dictionary dictionary = new Dictionary();
-            List<ExplanationSection> results = dictionary.Search("apple");
-            Assert.AreEqual("n.名詞", results[0].PartOfSpeech);
-            Assert.AreEqual("1. 蘋果[C]", results[0].Interpretations[0].Interpretation);
-            Assert.AreEqual("An apple a day keeps the doctor away. 一日一蘋果，醫生不登門。", results[0].Interpretations[0].Example);
+            Definition definition = dictionary.Search("style");
+            Assert.AreEqual("n.方式；樣式；時髦；儀錶，品位；", definition.explanations[0]);
+            Assert.AreEqual("The word style was used in our definition of fashion.", definition.examples[0].origin);
+            Assert.AreEqual("款式(style)這個詞曾用來給時裝下定義.", definition.examples[0].translated);
         }
         
         [TestMethod]
@@ -38,7 +38,7 @@ namespace Windows_Spotlight_Test
         public void TestSearchNoResult()
         {
             Dictionary dictionary = new Dictionary();
-            List<ExplanationSection> results = dictionary.Search("abcasd");
+            Definition results = dictionary.Search("abcasd");
             Assert.Fail();
         }
     }

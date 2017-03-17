@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WPF_Windows_Spotlight.Models.SearchEngine;
-using WPF_Windows_Spotlight.Models.ResultItemsFactory;
+using QuickSearch.Models.SearchEngine;
+using QuickSearch.Models.ResultItemsFactory;
 using System.Net.NetworkInformation;
 using System.Net;
 using Telerik.JustMock;

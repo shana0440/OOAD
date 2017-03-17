@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
-namespace WPF_Windows_Spotlight.Models.ResultItemsFactory
+namespace QuickSearch.Models.ResultItemsFactory
 {
     public interface IResultItem
     {

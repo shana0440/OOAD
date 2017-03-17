@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
-namespace WPF_Windows_Spotlight
+namespace QuickSearch
 {
     public class LoadingCircle : INotifyPropertyChanged
     {

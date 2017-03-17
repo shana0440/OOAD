@@ -5,9 +5,9 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using WPF_Windows_Spotlight.Models;
+using QuickSearch.Models;
 
-namespace WPF_Windows_Spotlight.Models.CurrencyConverter
+namespace QuickSearch.Models.CurrencyConverter
 {
     public class CurrencyConverter
     {

@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
-namespace WPF_Windows_Spotlight.Models.ResultItemsFactory
+namespace QuickSearch.Models.ResultItemsFactory
 {
     abstract class ResultItem : IResultItem, INotifyPropertyChanged
     {

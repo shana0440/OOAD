@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace WPF_Windows_Spotlight.Models.FileSystem
+namespace QuickSearch.Models.FileSystem
 {
     class FileSystemResultFileItem : FileSystemResultItem
     {

@@ -5,9 +5,9 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using WPF_Windows_Spotlight.Models.ResultItemsFactory;
+using QuickSearch.Models.ResultItemsFactory;
 
-namespace WPF_Windows_Spotlight.Models.SearchEngine
+namespace QuickSearch.Models.SearchEngine
 {
     public class SearchEngine
     {

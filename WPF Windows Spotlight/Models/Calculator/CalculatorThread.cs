@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using WPF_Windows_Spotlight.Models.ResultItemsFactory;
+using QuickSearch.Models.ResultItemsFactory;
 
-namespace WPF_Windows_Spotlight.Models.Calculator
+namespace QuickSearch.Models.Calculator
 {
     public class CalculatorThread : IThread
     {

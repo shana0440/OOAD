@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
 
-namespace WPF_Windows_Spotlight.Models
+namespace QuickSearch.Models
 {
     class MyBackgroundWorker : BackgroundWorker
     {

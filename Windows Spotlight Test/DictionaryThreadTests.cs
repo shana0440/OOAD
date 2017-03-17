@@ -1,9 +1,9 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.ComponentModel;
-using WPF_Windows_Spotlight.Models.Dictionary;
+using QuickSearch.Models.Dictionary;
 using System.Threading;
 using System.Collections.Generic;
-using WPF_Windows_Spotlight.Models.ResultItemsFactory;
+using QuickSearch.Models.ResultItemsFactory;
 using Telerik.JustMock;
 using System.Net.NetworkInformation;
 

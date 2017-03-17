@@ -7,15 +7,15 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
-using WPF_Windows_Spotlight.Controller;
-using WPF_Windows_Spotlight.Models;
-using WPF_Windows_Spotlight.Models.ResultItemsFactory;
-using WPF_Windows_Spotlight.View;
+using QuickSearch.Controller;
+using QuickSearch.Models;
+using QuickSearch.Models.ResultItemsFactory;
+using QuickSearch.View;
 using Xceed.Wpf.Toolkit.Core.Utilities;
 using HorizontalAlignment = System.Windows.HorizontalAlignment;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 
-namespace WPF_Windows_Spotlight
+namespace QuickSearch
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

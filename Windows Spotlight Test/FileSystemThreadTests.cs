@@ -1,10 +1,10 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.ComponentModel;
-using WPF_Windows_Spotlight.Models.FileSystem;
+using QuickSearch.Models.FileSystem;
 using System.Threading;
 using System.Collections.Generic;
-using WPF_Windows_Spotlight.Models.ResultItemsFactory;
+using QuickSearch.Models.ResultItemsFactory;
 
 namespace Windows_Spotlight_Test
 {

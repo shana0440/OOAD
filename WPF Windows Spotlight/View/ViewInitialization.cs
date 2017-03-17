@@ -2,7 +2,7 @@ using System;
 using System.Windows;
 using System.Windows.Forms;
 
-namespace WPF_Windows_Spotlight.View
+namespace QuickSearch.View
 {
     class ViewInitialization
     {

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Windows.Controls;
-using WPF_Windows_Spotlight.Models.ResultItemsFactory;
+using QuickSearch.Models.ResultItemsFactory;
 using System.Windows;
 using System.Windows.Media;
 
-namespace WPF_Windows_Spotlight.Models.Calculator
+namespace QuickSearch.Models.Calculator
 {
     class CalculatorResultItem : ResultItem
     {

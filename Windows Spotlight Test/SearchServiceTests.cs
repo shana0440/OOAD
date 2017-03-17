@@ -1,8 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WPF_Windows_Spotlight.Controller;
+using QuickSearch.Controller;
 using System.Threading;
 using System.Collections.Generic;
-using WPF_Windows_Spotlight.Models.ResultItemsFactory;
+using QuickSearch.Models.ResultItemsFactory;
 using System.Collections.ObjectModel;
 
 namespace Windows_Spotlight_Test

@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Net;
 
-namespace WPF_Windows_Spotlight.Models.CurrencyConverter
+namespace QuickSearch.Models.CurrencyConverter
 {
     public class CurrencyConverterThread : IThread
     {

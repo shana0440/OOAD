@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using WPF_Windows_Spotlight.Models.ResultItemsFactory;
+using QuickSearch.Models.ResultItemsFactory;
 
-namespace WPF_Windows_Spotlight.Models.FileSystem
+namespace QuickSearch.Models.FileSystem
 {
     class FileSystemResultItemFactory : IResultItemsFactory
     {

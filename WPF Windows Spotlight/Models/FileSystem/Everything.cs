@@ -3,7 +3,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.Collections.Generic;
 
-namespace WPF_Windows_Spotlight.Models.FileSystem
+namespace QuickSearch.Models.FileSystem
 {
     public class Everything
     {

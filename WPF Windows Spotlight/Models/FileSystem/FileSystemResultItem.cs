@@ -5,9 +5,9 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using WPF_Windows_Spotlight.Models.ResultItemsFactory;
+using QuickSearch.Models.ResultItemsFactory;
 
-namespace WPF_Windows_Spotlight.Models.FileSystem
+namespace QuickSearch.Models.FileSystem
 {
     abstract class FileSystemResultItem : ResultItem
     {

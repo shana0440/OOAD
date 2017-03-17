@@ -4,9 +4,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WPF_Windows_Spotlight.Models.ResultItemsFactory;
+using QuickSearch.Models.ResultItemsFactory;
 
-namespace WPF_Windows_Spotlight.Models.FileSystem
+namespace QuickSearch.Models.FileSystem
 {
     public class FileSystemThread : IThread
     {

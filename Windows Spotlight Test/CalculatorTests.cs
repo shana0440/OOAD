@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WPF_Windows_Spotlight.Models.Calculator;
+using QuickSearch.Models.Calculator;
 
 namespace Windows_Spotlight_Test
 {

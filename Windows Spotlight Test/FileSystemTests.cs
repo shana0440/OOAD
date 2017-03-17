@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WPF_Windows_Spotlight.Models.FileSystem;
+using QuickSearch.Models.FileSystem;
 using System.Collections.Generic;
 using Telerik.JustMock;
 

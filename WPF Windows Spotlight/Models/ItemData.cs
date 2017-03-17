@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WPF_Windows_Spotlight.Models
+namespace QuickSearch.Models
 {
     class ItemData
     {

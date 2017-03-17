@@ -1,10 +1,10 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WPF_Windows_Spotlight.Models.CurrencyConverter;
+using QuickSearch.Models.CurrencyConverter;
 using System.Net;
 using Telerik.JustMock;
 using System.Net.NetworkInformation;
-using WPF_Windows_Spotlight.Models;
+using QuickSearch.Models;
 
 namespace Windows_Spotlight_Test
 {

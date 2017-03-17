@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace WPF_Windows_Spotlight
+namespace QuickSearch
 {
     /// <summary>
     /// Interaction logic for App.xaml

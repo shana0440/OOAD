@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Net;
-using WPF_Windows_Spotlight.Models.ResultItemsFactory;
+using QuickSearch.Models.ResultItemsFactory;
 
-namespace WPF_Windows_Spotlight.Models.Dictionary
+namespace QuickSearch.Models.Dictionary
 {
     public class DictionaryThread : IThread
     {
@@ -14,9 +14,9 @@ namespace WPF_Windows_Spotlight.Models.Dictionary
             try
             {
                 Dictionary directory = new Dictionary();
-                List<ExplanationSection> sections = directory.Search(keyword);
+                Definition section = directory.Search(keyword);
                 DictionaryResultItemFactory factory = new DictionaryResultItemFactory();
-                var DTO = new KeyValuePair<string, List<ExplanationSection>>(keyword, sections);
+                var DTO = new KeyValuePair<string, Definition>(keyword, section);
                 List<IResultItem> results = factory.CreateResultItems(DTO);
                 var worker = (BackgroundWorker)sender;
                 if (worker.CancellationPending)

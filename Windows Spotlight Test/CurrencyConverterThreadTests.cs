@@ -1,14 +1,14 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WPF_Windows_Spotlight.Models.CurrencyConverter;
+using QuickSearch.Models.CurrencyConverter;
 using System.ComponentModel;
 using System.Threading;
 using System.Collections.Generic;
-using WPF_Windows_Spotlight.Models.ResultItemsFactory;
+using QuickSearch.Models.ResultItemsFactory;
 using Telerik.JustMock;
 using System.Net.NetworkInformation;
 using System.Net;
-using WPF_Windows_Spotlight.Models;
+using QuickSearch.Models;
 
 namespace Windows_Spotlight_Test
 {

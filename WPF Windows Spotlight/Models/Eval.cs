@@ -4,7 +4,7 @@ using System.CodeDom.Compiler;
 using System.Reflection;
 using System.Text;
 
-namespace WPF_Windows_Spotlight.Models
+namespace QuickSearch.Models
 {
     class Eval
     {

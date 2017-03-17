@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using WPF_Windows_Spotlight.Models.Calculator;
-using WPF_Windows_Spotlight.Models;
-using WPF_Windows_Spotlight.Models.ResultItemsFactory;
+using QuickSearch.Models.Calculator;
+using QuickSearch.Models;
+using QuickSearch.Models.ResultItemsFactory;
 using System.Collections.ObjectModel;
-using WPF_Windows_Spotlight.Models.FileSystem;
+using QuickSearch.Models.FileSystem;
 using System;
-using WPF_Windows_Spotlight.Models.Dictionary;
-using WPF_Windows_Spotlight.Models.CurrencyConverter;
-using WPF_Windows_Spotlight.Models.SearchEngine;
+using QuickSearch.Models.Dictionary;
+using QuickSearch.Models.CurrencyConverter;
+using QuickSearch.Models.SearchEngine;
 
-namespace WPF_Windows_Spotlight.Controller
+namespace QuickSearch.Controller
 {
     public class SearchService
     {
