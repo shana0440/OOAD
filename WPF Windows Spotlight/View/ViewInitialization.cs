@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Windows;
 using System.Windows.Forms;
 
@@ -8,7 +8,6 @@ namespace WPF_Windows_Spotlight.View
     {
         Window _view;
         NotifyIcon _notifyIcon;
-        LowLevelKeyboardListener _keyboardListener;
 
         public ViewInitialization(Window view)
         {
@@ -19,7 +18,6 @@ namespace WPF_Windows_Spotlight.View
         {
             InitStateBar();
             MakeWindowToFullScreen();
-            HookKeyboard();
             HideOfTaskBar();
         }
 
@@ -50,7 +48,6 @@ namespace WPF_Windows_Spotlight.View
         void CloseApp(object sender, EventArgs e)
         {
             _notifyIcon.Visible = false;
-            _keyboardListener.UnHookKeyboard();
             _view.Close();
         }
 
@@ -62,21 +59,11 @@ namespace WPF_Windows_Spotlight.View
             _view.Top = 0;
         }
 
-        void HookKeyboard()
-        {
-            _keyboardListener = new LowLevelKeyboardListener();
-            _keyboardListener.HookKeyboard();
-        }
-
         void HideOfTaskBar()
         {
             // 在任務列(alt + tab)不會出現
             _view.ShowInTaskbar = false;
         }
 
-        public void SetKeyboardEvent(EventHandler<KeyPressedArgs> handler)
-        {
-            _keyboardListener.OnKeyPressed += handler;
-        }
     }
 }
