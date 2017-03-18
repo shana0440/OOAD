@@ -13,6 +13,7 @@ using QuickSearch.View;
 using Xceed.Wpf.Toolkit.Core.Utilities;
 using HorizontalAlignment = System.Windows.HorizontalAlignment;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
+using System.Threading;
 
 namespace QuickSearch
 {
@@ -24,7 +25,7 @@ namespace QuickSearch
         LoadingCircle _rotate = new LoadingCircle { Angle = 0 };
         ViewInitialization _viewInitialization;
         bool _isWindowVisible = false;
-        SearchService _searchService = new SearchService();
+        SearchService _searchService;
         bool _isSearching = false;
         HookKeyMatch _hookKeyMatch = new HookKeyMatch();
         Theme _theme;
@@ -35,9 +36,44 @@ namespace QuickSearch
 
             _viewInitialization = new ViewInitialization(this);
             _viewInitialization.Init();
+            _searchService = new SearchService();
             _hookKeyMatch.PlusKeyDownEvent(SearchbarVisable);
+            _searchService.SubscribeSearchOverEvent(() => {
+                this.Dispatcher.Invoke(SearchOverEvent);
+            });
 
             InitRender();
+        }
+
+        void SearchOverEvent()
+        {
+            _rotate.Stop();
+            _isSearching = false;
+            if (_searchService.ResultList.Count > 0)
+            {
+                IResultItem item = _searchService.ResultList[0];
+                VisualTreeHelperEx.FindDescendantByType<ScrollViewer>(ResultList)?.ScrollToTop();
+                ShowSelectdItemContent(item);
+            }
+            else
+            {
+                ResultIcon.Visibility = Visibility.Hidden;
+                ResizeHeight();
+                ContentView.Children.Clear();
+                InputTextBoxWatermark.Text = "— 沒有結果";
+                InputTextBoxWatermark.HorizontalAlignment = HorizontalAlignment.Right;
+            }
+        }
+
+        void ShowSelectdItemContent(IResultItem item)
+        {
+            if (item == null) return;
+            if (!_isSearching)
+            {
+                ResultIcon.Source = item.Icon;
+            }
+            ResizeHeight();
+            item.GenerateContent(ContentView);
         }
 
         public void InitRender()
@@ -131,7 +167,7 @@ namespace QuickSearch
         void HideWindow()
         {
             _isWindowVisible = false;
-            _searchService.CancelCurrentSearching();
+            _searchService.AbortSearchThread();
             ResultIcon.Source = null;
             InputTextBox.Clear();
             Hide();
@@ -161,64 +197,35 @@ namespace QuickSearch
         {
             if (InputTextBox.Text.Trim() == "")
             {
-                if (InputTextBox.Text == "")
-                {
-                    InputTextBoxWatermark.Text = "Quick Search";
-                    InputTextBoxWatermark.HorizontalAlignment = HorizontalAlignment.Left;
-                    _searchService.CancelCurrentSearching();
-                    ResultIcon.Visibility = Visibility.Hidden;
-                }
-                else
-                {
-                    InputTextBoxWatermark.Text = "";
-                }
-                ResizeHeight();
+                ClearSearchText();
             }
             else
             {
                 _isSearching = true;
                 ResultIcon.Visibility = Visibility.Visible;
-                _rotate.Start();
+                _rotate.IfStopThenStart();
                 ContentView.Children.Clear();
                 ResultIcon.Source = _theme.LoadingImage;
                 InputTextBoxWatermark.Text = "";
 
-                _searchService.SubscribeSearchOverEvent(SearchOverEvent);
                 _searchService.Search(InputTextBox.Text);
             }
         }
 
-        void SearchOverEvent()
+        private void ClearSearchText()
         {
-            _rotate.Stop();
-            _isSearching = false;
-            if (_searchService.ResultList.Count > 0)
+            if (InputTextBox.Text == "")
             {
-                IResultItem item = _searchService.ResultList[0];
-                // 不知道為啥要兩個 不用兩個他不會回到最上面
-                ResultList.ScrollIntoView(item);
-                ResultList.ScrollIntoView(ResultList.SelectedItem);
-                ShowSelectdItemContent(item);
+                InputTextBoxWatermark.Text = "Quick Search";
+                InputTextBoxWatermark.HorizontalAlignment = HorizontalAlignment.Left;
+                _searchService.AbortSearchThread();
+                ResultIcon.Visibility = Visibility.Hidden;
             }
             else
             {
-                ResultIcon.Visibility = Visibility.Hidden;
-                ResizeHeight();
-                ContentView.Children.Clear();
-                InputTextBoxWatermark.Text = "— 沒有結果";
-                InputTextBoxWatermark.HorizontalAlignment = HorizontalAlignment.Right;
-            }
-        }
-
-        void ShowSelectdItemContent(IResultItem item)
-        {
-            if (item == null) return;
-            if (!_isSearching)
-            {
-                ResultIcon.Source = item.Icon;
+                InputTextBoxWatermark.Text = "";
             }
             ResizeHeight();
-            item.GenerateContent(ContentView);
         }
 
         private void OpenItemResource(object sender, MouseButtonEventArgs e)
@@ -253,7 +260,10 @@ namespace QuickSearch
             if (_searchService.ResultList.Count > 0)
             {
                 ResultList.ScrollIntoView(ResultList.SelectedItem);
-                ShowSelectdItemContent(_searchService.ResultList[_searchService.SelectedIndex]);
+                if (_searchService.SelectedIndex < _searchService.ResultList.Count)
+                {
+                    ShowSelectdItemContent(_searchService.ResultList[_searchService.SelectedIndex]);
+                }
             }
         }
     }

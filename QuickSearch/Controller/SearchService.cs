@@ -9,18 +9,20 @@ using System;
 using QuickSearch.Models.Dictionary;
 using QuickSearch.Models.CurrencyConverter;
 using QuickSearch.Models.SearchEngine;
+using System.Threading;
+using System.Windows;
 
 namespace QuickSearch.Controller
 {
     public class SearchService
     {
-        int _searchingCount = 0;
-        List<BackgroundWorker> _workers = new List<BackgroundWorker>();
         public delegate void SearchOverEventHandler();
         SearchOverEventHandler _searchOverEvent;
-        ObservableCollection<IResultItem> _resultList = new ObservableCollection<IResultItem>();
-        int _serialNumber = 0;
+        AsyncObservableCollection<IResultItem> _resultList = new AsyncObservableCollection<IResultItem>();
         public int SelectedIndex { get; internal set; }
+
+        Thread _searchThread;
+        SearchThread _searchThreadObject;
 
         public ObservableCollection<IResultItem> ResultList
         {
@@ -30,127 +32,47 @@ namespace QuickSearch.Controller
             }
         }
 
+        public SearchService()
+        {
+            _searchThreadObject = _searchThreadObject ?? new SearchThread();
+            _searchThreadObject.SubscribeSearchOverEvent(() =>
+            {
+                _searchThread.Join();
+                Console.WriteLine("SearchThread Search Over");
+                Console.WriteLine("Search Keyword: {0}", _searchThreadObject.Keyword);
+                Console.WriteLine("Get Reslut Items amount: {0}", _searchThreadObject.ResultList.Count);
+                Console.WriteLine("====================================");
+                foreach (var item in _searchThreadObject.ResultList)
+                {
+                    _resultList.Add(item);
+                }
+                _searchOverEvent();
+            });
+
+            _searchThread = _searchThread ?? new Thread(_searchThreadObject.Search);
+        }
+
         public void Search(string keyword)
         {
-            CancelCurrentSearching();
-            _serialNumber = _serialNumber + 1 % 1000;
-
-            IThread calculatorThread = new CalculatorThread();
-            MyBackgroundWorker calculatorWorker = new MyBackgroundWorker(_serialNumber, "計算機");
-            calculatorWorker.DoWork += new DoWorkEventHandler(calculatorThread.DoWork);
-            calculatorWorker.RunWorkerCompleted += SearchOver;
-            calculatorWorker.WorkerSupportsCancellation = true; // support cancel
-            calculatorWorker.RunWorkerAsync(keyword);
-            _searchingCount++;
-            _workers.Add(calculatorWorker);
-
-            IThread fileSystemThread = new FileSystemThread();
-            MyBackgroundWorker fileSystemWorker = new MyBackgroundWorker(_serialNumber, "檔案系統");
-            fileSystemWorker.DoWork += new DoWorkEventHandler(fileSystemThread.DoWork);
-            fileSystemWorker.RunWorkerCompleted += SearchOver;
-            fileSystemWorker.WorkerSupportsCancellation = true;
-            fileSystemWorker.RunWorkerAsync(keyword);
-            _searchingCount++;
-            _workers.Add(fileSystemWorker);
-
-            IThread directoryThread = new DictionaryThread();
-            MyBackgroundWorker directoryWorker = new MyBackgroundWorker(_serialNumber, "字典");
-            directoryWorker.DoWork += new DoWorkEventHandler(directoryThread.DoWork);
-            directoryWorker.RunWorkerCompleted += SearchOver;
-            directoryWorker.WorkerSupportsCancellation = true;
-            directoryWorker.RunWorkerAsync(keyword);
-            _searchingCount++;
-            _workers.Add(directoryWorker);
-
-            IThread currencyThread = new CurrencyConverterThread();
-            MyBackgroundWorker currencyWorker = new MyBackgroundWorker(_serialNumber, "匯率轉換");
-            currencyWorker.DoWork += new DoWorkEventHandler(currencyThread.DoWork);
-            currencyWorker.RunWorkerCompleted += SearchOver;
-            currencyWorker.WorkerSupportsCancellation = true;
-            currencyWorker.RunWorkerAsync(keyword);
-            _searchingCount++;
-            _workers.Add(currencyWorker);
-
-            IThread searchEngineThread = new SearchEngineThread();
-            MyBackgroundWorker searchEngineWorker = new MyBackgroundWorker(_serialNumber, "網頁搜尋");
-            searchEngineWorker.DoWork += new DoWorkEventHandler(searchEngineThread.DoWork);
-            searchEngineWorker.RunWorkerCompleted += SearchOver;
-            searchEngineWorker.WorkerSupportsCancellation = true;
-            searchEngineWorker.RunWorkerAsync(keyword);
-            _searchingCount++;
-            _workers.Add(searchEngineWorker);
-        }
-
-        public void CancelCurrentSearching()
-        {
-            foreach (var worker in _workers)
+            if (!_searchThread.IsAlive)
             {
-                worker.CancelAsync();
-            }
-            SelectedIndex = 0;
-            _searchingCount = 0;
-            _resultList.Clear();
-            _workers.Clear();
-            _serialNumber++;
-        }
-
-        void SearchOver(object sender, RunWorkerCompletedEventArgs e)
-        {
-            var worker = (MyBackgroundWorker)sender;
-            
-            var isCurrentSearch = worker.SerialNumber == _serialNumber;
-            if (isCurrentSearch)
-            {
-                _searchingCount--;
-                if (!e.Cancelled && e.Result != null)
+                if (_searchThread.ThreadState == ThreadState.Stopped || _searchThread.ThreadState == ThreadState.Aborted)
                 {
-                    List<IResultItem> result = (List<IResultItem>)e.Result;
-                    MergeListToObservableCollection(_resultList, result);
+                    _searchThread = new Thread(_searchThreadObject.Search);
                 }
-
-                var spendTime = worker.Watch.ElapsedMilliseconds;
-                Console.WriteLine(String.Format("{0} 運作了 {1} 毫秒", worker.Owner, spendTime));
-                if (_searchingCount == 0)
-                {
-                    _workers.Clear();
-                    if (_resultList.Count > 0)
-                    {
-                        SortBestResult(_resultList);
-                    }
-                    SelectItem(0);
-                    _searchOverEvent?.Invoke();
-                    GC.Collect();
-                }
+                _searchThread.Start();
+                _resultList.Clear();
+                SelectedIndex = 0;
             }
+
+            _searchThreadObject.Wait500ms();
+            _searchThreadObject.Keyword = keyword;
         }
 
-        ObservableCollection<IResultItem> MergeListToObservableCollection(ObservableCollection<IResultItem> target, List<IResultItem> source)
-        {
-            foreach (var item in source)
-            {
-                target.Add(item);
-            }
-            return target;
-        }
 
         public void SubscribeSearchOverEvent(SearchOverEventHandler handler)
         {
             _searchOverEvent = handler;
-        }
-
-        void SortBestResult(ObservableCollection<IResultItem> results)
-        {
-            IResultItem bestSolution = null;
-            foreach (var item in results)
-            {
-                if (bestSolution == null || bestSolution.Priority < item.Priority)
-                {
-                    bestSolution = item;
-                }
-            }
-            bestSolution.GroupName = "最佳搜尋結果";
-            results.Remove(bestSolution);
-            results.Insert(0, bestSolution);
         }
 
         internal void OpenSelectedItemResource()
@@ -176,5 +98,10 @@ namespace QuickSearch.Controller
             }
         }
 
+        public void AbortSearchThread()
+        {
+            _searchThread.Abort();
+            GC.Collect();
+        }
     }
 }

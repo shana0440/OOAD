@@ -30,7 +30,7 @@ namespace QuickSearch
             }
         }
 
-        public void Start()
+        public void IfStopThenStart()
         {
             if (!_searching)
             {
