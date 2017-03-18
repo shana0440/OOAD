@@ -1,43 +1,49 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.ComponentModel;
-using QuickSearch.Models.SearchEngine;
+using QuickSearch.Models.Dictionary;
 using System.Threading;
 using System.Collections.Generic;
 using QuickSearch.Models.ResultItemsFactory;
 using Telerik.JustMock;
 using System.Net.NetworkInformation;
 
-namespace Windows_Spotlight_Test
+namespace QuickSearchTest
 {
     [TestClass]
-    public class SearchEngineThreadTests
+    public class DictionaryThreadTests
     {
         object _threadResult;
 
         [TestMethod]
         public void TestDoWorkSuccess()
         {
-            SearchEngineThread thread = new SearchEngineThread();
+            DictionaryThread thread = new DictionaryThread();
             BackgroundWorker worker = new BackgroundWorker();
             worker.DoWork += thread.DoWork;
             worker.RunWorkerCompleted += WorkerCompleted;
-            worker.RunWorkerAsync("google");
-            
-            Thread.Sleep(1000);
+            worker.RunWorkerAsync("apple");
+
+            while (worker.IsBusy)
+            {
+                Thread.Sleep(1000);
+            }
             List<IResultItem> result = (List<IResultItem>)_threadResult;
-            Assert.AreEqual(5, result.Count);
+            Assert.AreEqual(1, result.Count);
         }
 
         [TestMethod]
         public void TestDoWorkFail()
         {
-            SearchEngineThread thread = new SearchEngineThread();
+            DictionaryThread thread = new DictionaryThread();
             BackgroundWorker worker = new BackgroundWorker();
             worker.DoWork += thread.DoWork;
             worker.RunWorkerCompleted += WorkerCompleted;
             worker.RunWorkerAsync("googleqweoirjwflszjksdhf;laewoijfdz;sldkfj");
 
-            Thread.Sleep(1000);
+            while (worker.IsBusy)
+            {
+                Thread.Sleep(1000);
+            }
             List<IResultItem> result = (List<IResultItem>)_threadResult;
             Assert.IsNull(result);
         }
@@ -48,11 +54,10 @@ namespace Windows_Spotlight_Test
             Mock.SetupStatic(typeof(NetworkInterface), Behavior.Strict, StaticConstructor.Mocked);
             Mock.Arrange(() => NetworkInterface.GetIsNetworkAvailable()).Returns(false);
 
-            SearchEngineThread thread = new SearchEngineThread();
-            BackgroundWorker worker = new BackgroundWorker();
-            DoWorkEventArgs e = new DoWorkEventArgs("google");
+            DictionaryThread thread = new DictionaryThread();
+            DoWorkEventArgs e = new DoWorkEventArgs("keyword");
             thread.DoWork("0.0", e);
-
+            
             Thread.Sleep(1000);
             Assert.IsNull(e.Result);
         }

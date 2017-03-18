@@ -11,7 +11,7 @@ namespace QuickSearch.Models.Dictionary
         public Definition Search(string keyword)
         {
             string url = String.Format(Config.DirectoryUrl, Uri.EscapeDataString(keyword));
-            string html = Crawler.GetResponse(url); 
+            string html = Crawler.GetResponse(url);
             return ParseHTML(html);
         }
 

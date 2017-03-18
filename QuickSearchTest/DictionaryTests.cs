@@ -6,7 +6,7 @@ using System.Net;
 using Telerik.JustMock;
 using System.Net.NetworkInformation;
 
-namespace Windows_Spotlight_Test
+namespace QuickSearchTest
 {
     [TestClass]
     public class DictionaryTests

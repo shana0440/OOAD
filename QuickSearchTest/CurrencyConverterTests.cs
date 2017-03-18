@@ -6,7 +6,7 @@ using Telerik.JustMock;
 using System.Net.NetworkInformation;
 using QuickSearch.Models;
 
-namespace Windows_Spotlight_Test
+namespace QuickSearchTest
 {
     [TestClass]
     public class CurrencyConverterTests

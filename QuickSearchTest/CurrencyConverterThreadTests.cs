@@ -10,7 +10,7 @@ using System.Net.NetworkInformation;
 using System.Net;
 using QuickSearch.Models;
 
-namespace Windows_Spotlight_Test
+namespace QuickSearchTest
 {
     [TestClass]
     public class CurrencyConverterThreadTests

@@ -195,7 +195,7 @@
             </Border>
         </Canvas>
         <Canvas x:Name="DecorateCanvas">
-            <Image x:Name="DecorateImage" Width="300" Source="C:\Users\kw\Documents\Visual Studio 2015\Projects\QuickSearch\WPF Windows Spotlight\Images\DecorateImage2.png"></Image>
+            <Image x:Name="DecorateImage" Width="300" Source="C:\Users\kw\Documents\Visual Studio 2015\Projects\QuickSearch\QuickSearch\Images\DecorateImage2.png"></Image>
         </Canvas>
     </Grid>
 </Window>

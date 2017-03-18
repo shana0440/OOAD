@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QuickSearch.Models.Calculator;
 
-namespace Windows_Spotlight_Test
+namespace QuickSearchTest
 {
     [TestClass]
     public class CalculatorTests

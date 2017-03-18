@@ -6,8 +6,8 @@
     <ProjectGuid>{5A12A89E-104B-42C4-A08B-DA89A37FB07B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Windows_Spotlight_Test</RootNamespace>
-    <AssemblyName>Windows Spotlight Test</AssemblyName>
+    <RootNamespace>QuickSearchTest</RootNamespace>
+    <AssemblyName>QuickSearchTest</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -80,7 +80,7 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WPF Windows Spotlight\QuickSearch.csproj">
+    <ProjectReference Include="..\QuickSearch\QuickSearch.csproj">
       <Project>{3def0abe-b839-4028-a037-91e0320124aa}</Project>
       <Name>QuickSearch</Name>
     </ProjectReference>

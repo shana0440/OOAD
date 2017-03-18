@@ -7,7 +7,7 @@ using System.Net.NetworkInformation;
 using System.Net;
 using Telerik.JustMock;
 
-namespace Windows_Spotlight_Test
+namespace QuickSearchTest
 {
     [TestClass]
     public class SearchEngineTests

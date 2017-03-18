@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using QuickSearch.Models.ResultItemsFactory;
 using System.Collections.ObjectModel;
 
-namespace Windows_Spotlight_Test
+namespace QuickSearchTest
 {
     [TestClass]
     public class SearchServiceTests

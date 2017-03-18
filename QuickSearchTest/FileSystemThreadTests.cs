@@ -6,7 +6,7 @@ using System.Threading;
 using System.Collections.Generic;
 using QuickSearch.Models.ResultItemsFactory;
 
-namespace Windows_Spotlight_Test
+namespace QuickSearchTest
 {
     [TestClass]
     public class FileSystemThreadTests

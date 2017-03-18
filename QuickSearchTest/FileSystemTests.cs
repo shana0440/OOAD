@@ -4,7 +4,7 @@ using QuickSearch.Models.FileSystem;
 using System.Collections.Generic;
 using Telerik.JustMock;
 
-namespace Windows_Spotlight_Test
+namespace QuickSearchTest
 {
     [TestClass]
     public class FileSystemTests
