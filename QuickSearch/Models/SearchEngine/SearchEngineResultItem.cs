@@ -40,7 +40,7 @@ namespace QuickSearch.Models.SearchEngine
             title.Content = Title;
             title.FontSize = 24;
             title.HorizontalContentAlignment = HorizontalAlignment.Center;
-            title.Foreground = Brushes.White;
+            title.Foreground = ((SolidColorBrush)Application.Current.Resources["ForegroundColor"]);
             contentView.Children.Add(title);
 
             var url = new Label();
@@ -51,7 +51,7 @@ namespace QuickSearch.Models.SearchEngine
             contentView.Children.Add(url);
 
             var hr = new Border();
-            var hrColor = (Color)ColorConverter.ConvertFromString(Config.SearchbarBorderColor);
+            var hrColor = ((SolidColorBrush)Application.Current.Resources["SearchbarBorderColor"]).Color;
             hr.Height = 1;
             hr.BorderBrush = new SolidColorBrush(hrColor);
             hr.BorderThickness = new Thickness(0, 1, 0, 0);

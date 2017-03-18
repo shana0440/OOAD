@@ -39,7 +39,7 @@ namespace QuickSearch.Models.Dictionary
             {
                 var explanationLabel = new Label { Content = explanation };
                 explanationLabel.Margin = new Thickness(10, 0, 0, 0);
-                explanationLabel.Foreground = Brushes.White;
+                explanationLabel.Foreground = ((SolidColorBrush)Application.Current.Resources["ForegroundColor"]);
                 contentView.Children.Add(explanationLabel);
             }
 
@@ -52,7 +52,7 @@ namespace QuickSearch.Models.Dictionary
             {
                 var originExample = new Label { Content = example.origin };
                 originExample.Margin = new Thickness(10, 0, 0, 0);
-                originExample.Foreground = Brushes.White;
+                originExample.Foreground = ((SolidColorBrush)Application.Current.Resources["ForegroundColor"]);
                 contentView.Children.Add(originExample);
 
                 var translatedExample = new Label { Content = example.translated };

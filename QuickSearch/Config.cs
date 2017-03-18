@@ -21,8 +21,5 @@ namespace QuickSearch
         public const int SearchbarHeight = 420;
         public const int InputHieght = 50;
 
-        public const string SearchbarColor = "#FF252525";
-        public const string SearchbarBorderColor = "#FF3a3a3a";
-
     }
 }

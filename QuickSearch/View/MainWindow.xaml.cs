@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Threading;
 using QuickSearch.Controller;
 using QuickSearch.Models;
@@ -28,6 +27,7 @@ namespace QuickSearch
         SearchService _searchService = new SearchService();
         bool _isSearching = false;
         HookKeyMatch _hookKeyMatch = new HookKeyMatch();
+        Theme _theme;
 
         public MainWindow()
         {
@@ -47,8 +47,7 @@ namespace QuickSearch
             InitResultsListSource();
             InitLoadingCircle();
             MakeSearchBarToCenter();
-            Application.Current.Resources["SearchbarColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Config.SearchbarColor));
-            Application.Current.Resources["SearchbarBorderColor"] = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Config.SearchbarBorderColor));
+            ApplyTheme("Dark");
         }
 
         void RenderSearchIcon()
@@ -85,7 +84,7 @@ namespace QuickSearch
             DataContext = _rotate;
         }
 
-        private void MakeSearchBarToCenter()
+        void MakeSearchBarToCenter()
         {
             var searchbarTop = (SystemParameters.PrimaryScreenHeight / 2) - (Config.SearchbarHeight / 2);
             var searchbarLeft = (SystemParameters.PrimaryScreenWidth / 2) - (Config.SearchbarWidth / 2);
@@ -98,6 +97,16 @@ namespace QuickSearch
             DecorateImage.Width = 300;
             Canvas.SetTop(DecorateImage, searchbarTop - 176);
             Canvas.SetLeft(DecorateImage, searchbarLeft + Config.SearchbarWidth - 195);
+        }
+
+        void ApplyTheme(string themeName)
+        {
+            _theme = new Theme(themeName);
+            var fields = _theme.GetType().GetFields();
+            foreach (var field in fields)
+            {
+                var test = Application.Current.Resources[field.Name] = _theme.GetType().GetField(field.Name).GetValue(_theme);
+            }
         }
 
         void SearchbarVisable(KeyboardHookEventArgs args)
@@ -171,7 +180,7 @@ namespace QuickSearch
                 ResultIcon.Visibility = Visibility.Visible;
                 _rotate.Start();
                 ContentView.Children.Clear();
-                ResultIcon.Source = BitmapToBitmapImage.Transform(Properties.Resources.loading);
+                ResultIcon.Source = _theme.LoadingImage;
                 InputTextBoxWatermark.Text = "";
 
                 _searchService.SubscribeSearchOverEvent(SearchOverEvent);

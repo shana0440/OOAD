@@ -163,6 +163,7 @@
     <Compile Include="Models\SearchEngine\SearchEngineResultItem.cs" />
     <Compile Include="Models\SearchEngine\SearchEngineThread.cs" />
     <Compile Include="View\LoadingCircle.cs" />
+    <Compile Include="View\Theme.cs" />
     <Compile Include="View\ViewInitialization.cs" />
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -232,7 +233,6 @@
     <Resource Include="Images\calculator_icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Images\loading.png" />
     <None Include="Images\icon.ico" />
     <None Include="Images\exchange.png" />
     <None Include="Images\web.png" />

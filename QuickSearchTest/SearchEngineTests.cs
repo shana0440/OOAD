@@ -21,10 +21,6 @@ namespace QuickSearchTest
 
             Assert.AreEqual(5, results.Count);
             Assert.AreEqual("登入Facebook | Facebook", results[0].Title);
-            Assert.AreEqual("歡迎來到Facebook －登入、註冊或瞭解更多", results[1].Title);
-            Assert.AreEqual("Facebook - Log In or Sign Up", results[2].Title);
-            Assert.AreEqual("Log into Facebook | Facebook", results[3].Title);
-            Assert.AreEqual("Log in to Facebook | Facebook", results[4].Title);
         }
 
         [TestMethod]

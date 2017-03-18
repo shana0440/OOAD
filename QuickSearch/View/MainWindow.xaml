@@ -12,12 +12,12 @@
                     <ControlTemplate TargetType="{x:Type Thumb}">
                         <Grid x:Name="Grid">
                             <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Fill="Transparent" />
-                            <Border x:Name="Rectangle1" CornerRadius="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto"  Background="{TemplateBinding Background}" />
+                            <Border x:Name="Rectangle1" CornerRadius="5" Width="Auto" Height="Auto" Background="{TemplateBinding Background}" />
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="Tag" Value="Horizontal">
                                 <Setter TargetName="Rectangle1" Property="Width" Value="Auto" />
-                                <Setter TargetName="Rectangle1" Property="Height" Value="7" />
+                                <Setter TargetName="Rectangle1" Property="Height" Value="Auto" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -37,8 +37,7 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="0.00001*" />
                             </Grid.RowDefinitions>
-
-                            <Track x:Name="PART_Track" Grid.Row="0" IsDirectionReversed="true" Focusable="false">
+                            <Track x:Name="PART_Track" IsDirectionReversed="true" Focusable="false">
                                 <Track.Thumb>
                                     <Thumb x:Name="Thumb" Background="{TemplateBinding Foreground}" Style="{DynamicResource ScrollThumbs}" />
                                 </Track.Thumb>
@@ -50,7 +49,6 @@
                                 </Track.DecreaseRepeatButton>
                             </Track>
                         </Grid>
-
                         <ControlTemplate.Triggers>
                             <Trigger SourceName="Thumb" Property="IsMouseOver" Value="true">
                                 <Setter Value="{DynamicResource ButtonSelectBrush}" TargetName="Thumb" Property="Background" />
@@ -114,8 +112,8 @@
                             </Style>
                         </TextBlock.Style>
                     </TextBlock>
-                    <TextBox x:Name="InputTextBox" Margin="0,12,8,11" FontSize="23" FontFamily="Arial" TextChanged="Search" Grid.ColumnSpan="3" Grid.Column="1" VerticalAlignment="Center" BorderThickness="0" Background="Transparent" PreviewKeyDown="SelectItem" Height="28" Foreground="#FFF0F0F0" CaretBrush="White" />
-                    <ListBox BorderBrush="{DynamicResource SearchbarBorderColor}" BorderThickness="0,0,1,0" x:Name="ResultList" ItemsSource="{Binding}" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="Auto" Grid.Row="1" Grid.ColumnSpan="3" Background="Transparent" Margin="-1,1,0,-46" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Foreground="#FFF0F0F0">
+                    <TextBox x:Name="InputTextBox" Margin="0,12,8,11" FontSize="23" FontFamily="Arial" TextChanged="Search" Grid.ColumnSpan="3" Grid.Column="1" VerticalAlignment="Center" BorderThickness="0" Background="Transparent" PreviewKeyDown="SelectItem" Height="28" Foreground="{DynamicResource ForegroundColor}" CaretBrush="{DynamicResource ForegroundColor}" />
+                    <ListBox BorderBrush="{DynamicResource SearchbarBorderColor}" BorderThickness="0,0,1,0" x:Name="ResultList" ItemsSource="{Binding}" HorizontalAlignment="Left" Height="Auto" Width="300" Grid.Row="1" Grid.ColumnSpan="3" Background="Transparent" Margin="-1,1,0,-45" ScrollViewer.HorizontalScrollBarVisibility="Hidden" Foreground="{DynamicResource ForegroundColor}">
                         <ListBox.GroupStyle>
                             <GroupStyle>
                                 <GroupStyle.ContainerStyle>
@@ -128,7 +126,7 @@
                                                             <RowDefinition/>
                                                             <RowDefinition/>
                                                         </Grid.RowDefinitions>
-                                                        <StackPanel Grid.Row="0" Orientation="Horizontal" Background="{DynamicResource SearchbarBorderColor}">
+                                                        <StackPanel Grid.Row="0" Orientation="Horizontal" Background="{DynamicResource ListBoxGroupBackgroundColor}">
                                                             <TextBlock Margin="15, 0, 0, 0" Text="{Binding Name}"/>
                                                         </StackPanel>
                                                         <ItemsPresenter Grid.Row="1"/>
@@ -188,8 +186,8 @@
                             <RotateTransform Angle="{Binding Angle}"/>
                         </Image.RenderTransform>
                     </Image>
-                    <ScrollViewer Grid.Column="3" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left" Height="347" Grid.Row="1" VerticalAlignment="Top" Width="376" Grid.ColumnSpan="2" Margin="0,1,-21,-47" Foreground="#FFF1F1F1">
-                        <StackPanel x:Name="ContentView" HorizontalAlignment="Left" VerticalAlignment="Top" Width="376"/>
+                    <ScrollViewer Grid.Column="3" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" Height="Auto" Grid.Row="1" Width="377" Grid.ColumnSpan="2" Margin="0,1,-21,-47" Foreground="{DynamicResource ForegroundColor}">
+                        <StackPanel x:Name="ContentView" Width="377"/>
                     </ScrollViewer>
                 </Grid>
             </Border>

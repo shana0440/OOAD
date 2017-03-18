@@ -33,7 +33,7 @@ namespace QuickSearch.Models.Calculator
             contentView.Children.Add(expression);
 
             Border hr = new Border();
-            var hrColor = (Color)ColorConverter.ConvertFromString(Config.SearchbarBorderColor);
+            var hrColor = ((SolidColorBrush)Application.Current.Resources["SearchbarBorderColor"]).Color;
             hr.Height = 1;
             hr.BorderBrush = new SolidColorBrush(hrColor);
             hr.BorderThickness = new Thickness(0, 1, 0, 0);
@@ -45,7 +45,7 @@ namespace QuickSearch.Models.Calculator
             answer.Content = Title;
             answer.FontSize = 36;
             answer.HorizontalContentAlignment = HorizontalAlignment.Center;
-            answer.Foreground = Brushes.White;
+            answer.Foreground = ((SolidColorBrush)Application.Current.Resources["ForegroundColor"]);
             contentView.Children.Add(answer);
         }
 

@@ -46,11 +46,11 @@ namespace QuickSearch.Models.FileSystem
             title.Content = Title;
             title.FontSize = 24;
             title.HorizontalContentAlignment = HorizontalAlignment.Center;
-            title.Foreground = Brushes.White;
+            title.Foreground = ((SolidColorBrush)Application.Current.Resources["ForegroundColor"]);
             contentView.Children.Add(title);
 
             var hr = new Border();
-            var hrColor = (Color)ColorConverter.ConvertFromString(Config.SearchbarBorderColor);
+            var hrColor = ((SolidColorBrush)Application.Current.Resources["SearchbarBorderColor"]).Color;
             hr.Height = 1;
             hr.BorderBrush = new SolidColorBrush(hrColor);
             hr.BorderThickness = new Thickness(0, 1, 0, 0);
@@ -69,7 +69,7 @@ namespace QuickSearch.Models.FileSystem
                 name.HorizontalContentAlignment = HorizontalAlignment.Right;
                 value.HorizontalContentAlignment = HorizontalAlignment.Left;
                 name.Foreground = Brushes.LightGray;
-                value.Foreground = Brushes.White;
+                value.Foreground = ((SolidColorBrush)Application.Current.Resources["SearchbarBorderColor"]);
 
                 wrap.Children.Add(name);
                 wrap.Children.Add(value);
