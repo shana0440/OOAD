@@ -132,7 +132,7 @@ namespace QuickSearch
             
             DecorateImage.Width = 300;
             Canvas.SetTop(DecorateImage, searchbarTop - 176);
-            Canvas.SetLeft(DecorateImage, searchbarLeft + Config.SearchbarWidth - 195);
+            Canvas.SetLeft(DecorateImage, searchbarLeft + Config.SearchbarWidth - 196);
         }
 
         void ApplyTheme(string themeName)
@@ -168,6 +168,7 @@ namespace QuickSearch
         {
             _isWindowVisible = false;
             _searchService.AbortSearchThread();
+            _searchService.ResultList.Clear();
             ResultIcon.Source = null;
             InputTextBox.Clear();
             Hide();

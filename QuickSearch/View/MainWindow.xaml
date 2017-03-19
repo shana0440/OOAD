@@ -187,7 +187,7 @@
                         </Image.RenderTransform>
                     </Image>
                     <ScrollViewer Grid.Column="3" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto" Height="Auto" Grid.Row="1" Width="377" Grid.ColumnSpan="2" Margin="0,1,-21,-47" Foreground="{DynamicResource ForegroundColor}">
-                        <StackPanel x:Name="ContentView" Width="377"/>
+                        <StackPanel x:Name="ContentView" Width="365"/>
                     </ScrollViewer>
                 </Grid>
             </Border>

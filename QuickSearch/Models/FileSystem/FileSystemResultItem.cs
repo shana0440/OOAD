@@ -42,10 +42,11 @@ namespace QuickSearch.Models.FileSystem
             img.Width = 100;
             contentView.Children.Add(img);
 
-            var title = new Label();
-            title.Content = Title;
+            var title = new TextBlock();
+            title.Text = Title;
             title.FontSize = 24;
-            title.HorizontalContentAlignment = HorizontalAlignment.Center;
+            title.TextTrimming = TextTrimming.WordEllipsis;
+            title.TextAlignment = TextAlignment.Center;
             title.Foreground = ((SolidColorBrush)Application.Current.Resources["ForegroundColor"]);
             contentView.Children.Add(title);
 

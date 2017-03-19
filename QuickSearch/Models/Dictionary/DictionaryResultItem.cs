@@ -37,7 +37,7 @@ namespace QuickSearch.Models.Dictionary
             contentView.Children.Add(explanationTitle);
             foreach (var explanation in _definition.explanations)
             {
-                var explanationLabel = new Label { Content = explanation };
+                var explanationLabel = new TextBlock { Text = explanation, TextWrapping = TextWrapping.WrapWithOverflow };
                 explanationLabel.Margin = new Thickness(10, 0, 0, 0);
                 explanationLabel.Foreground = ((SolidColorBrush)Application.Current.Resources["ForegroundColor"]);
                 contentView.Children.Add(explanationLabel);
@@ -50,13 +50,13 @@ namespace QuickSearch.Models.Dictionary
             contentView.Children.Add(exampleTitle);
             foreach (var example in _definition.examples)
             {
-                var originExample = new Label { Content = example.origin };
-                originExample.Margin = new Thickness(10, 0, 0, 0);
+                var originExample = new TextBlock { Text = example.origin, TextWrapping = TextWrapping.WrapWithOverflow };
+                originExample.Margin = new Thickness(10, 0, 0, 5);
                 originExample.Foreground = ((SolidColorBrush)Application.Current.Resources["ForegroundColor"]);
                 contentView.Children.Add(originExample);
 
-                var translatedExample = new Label { Content = example.translated };
-                translatedExample.Margin = new Thickness(10, 0, 0, 0);
+                var translatedExample = new TextBlock { Text = example.translated, TextWrapping = TextWrapping.WrapWithOverflow };
+                translatedExample.Margin = new Thickness(10, 0, 0, 10);
                 translatedExample.Foreground = Brushes.LightGray;
                 contentView.Children.Add(translatedExample);
             }

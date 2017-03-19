@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using QuickSearch.Models.ResultItemsFactory;
+using QuickSearch.View;
 
 namespace QuickSearch.Models.SearchEngine
 {
@@ -36,10 +37,11 @@ namespace QuickSearch.Models.SearchEngine
             img.Width = 100;
             contentView.Children.Add(img);
 
-            var title = new Label();
-            title.Content = Title;
+            var title = new TextBlock();
+            title.Text = Title;
+            title.TextTrimming = TextTrimming.WordEllipsis;
             title.FontSize = 24;
-            title.HorizontalContentAlignment = HorizontalAlignment.Center;
+            title.TextAlignment = TextAlignment.Center;
             title.Foreground = ((SolidColorBrush)Application.Current.Resources["ForegroundColor"]);
             contentView.Children.Add(title);
 
@@ -74,7 +76,7 @@ namespace QuickSearch.Models.SearchEngine
 
         public override void OpenResource()
         {
-            Process.Start(_url);
+            Process.Start(String.Format("https://{0}", _url));
         }
     }
 }
