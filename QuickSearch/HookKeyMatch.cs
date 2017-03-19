@@ -31,6 +31,11 @@ namespace QuickSearch
             {
                 _pressKeys.Add(Keys.Control);
             }
+            else if (e.isLWinPressed)
+            {
+                _pressKeys.Add(Keys.LWin);
+            }
+
         }
 
         void ReleasePressKey(KeyboardHookEventArgs e)
@@ -43,6 +48,10 @@ namespace QuickSearch
             if (e.isLCtrlPressed)
             {
                 _pressKeys.Remove(Keys.Control);
+            }
+            else if (e.isLWinPressed)
+            {
+                _pressKeys.Remove(Keys.LWin);
             }
         }
 

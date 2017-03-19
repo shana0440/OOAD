@@ -15,7 +15,7 @@ namespace QuickSearch
         public const string SearchEngineUrl = "https://www.google.com.tw/search?q={0}";
         
         public static HashSet<Keys> KeyForHide = new HashSet<Keys> { Keys.Escape };
-        public static HashSet<Keys> KeyForOpenAndHide = new HashSet<Keys> { Keys.Control, Keys.Space };
+        public static HashSet<Keys> KeyForOpenAndHide = new HashSet<Keys> { Keys.LWin, Keys.Space };
 
         public const int SearchbarWidth = 700;
         public const int SearchbarHeight = 420;
