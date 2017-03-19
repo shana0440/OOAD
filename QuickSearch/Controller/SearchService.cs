@@ -35,6 +35,13 @@ namespace QuickSearch.Controller
         public SearchService()
         {
             _searchThreadObject = _searchThreadObject ?? new SearchThread();
+            _searchThreadObject.EachWorkerSearchOverEvnet += (List<IResultItem> list) =>
+            {
+                foreach (var item in list)
+                {
+                    _resultList.Add(item);
+                }
+            };
             _searchThreadObject.SubscribeSearchOverEvent(() =>
             {
                 _searchThread.Join();
@@ -42,21 +49,40 @@ namespace QuickSearch.Controller
                 Console.WriteLine("Search Keyword: {0}", _searchThreadObject.Keyword);
                 Console.WriteLine("Get Reslut Items amount: {0}", _searchThreadObject.ResultList.Count);
                 Console.WriteLine("====================================");
-                foreach (var item in _searchThreadObject.ResultList)
-                {
-                    _resultList.Add(item);
-                }
+                SortBestResult(_resultList);
+                
                 _searchOverEvent();
             });
 
             _searchThread = _searchThread ?? new Thread(_searchThreadObject.Search);
         }
 
+        void SortBestResult(AsyncObservableCollection<IResultItem> results)
+        {
+            if(results.Count <= 0) return;
+            IResultItem bestSolution = null;
+            foreach (var item in results)
+            {
+                if (bestSolution == null || bestSolution.Priority < item.Priority)
+                {
+                    bestSolution = item;
+                }
+            }
+            bestSolution.GroupName = "最佳搜尋結果";
+            results.Remove(bestSolution);
+            results.Insert(0, bestSolution);
+        }
+
         public void Search(string keyword)
         {
+            _resultList.Clear();
             if (!_searchThread.IsAlive)
             {
-                if (_searchThread.ThreadState == ThreadState.Stopped || _searchThread.ThreadState == ThreadState.Aborted)
+                var isThreadAbandoned = _searchThread.ThreadState == ThreadState.Stopped
+                    || _searchThread.ThreadState == ThreadState.Aborted
+                    || _searchThread.ThreadState == ThreadState.AbortRequested
+                    || _searchThread.ThreadState == ThreadState.Unstarted;
+                if (isThreadAbandoned)
                 {
                     _searchThread = new Thread(_searchThreadObject.Search);
                 }

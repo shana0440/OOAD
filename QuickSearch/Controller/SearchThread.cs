@@ -24,6 +24,8 @@ namespace QuickSearch.Controller
         public volatile ManualResetEvent _pauseEvent = new ManualResetEvent(true); // 暫停執行續用的
         public delegate void SearchOverEventHandler();
         SearchOverEventHandler _searchOverEvent;
+        public delegate void EachWorkerSearchOverEventHandler(List<IResultItem> list);
+        public EachWorkerSearchOverEventHandler EachWorkerSearchOverEvnet;
 
         public void Search()
         {
@@ -84,14 +86,14 @@ namespace QuickSearch.Controller
 
             var worker = new MyBackgroundWorker(_serialNumber, threadName);
             worker.DoWork += new DoWorkEventHandler(thread.DoWork);
-            worker.RunWorkerCompleted += SearchOver;
+            worker.RunWorkerCompleted += BackgroundWorkerSearchOver;
             worker.WorkerSupportsCancellation = true;
             worker.RunWorkerAsync(Keyword);
             _searchingCount++;
             return worker;
         }
 
-        void SearchOver(object sender, RunWorkerCompletedEventArgs e)
+        void BackgroundWorkerSearchOver(object sender, RunWorkerCompletedEventArgs e)
         {
             var worker = (MyBackgroundWorker)sender;
 
@@ -102,48 +104,21 @@ namespace QuickSearch.Controller
                 if (!e.Cancelled && e.Result != null)
                 {
                     List<IResultItem> result = (List<IResultItem>)e.Result;
-                    MergeListToObservableCollection(ResultList, result);
+                    EachWorkerSearchOverEvnet(result);
                 }
 
                 var spendTime = worker.Watch.ElapsedMilliseconds;
                 Console.WriteLine("{0} 運作了 {1} 毫秒", worker.Owner, spendTime);
-                if (_searchingCount == 0)
+                var isAllBackgroundWokersSearchOver = _searchingCount == 0;
+                if (isAllBackgroundWokersSearchOver)
                 {
                     _workers.Clear();
-                    if (ResultList.Count > 0)
-                    {
-                        SortBestResult(ResultList);
-                    }
                     _searchOverEvent?.Invoke();
                     GC.Collect();
                 }
             }
         }
-
-        List<IResultItem> MergeListToObservableCollection(List<IResultItem> target, List<IResultItem> source)
-        {
-            foreach (var item in source)
-            {
-                target.Add(item);
-            }
-            return target;
-        }
-
-        void SortBestResult(List<IResultItem> results)
-        {
-            IResultItem bestSolution = null;
-            foreach (var item in results)
-            {
-                if (bestSolution == null || bestSolution.Priority < item.Priority)
-                {
-                    bestSolution = item;
-                }
-            }
-            bestSolution.GroupName = "最佳搜尋結果";
-            results.Remove(bestSolution);
-            results.Insert(0, bestSolution);
-        }
-
+        
         public void SubscribeSearchOverEvent(SearchOverEventHandler handler)
         {
             _searchOverEvent = handler;

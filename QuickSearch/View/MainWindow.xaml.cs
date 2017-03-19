@@ -171,6 +171,7 @@ namespace QuickSearch
             _searchService.ResultList.Clear();
             ResultIcon.Source = null;
             InputTextBox.Clear();
+            ResizeHeight();
             Hide();
         }
 
@@ -220,6 +221,7 @@ namespace QuickSearch
                 InputTextBoxWatermark.Text = "Quick Search";
                 InputTextBoxWatermark.HorizontalAlignment = HorizontalAlignment.Left;
                 _searchService.AbortSearchThread();
+                _searchService.ResultList.Clear();
                 ResultIcon.Visibility = Visibility.Hidden;
             }
             else

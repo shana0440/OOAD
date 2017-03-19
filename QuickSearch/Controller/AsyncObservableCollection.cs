@@ -12,51 +12,52 @@ namespace QuickSearch.Controller
 {
     public class AsyncObservableCollection<T> : ObservableCollection<T>
     {
-        //获取当前线程的SynchronizationContext对象
-        private SynchronizationContext _synchronizationContext = SynchronizationContext.Current;
-        public AsyncObservableCollection() { }
-        public AsyncObservableCollection(IEnumerable<T> list) : base(list) { }
+        private readonly SynchronizationContext _synchronizationContext = SynchronizationContext.Current;
 
-        protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
+        public AsyncObservableCollection()
         {
-
-            if (SynchronizationContext.Current == _synchronizationContext)
-            {
-                //如果操作发生在同一个线程中，不需要进行跨线程执行         
-                RaiseCollectionChanged(e);
-            }
-            else
-            {
-                //如果不是发生在同一个线程中
-                //准确说来，这里是在一个非UI线程中，需要进行UI的更新所进行的操作         
-                _synchronizationContext.Post(RaiseCollectionChanged, e);
-            }
         }
 
-        private void RaiseCollectionChanged(object param)
+        public AsyncObservableCollection(IEnumerable<T> list)
+            : base(list)
         {
-            // 执行         
-            base.OnCollectionChanged((NotifyCollectionChangedEventArgs)param);
         }
 
-        protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+        private void ExecuteOnSyncContext(Action action)
         {
             if (SynchronizationContext.Current == _synchronizationContext)
             {
-                // Execute the PropertyChanged event on the current thread             
-                RaisePropertyChanged(e);
+                action();
             }
             else
             {
-                // Post the PropertyChanged event on the creator thread             
-                _synchronizationContext.Post(RaisePropertyChanged, e);
+                _synchronizationContext.Send(_ => action(), null);
             }
         }
 
-        private void RaisePropertyChanged(object param)
+        protected override void InsertItem(int index, T item)
         {
-            // We are in the creator thread, call the base implementation directly         
-            base.OnPropertyChanged((PropertyChangedEventArgs)param);
+            ExecuteOnSyncContext(() => base.InsertItem(index, item));
+        }
+
+        protected override void RemoveItem(int index)
+        {
+            ExecuteOnSyncContext(() => base.RemoveItem(index));
+        }
+
+        protected override void SetItem(int index, T item)
+        {
+            ExecuteOnSyncContext(() => base.SetItem(index, item));
+        }
+
+        protected override void MoveItem(int oldIndex, int newIndex)
+        {
+            ExecuteOnSyncContext(() => base.MoveItem(oldIndex, newIndex));
+        }
+
+        protected override void ClearItems()
+        {
+            ExecuteOnSyncContext(() => base.ClearItems());
         }
     }
 }
