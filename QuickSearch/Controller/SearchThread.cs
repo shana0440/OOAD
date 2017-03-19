@@ -34,58 +34,19 @@ namespace QuickSearch.Controller
                 Thread.Sleep(500);
             } while (_isPause);
 
-            CancelCurrentSearching();
+            CancelCurrentSearchingWorker();
 
             _serialNumber++;
             _serialNumber = _serialNumber + 1 % 1000;
 
-            IThread calculatorThread = new CalculatorThread();
-            MyBackgroundWorker calculatorWorker = new MyBackgroundWorker(_serialNumber, "計算機");
-            calculatorWorker.DoWork += new DoWorkEventHandler(calculatorThread.DoWork);
-            calculatorWorker.RunWorkerCompleted += SearchOver;
-            calculatorWorker.WorkerSupportsCancellation = true; // support cancel
-            calculatorWorker.RunWorkerAsync(Keyword);
-            _searchingCount++;
-            _workers.Add(calculatorWorker);
-
-            IThread fileSystemThread = new FileSystemThread();
-            MyBackgroundWorker fileSystemWorker = new MyBackgroundWorker(_serialNumber, "檔案系統");
-            fileSystemWorker.DoWork += new DoWorkEventHandler(fileSystemThread.DoWork);
-            fileSystemWorker.RunWorkerCompleted += SearchOver;
-            fileSystemWorker.WorkerSupportsCancellation = true;
-            fileSystemWorker.RunWorkerAsync(Keyword);
-            _searchingCount++;
-            _workers.Add(fileSystemWorker);
-
-            IThread directoryThread = new DictionaryThread();
-            MyBackgroundWorker directoryWorker = new MyBackgroundWorker(_serialNumber, "字典");
-            directoryWorker.DoWork += new DoWorkEventHandler(directoryThread.DoWork);
-            directoryWorker.RunWorkerCompleted += SearchOver;
-            directoryWorker.WorkerSupportsCancellation = true;
-            directoryWorker.RunWorkerAsync(Keyword);
-            _searchingCount++;
-            _workers.Add(directoryWorker);
-
-            IThread currencyThread = new CurrencyConverterThread();
-            MyBackgroundWorker currencyWorker = new MyBackgroundWorker(_serialNumber, "匯率轉換");
-            currencyWorker.DoWork += new DoWorkEventHandler(currencyThread.DoWork);
-            currencyWorker.RunWorkerCompleted += SearchOver;
-            currencyWorker.WorkerSupportsCancellation = true;
-            currencyWorker.RunWorkerAsync(Keyword);
-            _searchingCount++;
-            _workers.Add(currencyWorker);
-
-            IThread searchEngineThread = new SearchEngineThread();
-            MyBackgroundWorker searchEngineWorker = new MyBackgroundWorker(_serialNumber, "網頁搜尋");
-            searchEngineWorker.DoWork += new DoWorkEventHandler(searchEngineThread.DoWork);
-            searchEngineWorker.RunWorkerCompleted += SearchOver;
-            searchEngineWorker.WorkerSupportsCancellation = true;
-            searchEngineWorker.RunWorkerAsync(Keyword);
-            _searchingCount++;
-            _workers.Add(searchEngineWorker);
+            _workers.Add(CreateWoker("計算機"));
+            _workers.Add(CreateWoker("檔案系統"));
+            _workers.Add(CreateWoker("字典"));
+            _workers.Add(CreateWoker("匯率轉換"));
+            _workers.Add(CreateWoker("網頁搜尋"));
         }
 
-        public void CancelCurrentSearching()
+        public void CancelCurrentSearchingWorker()
         {
             foreach (var worker in _workers)
             {
@@ -95,6 +56,39 @@ namespace QuickSearch.Controller
             ResultList.Clear();
             _workers.Clear();
             _serialNumber++;
+        }
+
+        MyBackgroundWorker CreateWoker(string threadName)
+        {
+            IThread thread;
+            switch (threadName)
+            {
+                case "計算機":
+                    thread = new CalculatorThread();
+                    break;
+                case "檔案系統":
+                    thread = new FileSystemThread();
+                    break;
+                case "字典":
+                    thread = new DictionaryThread();
+                    break;
+                case "匯率轉換":
+                    thread = new CurrencyConverterThread();
+                    break;
+                case "網頁搜尋":
+                    thread = new SearchEngineThread();
+                    break;
+                default:
+                    throw new ArgumentException("不存在該功能");
+            }
+
+            var worker = new MyBackgroundWorker(_serialNumber, threadName);
+            worker.DoWork += new DoWorkEventHandler(thread.DoWork);
+            worker.RunWorkerCompleted += SearchOver;
+            worker.WorkerSupportsCancellation = true;
+            worker.RunWorkerAsync(Keyword);
+            _searchingCount++;
+            return worker;
         }
 
         void SearchOver(object sender, RunWorkerCompletedEventArgs e)
@@ -112,7 +106,7 @@ namespace QuickSearch.Controller
                 }
 
                 var spendTime = worker.Watch.ElapsedMilliseconds;
-                Console.WriteLine(String.Format("{0} 運作了 {1} 毫秒", worker.Owner, spendTime));
+                Console.WriteLine("{0} 運作了 {1} 毫秒", worker.Owner, spendTime);
                 if (_searchingCount == 0)
                 {
                     _workers.Clear();
@@ -160,13 +154,6 @@ namespace QuickSearch.Controller
             _pauseEvent.Reset();
             _isPause = true;
             Console.WriteLine("SearchThread is paused");
-        }
-
-        public void Resume()
-        {
-            _pauseEvent.Set();
-            _isPause = false;
-            Console.WriteLine("SearchThread is resuming ");
         }
     }
 

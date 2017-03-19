@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace QuickSearch.Models.FileSystem
 {
@@ -6,11 +7,10 @@ namespace QuickSearch.Models.FileSystem
     {
         public FileSystemResultFileItem(string filePath) : base(filePath)
         {
-            var ico = System.Drawing.Icon.ExtractAssociatedIcon(filePath);
+            var ico = IconReader.GetFileIcon(filePath, IconReader.IconSize.Large);
             var bmp = ico.ToBitmap();
             bmp.MakeTransparent();
             _icon = bmp;
-            
             var info = new FileInfo(filePath);
             SetInfo(info);
         }

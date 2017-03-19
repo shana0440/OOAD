@@ -150,6 +150,7 @@
     <Compile Include="Models\FileSystem\FileSystemResultItem.cs" />
     <Compile Include="Models\FileSystem\FileSystemResultItemFactory.cs" />
     <Compile Include="Models\FileSystem\FileSystemThread.cs" />
+    <Compile Include="Models\FileSystem\IconHelper.cs" />
     <Compile Include="Models\IThread.cs" />
     <Compile Include="Models\Eval.cs" />
     <Compile Include="Models\ItemData.cs" />
