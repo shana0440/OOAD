@@ -1,16 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
-using QuickSearch.Models.Calculator;
-using QuickSearch.Models;
 using QuickSearch.Models.ResultItemsFactory;
 using System.Collections.ObjectModel;
-using QuickSearch.Models.FileSystem;
 using System;
-using QuickSearch.Models.Dictionary;
-using QuickSearch.Models.CurrencyConverter;
-using QuickSearch.Models.SearchEngine;
 using System.Threading;
-using System.Windows;
 
 namespace QuickSearch.Controller
 {
@@ -20,40 +12,37 @@ namespace QuickSearch.Controller
         SearchOverEventHandler _searchOverEvent;
         AsyncObservableCollection<IResultItem> _resultList = new AsyncObservableCollection<IResultItem>();
         public int SelectedIndex { get; internal set; }
-
-        Thread _searchThread;
-        SearchThread _searchThreadObject;
+        
+        SearchThread _searchThreadObject = new SearchThread();
+        SearchTimeout _searchTimeout = new SearchTimeout(300);
 
         public ObservableCollection<IResultItem> ResultList
         {
-            get
-            {
-                return _resultList;
-            }
+            get { return _resultList; }
         }
 
         public SearchService()
         {
-            _searchThreadObject = _searchThreadObject ?? new SearchThread();
             _searchThreadObject.EachWorkerSearchOverEvnet += (List<IResultItem> list) =>
             {
-                Console.WriteLine("ResultList Count: {0}", _resultList.Count);
                 foreach (var item in list)
                 {
                     _resultList.Add(item);
                 }
             };
-            _searchThreadObject.SubscribeSearchOverEvent(() =>
+
+            _searchThreadObject.SearchOverEvent += () =>
             {
-                _searchThread.Join();
-                Console.WriteLine("SearchThread Search Over");
-                Console.WriteLine("Search Keyword: {0}", _searchThreadObject.Keyword);
-                Console.WriteLine("Get Reslut Items amount: {0}", _resultList.Count);
-                Console.WriteLine("====================================");
                 SortBestResult(_resultList);
-                
                 _searchOverEvent();
-            });
+            };
+
+            _searchTimeout.SearchEvent = () =>
+            {
+                _resultList.Clear();
+                _searchThreadObject.Search();
+                SelectedIndex = 0;
+            };
         }
 
         void SortBestResult(AsyncObservableCollection<IResultItem> results)
@@ -74,24 +63,7 @@ namespace QuickSearch.Controller
 
         public void Search(string keyword)
         {
-            _resultList.Clear();
-            _searchThread = _searchThread ?? new Thread(_searchThreadObject.Search);
-            if (!_searchThread.IsAlive)
-            {
-                var isThreadAbandoned = _searchThread.ThreadState == ThreadState.Stopped
-                    || _searchThread.ThreadState == ThreadState.Aborted
-                    || _searchThread.ThreadState == ThreadState.AbortRequested
-                    || _searchThread.ThreadState == ThreadState.Unstarted;
-                if (isThreadAbandoned)
-                {
-                    _searchThread = new Thread(_searchThreadObject.Search);
-                    Console.WriteLine("Clear ResultList, Now ResultList Count is {0}", _resultList.Count);
-                }
-                _searchThread.Start();
-                SelectedIndex = 0;
-            }
-
-            _searchThreadObject.Wait500ms();
+            _searchTimeout.Restart();
             _searchThreadObject.Keyword = keyword;
         }
 
@@ -122,9 +94,9 @@ namespace QuickSearch.Controller
             }
         }
 
-        public void AbortSearchThread()
+        public void StopSearching()
         {
-            _searchThread?.Abort();
+            _searchTimeout.Stop();
             GC.Collect();
         }
     }

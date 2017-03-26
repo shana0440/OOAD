@@ -170,7 +170,7 @@ namespace QuickSearch
         void HideWindow()
         {
             _isWindowVisible = false;
-            _searchService.AbortSearchThread();
+            _searchService.StopSearching();
             _searchService.ResultList.Clear();
             ResultIcon.Source = null;
             InputTextBox.Clear();
@@ -223,7 +223,7 @@ namespace QuickSearch
             {
                 InputTextBoxWatermark.Text = "Quick Search";
                 InputTextBoxWatermark.HorizontalAlignment = HorizontalAlignment.Left;
-                _searchService.AbortSearchThread();
+                _searchService.StopSearching();
                 _searchService.ResultList.Clear();
                 ResultIcon.Visibility = Visibility.Hidden;
             }

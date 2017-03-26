@@ -126,6 +126,7 @@
     <Compile Include="Controller\AsyncObservableCollection.cs" />
     <Compile Include="Controller\SearchService.cs" />
     <Compile Include="Controller\SearchThread.cs" />
+    <Compile Include="Controller\SearchTimeout.cs" />
     <Compile Include="HookKeyMatch.cs" />
     <Compile Include="Models\BitmapToBitmapImage.cs" />
     <Compile Include="Models\Calculator\CalculatorThread.cs" />

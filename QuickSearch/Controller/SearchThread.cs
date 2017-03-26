@@ -9,7 +9,6 @@ using QuickSearch.Models.Calculator;
 using QuickSearch.Models.FileSystem;
 using QuickSearch.Models.Dictionary;
 using QuickSearch.Models.CurrencyConverter;
-using System.Collections.ObjectModel;
 
 namespace QuickSearch.Controller
 {
@@ -18,23 +17,15 @@ namespace QuickSearch.Controller
         List<BackgroundWorker> _workers = new List<BackgroundWorker>();
         int _serialNumber = 0;
         int _searchingCount = 0;
-        volatile bool _isPause = false;
         public volatile string Keyword;
         public volatile ManualResetEvent _pauseEvent = new ManualResetEvent(true); // 暫停執行續用的
         public delegate void SearchOverEventHandler();
-        SearchOverEventHandler _searchOverEvent;
+        public SearchOverEventHandler SearchOverEvent;
         public delegate void EachWorkerSearchOverEventHandler(List<IResultItem> list);
         public EachWorkerSearchOverEventHandler EachWorkerSearchOverEvnet;
 
         public void Search()
         {
-            do
-            {
-                _pauseEvent.WaitOne(500);
-                _isPause = false;
-                Thread.Sleep(500);
-            } while (_isPause);
-
             CancelCurrentSearchingWorker();
 
             _serialNumber++;
@@ -112,23 +103,12 @@ namespace QuickSearch.Controller
                 if (isAllBackgroundWokersSearchOver)
                 {
                     _workers.Clear();
-                    _searchOverEvent?.Invoke();
+                    SearchOverEvent?.Invoke();
                     GC.Collect();
                 }
             }
         }
         
-        public void SubscribeSearchOverEvent(SearchOverEventHandler handler)
-        {
-            _searchOverEvent = handler;
-        }
-
-        public void Wait500ms()
-        {
-            _pauseEvent.Reset();
-            _isPause = true;
-            Console.WriteLine("SearchThread is paused");
-        }
     }
 
 }
