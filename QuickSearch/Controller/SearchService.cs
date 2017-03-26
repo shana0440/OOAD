@@ -37,6 +37,7 @@ namespace QuickSearch.Controller
             _searchThreadObject = _searchThreadObject ?? new SearchThread();
             _searchThreadObject.EachWorkerSearchOverEvnet += (List<IResultItem> list) =>
             {
+                Console.WriteLine("ResultList Count: {0}", _resultList.Count);
                 foreach (var item in list)
                 {
                     _resultList.Add(item);
@@ -47,14 +48,12 @@ namespace QuickSearch.Controller
                 _searchThread.Join();
                 Console.WriteLine("SearchThread Search Over");
                 Console.WriteLine("Search Keyword: {0}", _searchThreadObject.Keyword);
-                Console.WriteLine("Get Reslut Items amount: {0}", _searchThreadObject.ResultList.Count);
+                Console.WriteLine("Get Reslut Items amount: {0}", _resultList.Count);
                 Console.WriteLine("====================================");
                 SortBestResult(_resultList);
                 
                 _searchOverEvent();
             });
-
-            _searchThread = _searchThread ?? new Thread(_searchThreadObject.Search);
         }
 
         void SortBestResult(AsyncObservableCollection<IResultItem> results)
@@ -76,6 +75,7 @@ namespace QuickSearch.Controller
         public void Search(string keyword)
         {
             _resultList.Clear();
+            _searchThread = _searchThread ?? new Thread(_searchThreadObject.Search);
             if (!_searchThread.IsAlive)
             {
                 var isThreadAbandoned = _searchThread.ThreadState == ThreadState.Stopped
@@ -85,9 +85,9 @@ namespace QuickSearch.Controller
                 if (isThreadAbandoned)
                 {
                     _searchThread = new Thread(_searchThreadObject.Search);
+                    Console.WriteLine("Clear ResultList, Now ResultList Count is {0}", _resultList.Count);
                 }
                 _searchThread.Start();
-                _resultList.Clear();
                 SelectedIndex = 0;
             }
 
@@ -103,12 +103,10 @@ namespace QuickSearch.Controller
 
         internal void OpenSelectedItemResource()
         {
-            _resultList[SelectedIndex].OpenResource();
-        }
-
-        public void OpenItemResource(int selectedIndex)
-        {
-            _resultList[selectedIndex].OpenResource();
+            if (SelectedIndex < _resultList.Count)
+            {
+                _resultList[SelectedIndex].OpenResource();
+            }
         }
 
         public void SelectItem(int selectedIndex)
@@ -126,7 +124,7 @@ namespace QuickSearch.Controller
 
         public void AbortSearchThread()
         {
-            _searchThread.Abort();
+            _searchThread?.Abort();
             GC.Collect();
         }
     }

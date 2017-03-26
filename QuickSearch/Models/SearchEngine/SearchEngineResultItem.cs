@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using QuickSearch.Models.ResultItemsFactory;
 using QuickSearch.View;
+using System.Text.RegularExpressions;
 
 namespace QuickSearch.Models.SearchEngine
 {
@@ -76,7 +77,8 @@ namespace QuickSearch.Models.SearchEngine
 
         public override void OpenResource()
         {
-            Process.Start(String.Format("https://{0}", _url));
+            var url = Regex.IsMatch(_url, "^https?://") ? _url : String.Format("http://{0}", _url);
+            Process.Start(url);
         }
     }
 }

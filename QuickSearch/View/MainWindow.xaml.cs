@@ -53,6 +53,7 @@ namespace QuickSearch
             {
                 IResultItem item = _searchService.ResultList[0];
                 VisualTreeHelperEx.FindDescendantByType<ScrollViewer>(ResultList)?.ScrollToTop();
+                _searchService.SelectItem(0);
                 ShowSelectdItemContent(item);
             }
             else
@@ -236,7 +237,7 @@ namespace QuickSearch
             var item = sender as ListBoxItem;
             if (item != null && item.IsSelected)
             {
-                _searchService.OpenItemResource(ResultList.SelectedIndex);
+                _searchService.OpenSelectedItemResource();
                 HideWindow();
             }
         }

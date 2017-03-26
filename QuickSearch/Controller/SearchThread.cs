@@ -19,7 +19,6 @@ namespace QuickSearch.Controller
         int _serialNumber = 0;
         int _searchingCount = 0;
         volatile bool _isPause = false;
-        public List<IResultItem> ResultList = new List<IResultItem>();
         public volatile string Keyword;
         public volatile ManualResetEvent _pauseEvent = new ManualResetEvent(true); // 暫停執行續用的
         public delegate void SearchOverEventHandler();
@@ -55,9 +54,7 @@ namespace QuickSearch.Controller
                 worker.CancelAsync();
             }
             _searchingCount = 0;
-            ResultList.Clear();
             _workers.Clear();
-            _serialNumber++;
         }
 
         MyBackgroundWorker CreateWoker(string threadName)
@@ -98,6 +95,8 @@ namespace QuickSearch.Controller
             var worker = (MyBackgroundWorker)sender;
 
             var isCurrentSearch = worker.SerialNumber == _serialNumber;
+            Console.WriteLine("Is Current Search Worker: {0}", isCurrentSearch);
+            Console.WriteLine("worker.SerialNumber: {0}, _serialNumber: {1}", worker.SerialNumber, _serialNumber);
             if (isCurrentSearch)
             {
                 _searchingCount--;

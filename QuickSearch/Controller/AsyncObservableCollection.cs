@@ -37,7 +37,14 @@ namespace QuickSearch.Controller
 
         protected override void InsertItem(int index, T item)
         {
-            ExecuteOnSyncContext(() => base.InsertItem(index, item));
+            try
+            {
+                ExecuteOnSyncContext(() => base.InsertItem(index, item));
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                // do not thing
+            }
         }
 
         protected override void RemoveItem(int index)
