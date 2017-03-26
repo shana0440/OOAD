@@ -25,7 +25,7 @@ namespace QuickSearchTest
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ExecutionEngineException), "算式有誤")]
+        [ExpectedException(typeof(Exception), "算式有誤")]
         public void TestExecuteError()
         {
             object[] param = { "2 * 1 + sqrt(100, 2) + pow(20, 2)" };

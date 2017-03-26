@@ -14,6 +14,7 @@ using Xceed.Wpf.Toolkit.Core.Utilities;
 using HorizontalAlignment = System.Windows.HorizontalAlignment;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using System.Threading;
+using System.Windows.Media;
 
 namespace QuickSearch
 {
@@ -38,6 +39,7 @@ namespace QuickSearch
             _viewInitialization.Init();
             _searchService = new SearchService();
             _hookKeyMatch.PlusKeyDownEvent(SearchbarVisable);
+            Application.Current.Resources["DecorateImage"] = BitmapToBitmapImage.Transform((System.Drawing.Bitmap)System.Drawing.Image.FromFile(@"images\DecorateImage2.png"));
             _searchService.SubscribeSearchOverEvent(() => {
                 this.Dispatcher.Invoke(SearchOverEvent);
             });

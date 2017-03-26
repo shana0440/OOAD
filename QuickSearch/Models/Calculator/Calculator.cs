@@ -18,9 +18,9 @@ namespace QuickSearch.Models.Calculator
                 var result = Eval.Execute(expression);
                 return result.ToString();
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                throw new ExecutionEngineException("算式有誤");
+                throw new Exception("算式有誤");
             }
         }
 
