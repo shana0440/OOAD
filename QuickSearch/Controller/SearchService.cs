@@ -29,7 +29,14 @@ namespace QuickSearch.Controller
                 {
                     _resultList.Add(item);
                 }
-                DecideBestResult(_resultList);
+                try
+                {
+                    DecideBestResult(_resultList);
+                }
+                catch (InvalidOperationException)
+                {
+                    // do not thing
+                }
             };
 
             _searchThreadObject.SearchOverEvent += () =>
