@@ -11,7 +11,9 @@ namespace QuickSearch.Models.ResultItemsFactory
 {
     public interface IResultItem
     {
+        int OriginIndex { get; set; }
         string GroupName { get; set; }
+        string OriginGroupName { get; }
         int Priority { get; set; }
         string Title { get; set; }
         bool IsSelected { get; set; }

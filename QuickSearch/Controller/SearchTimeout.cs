@@ -14,7 +14,7 @@ namespace QuickSearch.Controller
     class SearchTimeout
     {
         Stopwatch _watch = new Stopwatch();
-        Timer _timer = new Timer(250);
+        Timer _timer = new Timer(200);
         int _delay;
         public delegate void SearchEventHandler();
         public SearchEventHandler SearchEvent;

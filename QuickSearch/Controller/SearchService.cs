@@ -14,7 +14,7 @@ namespace QuickSearch.Controller
         public int SelectedIndex { get; internal set; }
         
         SearchThread _searchThreadObject = new SearchThread();
-        SearchTimeout _searchTimeout = new SearchTimeout(300);
+        SearchTimeout _searchTimeout = new SearchTimeout(250);
 
         public ObservableCollection<IResultItem> ResultList
         {
@@ -29,23 +29,24 @@ namespace QuickSearch.Controller
                 {
                     _resultList.Add(item);
                 }
+                DecideBestResult(_resultList);
             };
 
             _searchThreadObject.SearchOverEvent += () =>
             {
-                SortBestResult(_resultList);
+                DecideBestResult(_resultList);
                 _searchOverEvent();
             };
 
             _searchTimeout.SearchEvent = () =>
             {
                 _resultList.Clear();
-                _searchThreadObject.Search();
                 SelectedIndex = 0;
+                _searchThreadObject.Search();
             };
         }
 
-        void SortBestResult(AsyncObservableCollection<IResultItem> results)
+        void DecideBestResult(AsyncObservableCollection<IResultItem> results)
         {
             if(results.Count <= 0) return;
             IResultItem bestSolution = null;
@@ -56,7 +57,14 @@ namespace QuickSearch.Controller
                     bestSolution = item;
                 }
             }
+            if (results[0].GroupName == "最佳搜尋結果")
+            {
+                results[0].GroupName = results[0].OriginGroupName;
+                Console.WriteLine("Origin Index: {0}", results[0].OriginIndex);
+                results.Move(0, results[0].OriginIndex);
+            }
             bestSolution.GroupName = "最佳搜尋結果";
+            bestSolution.OriginIndex = results.IndexOf(bestSolution);
             results.Remove(bestSolution);
             results.Insert(0, bestSolution);
         }

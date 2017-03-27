@@ -53,9 +53,9 @@ namespace QuickSearch
             _isSearching = false;
             if (_searchService.ResultList.Count > 0)
             {
-                IResultItem item = _searchService.ResultList[0];
+                IResultItem item = _searchService.ResultList[_searchService.SelectedIndex];
                 VisualTreeHelperEx.FindDescendantByType<ScrollViewer>(ResultList)?.ScrollToTop();
-                _searchService.SelectItem(0);
+                _searchService.SelectItem(_searchService.SelectedIndex);
                 ShowSelectdItemContent(item);
             }
             else
