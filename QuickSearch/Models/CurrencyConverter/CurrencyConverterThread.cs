@@ -11,20 +11,11 @@ namespace QuickSearch.Models.CurrencyConverter
             var originCurrency = (string)e.Argument;
             try
             {
-                if (originCurrency.Length >= 4)
-                {
-                    CurrencyConverter converter = new CurrencyConverter();
-                    string currency = originCurrency.Substring(originCurrency.Length - 3, 3);
-                    string amount = originCurrency.Substring(0, originCurrency.Length - 3);
-                    string convertedCurrency = converter.Convert(amount, currency);
-                    CurrencyConverterResultItemFactory factory = new CurrencyConverterResultItemFactory();
-                    ItemData item = new ItemData() { Title = originCurrency, Content = convertedCurrency };
-                    e.Result = factory.CreateResultItems(item);
-                }
-                else
-                {
-                    e.Result = null;
-                }
+                CurrencyConverter converter = new CurrencyConverter();
+                string convertedCurrency = converter.Convert(originCurrency);
+                CurrencyConverterResultItemFactory factory = new CurrencyConverterResultItemFactory();
+                ItemData item = new ItemData() { Title = originCurrency, Content = convertedCurrency };
+                e.Result = factory.CreateResultItems(item);
             }
             catch (WebException exception)
             {

@@ -18,8 +18,17 @@ namespace QuickSearchTest
             Mock.SetupStatic(typeof(Crawler), Behavior.Strict, StaticConstructor.Mocked);
             Mock.Arrange(() => Crawler.GetResponse(url)).Returns("<span class=bld>277.2000 TWD</span>");
             CurrencyConverter converter = new CurrencyConverter();
-            string result = converter.Convert("1000", "JPY");
+            string result = converter.Convert("1000JPY");
             Assert.AreEqual("277.2000 TWD", result);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException), "貨幣輸入不合法")]
+        public void TestConvertUnLegal()
+        {
+            CurrencyConverter converter = new CurrencyConverter();
+            string result = converter.Convert("1000NotThisCurrency");
+            Assert.Fail();
         }
 
         [TestMethod]
@@ -27,7 +36,7 @@ namespace QuickSearchTest
         public void TestConvertFail()
         {
             CurrencyConverter converter = new CurrencyConverter();
-            string result = converter.Convert("1000", "NotThisCurrency");
+            string result = converter.Convert("1000NT$");
             Assert.Fail();
         }
 
@@ -39,7 +48,7 @@ namespace QuickSearchTest
             Mock.Arrange(() => NetworkInterface.GetIsNetworkAvailable()).Returns(false);
             CurrencyConverter converter = new CurrencyConverter();
 
-            string result = converter.Convert("1000", "NotThisCurrency");
+            string result = converter.Convert("1000NotThisCurrency");
 
             Assert.Fail();
         }
