@@ -27,24 +27,33 @@ namespace QuickSearch.Controller
         {
             if (SynchronizationContext.Current == _synchronizationContext)
             {
-                action();
+                try
+                {
+                    action();
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    Console.WriteLine("=================ignore this error=================");
+                }
             }
             else
             {
-                _synchronizationContext.Send(_ => action(), null);
+                _synchronizationContext.Send(_ => {
+                    try
+                    {
+                        action();
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        Console.WriteLine("===========?????==================");
+                    }
+                }, null);
             }
         }
 
         protected override void InsertItem(int index, T item)
         {
-            try
-            {
-                ExecuteOnSyncContext(() => base.InsertItem(index, item));
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                // do not thing
-            }
+            ExecuteOnSyncContext(() => base.InsertItem(index, item));
         }
 
         protected override void RemoveItem(int index)
