@@ -22,7 +22,7 @@ namespace QuickSearch.Models.SearchEngine
         {
             GroupName = "網頁";
             Title = title;
-            Priority = 300;
+            Priority = Config.SearchEnginePriority;
             _icon = Properties.Resources.web;
             _url = url;
             _intro = intro;

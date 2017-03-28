@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using QuickSearch.Models.ResultItemsFactory;
+using System.Text.RegularExpressions;
+using System;
 
 namespace QuickSearch.Models.FileSystem
 {
@@ -23,10 +25,15 @@ namespace QuickSearch.Models.FileSystem
                 
                 if (item != null)
                 {
+                    if (Regex.IsMatch(item.Title, @"(.(exe)|(lnk)$)"))
+                    {
+                        item.Priority += 50;
+                        Console.WriteLine("{0} Priority is: {1}", item.Title, item.Priority);
+                    }
                     results.Add(item);
                 }
             }
-            return results;
+         return results;
         }
     }
 }

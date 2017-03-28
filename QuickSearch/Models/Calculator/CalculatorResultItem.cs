@@ -13,7 +13,7 @@ namespace QuickSearch.Models.Calculator
         public CalculatorResultItem(string answer, string expression)
         {
             GroupName = "計算機";
-            Priority = 999;
+            Priority = Config.CalculatorPriority;
             Title = answer;
             _expression = String.Format("{0} =", expression);
             _icon = Properties.Resources.calculator_icon;

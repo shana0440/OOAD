@@ -17,7 +17,7 @@ namespace QuickSearch.Models.CurrencyConverter
         public CurrencyConverterResultItem(string origin, string afterConverted)
         {
             GroupName = "匯率換算";
-            Priority = 999;
+            Priority = Config.CurrencyConverterPriority;
             Title = afterConverted;
             _icon = Properties.Resources.exchange;
             _origin = origin;
