@@ -8,10 +8,12 @@ namespace QuickSearch.View
     {
         Window _view;
         NotifyIcon _notifyIcon;
+        Config _config;
 
-        public ViewInitialization(Window view)
+        public ViewInitialization(Window view, Config config)
         {
             _view = view;
+            _config = config;
         }
 
         public void Init()
@@ -37,12 +39,26 @@ namespace QuickSearch.View
         void InitStateBarMenu()
         {
             ContextMenu notifyMenu = new ContextMenu();
-            MenuItem notifyIconMenuItem = new MenuItem();
-            notifyIconMenuItem.Index = 0;
-            notifyIconMenuItem.Text = "結束(E&xit)";
-            notifyIconMenuItem.Click += new EventHandler(CloseApp);
-            notifyMenu.MenuItems.Add(notifyIconMenuItem);
+
+            MenuItem setting = new MenuItem();
+            setting.Index = 0;
+            setting.Text = "設定";
+            setting.Click += new EventHandler(OpenSettingWindow);
+            notifyMenu.MenuItems.Add(setting);
+
+            MenuItem exit = new MenuItem();
+            exit.Index = 1;
+            exit.Text = "結束(E&xit)";
+            exit.Click += new EventHandler(CloseApp);
+            notifyMenu.MenuItems.Add(exit);
+
             _notifyIcon.ContextMenu = notifyMenu;
+        }
+
+        private void OpenSettingWindow(object sender, EventArgs e)
+        {
+            var window = new Setting(_config);
+            window.Show();
         }
 
         void CloseApp(object sender, EventArgs e)

@@ -10,7 +10,7 @@ using System.Xml;
 
 namespace QuickSearch.View
 {
-    class Theme
+    public class Theme
     {
         public SolidColorBrush SearchbarColor;
         public SolidColorBrush SearchbarBorderColor;

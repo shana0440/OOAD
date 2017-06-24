@@ -29,13 +29,13 @@ namespace QuickSearch
         SearchService _searchService;
         bool _isSearching = false;
         HookKeyMatch _hookKeyMatch = new HookKeyMatch();
-        Theme _theme;
+        Config _config = new Config();
 
         public MainWindow()
         {
             InitializeComponent();
 
-            _viewInitialization = new ViewInitialization(this);
+            _viewInitialization = new ViewInitialization(this, _config);
             _viewInitialization.Init();
             _searchService = new SearchService();
             _hookKeyMatch.PlusKeyDownEvent(SearchbarVisable);
@@ -86,7 +86,6 @@ namespace QuickSearch
             InitResultsListSource();
             InitLoadingCircle();
             MakeSearchBarToCenter();
-            ApplyTheme("Dark");
         }
 
         void RenderSearchIcon()
@@ -138,30 +137,16 @@ namespace QuickSearch
             Canvas.SetLeft(DecorateImage, searchbarLeft + Config.SearchbarWidth - 196);
         }
 
-        void ApplyTheme(string themeName)
-        {
-            _theme = new Theme(themeName);
-            var fields = _theme.GetType().GetFields();
-            foreach (var field in fields)
-            {
-                var test = Application.Current.Resources[field.Name] = _theme.GetType().GetField(field.Name).GetValue(_theme);
-            }
-        }
-
         void SearchbarVisable(KeyboardHookEventArgs args)
         {
-            if (_hookKeyMatch.MatchKey(Config.KeyForOpenAndHide))
+            if (_hookKeyMatch.MatchKey(_config.KeyForOpenAndHide))
             {
                 if (_isWindowVisible)
-                {
                     HideWindow();
-                }
                 else
-                {
                     OpenWindow();
-                }
             }
-            else if (_hookKeyMatch.MatchKey(Config.KeyForHide))
+            else if (_hookKeyMatch.MatchKey(_config.KeyForHide))
             {
                 HideWindow();
             }
@@ -210,7 +195,7 @@ namespace QuickSearch
                 ResultIcon.Visibility = Visibility.Visible;
                 _rotate.IfStopThenStart();
                 ContentView.Children.Clear();
-                ResultIcon.Source = _theme.LoadingImage;
+                ResultIcon.Source = _config.Theme.LoadingImage;
                 InputTextBoxWatermark.Text = "";
 
                 _searchService.Search(InputTextBox.Text);

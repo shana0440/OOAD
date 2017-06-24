@@ -29,7 +29,7 @@ namespace QuickSearch
 
             if (e.isLCtrlPressed)
             {
-                _pressKeys.Add(Keys.Control);
+                _pressKeys.Add(Keys.LControlKey);
             }
             else if (e.isLWinPressed)
             {
@@ -47,7 +47,7 @@ namespace QuickSearch
 
             if (e.isLCtrlPressed)
             {
-                _pressKeys.Remove(Keys.Control);
+                _pressKeys.Remove(Keys.LControlKey);
             }
             else if (e.isLWinPressed)
             {
