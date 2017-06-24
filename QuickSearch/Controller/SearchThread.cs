@@ -17,7 +17,7 @@ namespace QuickSearch.Controller
         List<BackgroundWorker> _workers = new List<BackgroundWorker>();
         int _serialNumber = 0;
         int _searchingCount = 0;
-        public volatile string Keyword;
+        private string _keyword;
         public volatile ManualResetEvent _pauseEvent = new ManualResetEvent(true); // 暫停執行續用的
         public delegate void SearchOverEventHandler();
         public SearchOverEventHandler SearchOverEvent;
@@ -27,10 +27,7 @@ namespace QuickSearch.Controller
         public void Search()
         {
             CancelCurrentSearchingWorker();
-
-            _serialNumber++;
-            _serialNumber = _serialNumber + 1 % 1000;
-
+            
             _workers.Add(CreateWoker("計算機"));
             _workers.Add(CreateWoker("檔案系統"));
             _workers.Add(CreateWoker("字典"));
@@ -76,9 +73,16 @@ namespace QuickSearch.Controller
             worker.DoWork += new DoWorkEventHandler(thread.DoWork);
             worker.RunWorkerCompleted += BackgroundWorkerSearchOver;
             worker.WorkerSupportsCancellation = true;
-            worker.RunWorkerAsync(Keyword);
+            worker.RunWorkerAsync(_keyword);
             _searchingCount++;
             return worker;
+        }
+
+        internal void SetKeyword(string keyword)
+        {
+            this._keyword = keyword;
+            _serialNumber++;
+            _serialNumber = _serialNumber + 1 % 1000;
         }
 
         void BackgroundWorkerSearchOver(object sender, RunWorkerCompletedEventArgs e)

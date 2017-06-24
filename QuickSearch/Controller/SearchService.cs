@@ -79,7 +79,7 @@ namespace QuickSearch.Controller
         public void Search(string keyword)
         {
             _searchTimeout.Restart();
-            _searchThreadObject.Keyword = keyword;
+            _searchThreadObject.SetKeyword(keyword);
         }
 
 
