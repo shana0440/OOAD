@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:QuickSearch.View"
         mc:Ignorable="d"
-        Title="Setting" Height="300" Width="300">
+        Title="Setting" Height="305.034" Width="310.067">
     <Grid Margin="1,0,-1,0">
         <Label Content="快捷鍵" HorizontalAlignment="Left" Margin="10,12,0,0" VerticalAlignment="Top" Height="25"/>
         <CheckBox x:Name="WinSpaceCheckBox" Content="Win + Space" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="61,18,0,0" IsChecked="True" Checked="UseWinSpace"/>
