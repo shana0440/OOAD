@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace QuickSearch
 {
@@ -15,7 +16,7 @@ namespace QuickSearch
         public const string CurrencyConvertUrl = "https://www.google.com/finance/converter?a={0}&from={1}&to=TWD";
         public const string SearchEngineUrl = "https://www.google.com.tw/search?q={0}";
 
-        public HashSet<Keys> KeyForHide;
+        public HashSet<Keys> KeyForHide = new HashSet<Keys> { Keys.Escape };
         public HashSet<Keys> KeyForOpenAndHide;
 
         public const int SearchbarWidth = 700;
@@ -33,9 +34,7 @@ namespace QuickSearch
         public Config()
         {
             // read setting xml
-            KeyForHide = new HashSet<Keys> { Keys.Escape };
-            KeyForOpenAndHide = new HashSet<Keys> { Keys.LWin, Keys.Space };
-            SetTheme("Dark");
+            ReadSetting();
         }
 
         public void SetHotKey(HashSet<Keys> hotkey)
@@ -58,6 +57,25 @@ namespace QuickSearch
             {
                 var test = System.Windows.Application.Current.Resources[field.Name] = theme.GetType().GetField(field.Name).GetValue(theme);
             }
+        }
+
+        void ReadSetting()
+        {
+            var path = @".\setting.xml";
+            var doc = new XmlDocument();
+            doc.Load(path);
+            var eles = doc.DocumentElement;
+            var hotKeyString = eles.SelectSingleNode("/Config/HotKey").InnerText;
+            var hotKeySplit = hotKeyString.Split('+');
+            HashSet<Keys> hotKey = new HashSet<Keys>();
+            foreach (var key in hotKeySplit)
+            {
+                var k = (Keys)Enum.Parse(typeof(Keys), key, true);
+                hotKey.Add(k);
+            }
+            SetHotKey(hotKey);
+            var theme = eles.SelectSingleNode("/Config/Theme").InnerText;
+            SetTheme(theme);
         }
     }
 }
