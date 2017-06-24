@@ -34,13 +34,14 @@ namespace QuickSearch
         public Config()
         {
             // read setting xml
-            ReadSetting();
+            LoadSetting();
         }
 
         public void SetHotKey(HashSet<Keys> hotkey)
         {
             KeyForOpenAndHide = hotkey;
             // save to setting xml
+            SaveSettingProperty("HotKey", String.Join("+", hotkey));
         }
 
         public void SetTheme(string theme)
@@ -48,6 +49,7 @@ namespace QuickSearch
             this.Theme = new Theme(theme);
             ApplyTheme(this.Theme);
             // save to setting xml
+            SaveSettingProperty("Theme", theme);
         }
 
         void ApplyTheme(Theme theme)
@@ -59,7 +61,7 @@ namespace QuickSearch
             }
         }
 
-        void ReadSetting()
+        void LoadSetting()
         {
             var path = @".\setting.xml";
             var doc = new XmlDocument();
@@ -73,9 +75,22 @@ namespace QuickSearch
                 var k = (Keys)Enum.Parse(typeof(Keys), key, true);
                 hotKey.Add(k);
             }
-            SetHotKey(hotKey);
+            KeyForOpenAndHide = hotKey;
             var theme = eles.SelectSingleNode("/Config/Theme").InnerText;
-            SetTheme(theme);
+            this.Theme = new Theme(theme);
+            ApplyTheme(this.Theme);
+        }
+
+        void SaveSettingProperty(string name, string value)
+        {
+            var path = @".\setting.xml";
+            var doc = new XmlDocument();
+            doc.Load(path);
+            var eles = doc.DocumentElement;
+            var selector = String.Format("/Config/{0}", name);
+            var node = eles.SelectSingleNode(selector);
+            node.InnerText = value;
+            doc.Save(path);
         }
     }
 }
