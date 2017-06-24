@@ -28,6 +28,23 @@ namespace QuickSearch.View
         {
             InitializeComponent();
             _config = config;
+            _hotkey = _config.KeyForOpenAndHide;
+            if (_hotkey.Count == 2
+                && _hotkey.Contains(System.Windows.Forms.Keys.LWin)
+                && _hotkey.Contains(System.Windows.Forms.Keys.Space))
+            {
+                WinSpaceCheckBox.IsChecked = true;
+                HotKeyTextBox.Text = "";
+            }
+            else
+            {
+                WinSpaceCheckBox.IsChecked = false;
+                HotKeyTextBox.Text = String.Join(" + ", _hotkey);
+            }
+
+            var themes = new String[] { "Dark", "Light" };
+            var index = Array.IndexOf(themes, _config.Theme.Name);
+            ThemeComboBox.SelectedIndex = index;
         }
 
         private void PreviewSetHotKey(object sender, KeyEventArgs e)
@@ -55,6 +72,7 @@ namespace QuickSearch.View
         {
             if (HotKeyTextBox != null)
             {
+                _hotkey.Clear();
                 _hotkey.Add(System.Windows.Forms.Keys.LWin);
                 _hotkey.Add(System.Windows.Forms.Keys.Space);
                 HotKeyTextBox.Text = "";

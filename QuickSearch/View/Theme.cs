@@ -46,5 +46,13 @@ namespace QuickSearch.View
         {
             return new SolidColorBrush((Color)ColorConverter.ConvertFromString(colorFormat));
         }
+
+        public string Name
+        {
+            get
+            {
+                return _themeName;
+            }
+        }
     }
 }

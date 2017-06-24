@@ -11,7 +11,7 @@
         <CheckBox x:Name="WinSpaceCheckBox" Content="Win + Space" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="61,18,0,0" IsChecked="True" Checked="UseWinSpace"/>
         <TextBox x:Name="HotKeyTextBox" HorizontalAlignment="Left" Padding="5,5,5,5"  Margin="61,38,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="221" IsReadOnly="True" IsReadOnlyCaretVisible="True" PreviewKeyDown="PreviewSetHotKey" PreviewKeyUp="EndSetHotKey"/>
         <Label Content="主題" HorizontalAlignment="Left" Margin="10,75,0,0" VerticalAlignment="Top" Height="25" RenderTransformOrigin="0.477,1.033"/>
-        <ComboBox HorizontalAlignment="Left" Margin="61,75,0,0" VerticalAlignment="Top" Width="221" SelectedIndex="0" Height="25" SelectionChanged="ChangeTheme">
+        <ComboBox x:Name="ThemeComboBox" HorizontalAlignment="Left" Margin="61,75,0,0" VerticalAlignment="Top" Width="221" SelectedIndex="0" Height="25" SelectionChanged="ChangeTheme">
             <ComboBoxItem Content="Dark"/>
             <ComboBoxItem Content="Light"/>
         </ComboBox>
