@@ -42,7 +42,7 @@ namespace QuickSearchTest
             SearchService.SearchOverEventHandler handler = new SearchService.SearchOverEventHandler(SearchOverEvent);
             _service.SubscribeSearchOverEvent(handler);
             _service.Search("1+1");
-            _service.AbortSearchThread();
+            _service.StopSearching();
 
             Thread.Sleep(1000);
             Assert.IsFalse(_isSearchOver);

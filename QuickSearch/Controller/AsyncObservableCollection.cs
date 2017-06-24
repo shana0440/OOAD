@@ -27,11 +27,27 @@ namespace QuickSearch.Controller
         {
             if (SynchronizationContext.Current == _synchronizationContext)
             {
-                action();
+                try
+                {
+                    action();
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    Console.WriteLine("=================ignore this error=================");
+                }
             }
             else
             {
-                _synchronizationContext.Send(_ => action(), null);
+                _synchronizationContext.Send(_ => {
+                    try
+                    {
+                        action();
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        Console.WriteLine("===========?????==================");
+                    }
+                }, null);
             }
         }
 

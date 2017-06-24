@@ -9,7 +9,6 @@ using QuickSearch.Models.Calculator;
 using QuickSearch.Models.FileSystem;
 using QuickSearch.Models.Dictionary;
 using QuickSearch.Models.CurrencyConverter;
-using System.Collections.ObjectModel;
 
 namespace QuickSearch.Controller
 {
@@ -18,29 +17,17 @@ namespace QuickSearch.Controller
         List<BackgroundWorker> _workers = new List<BackgroundWorker>();
         int _serialNumber = 0;
         int _searchingCount = 0;
-        volatile bool _isPause = false;
-        public List<IResultItem> ResultList = new List<IResultItem>();
-        public volatile string Keyword;
+        private string _keyword;
         public volatile ManualResetEvent _pauseEvent = new ManualResetEvent(true); // 暫停執行續用的
         public delegate void SearchOverEventHandler();
-        SearchOverEventHandler _searchOverEvent;
+        public SearchOverEventHandler SearchOverEvent;
         public delegate void EachWorkerSearchOverEventHandler(List<IResultItem> list);
         public EachWorkerSearchOverEventHandler EachWorkerSearchOverEvnet;
 
         public void Search()
         {
-            do
-            {
-                _pauseEvent.WaitOne(500);
-                _isPause = false;
-                Thread.Sleep(500);
-            } while (_isPause);
-
             CancelCurrentSearchingWorker();
-
-            _serialNumber++;
-            _serialNumber = _serialNumber + 1 % 1000;
-
+            
             _workers.Add(CreateWoker("計算機"));
             _workers.Add(CreateWoker("檔案系統"));
             _workers.Add(CreateWoker("字典"));
@@ -55,9 +42,7 @@ namespace QuickSearch.Controller
                 worker.CancelAsync();
             }
             _searchingCount = 0;
-            ResultList.Clear();
             _workers.Clear();
-            _serialNumber++;
         }
 
         MyBackgroundWorker CreateWoker(string threadName)
@@ -88,9 +73,16 @@ namespace QuickSearch.Controller
             worker.DoWork += new DoWorkEventHandler(thread.DoWork);
             worker.RunWorkerCompleted += BackgroundWorkerSearchOver;
             worker.WorkerSupportsCancellation = true;
-            worker.RunWorkerAsync(Keyword);
+            worker.RunWorkerAsync(_keyword);
             _searchingCount++;
             return worker;
+        }
+
+        internal void SetKeyword(string keyword)
+        {
+            this._keyword = keyword;
+            _serialNumber++;
+            _serialNumber = _serialNumber + 1 % 1000;
         }
 
         void BackgroundWorkerSearchOver(object sender, RunWorkerCompletedEventArgs e)
@@ -98,6 +90,8 @@ namespace QuickSearch.Controller
             var worker = (MyBackgroundWorker)sender;
 
             var isCurrentSearch = worker.SerialNumber == _serialNumber;
+            Console.WriteLine("Is Current Search Worker: {0}", isCurrentSearch);
+            Console.WriteLine("worker.SerialNumber: {0}, _serialNumber: {1}", worker.SerialNumber, _serialNumber);
             if (isCurrentSearch)
             {
                 _searchingCount--;
@@ -113,23 +107,12 @@ namespace QuickSearch.Controller
                 if (isAllBackgroundWokersSearchOver)
                 {
                     _workers.Clear();
-                    _searchOverEvent?.Invoke();
+                    SearchOverEvent?.Invoke();
                     GC.Collect();
                 }
             }
         }
         
-        public void SubscribeSearchOverEvent(SearchOverEventHandler handler)
-        {
-            _searchOverEvent = handler;
-        }
-
-        public void Wait500ms()
-        {
-            _pauseEvent.Reset();
-            _isPause = true;
-            Console.WriteLine("SearchThread is paused");
-        }
     }
 
 }

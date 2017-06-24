@@ -27,8 +27,9 @@ namespace QuickSearch.Models.Calculator
                     e.Result = results;
                 }
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                Console.WriteLine(exception.Message);
                 e.Result = null;
             }
         }

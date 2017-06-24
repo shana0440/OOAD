@@ -10,7 +10,39 @@ namespace QuickSearch.Models.ResultItemsFactory
     {
         protected Bitmap _icon;
         private bool _isSelected;
-        public string GroupName { get; set; }
+        private string _originGroupName;
+        private string _groupName;
+        private int _originIndex = -1;
+
+        public int OriginIndex {
+            get
+            {
+                return _originIndex;
+            }
+            set
+            {
+                _originIndex = (_originIndex == -1) ? value : _originIndex;
+            }
+        }
+        public string OriginGroupName {
+            get
+            {
+                return _originGroupName;
+            }
+        }
+
+        public string GroupName {
+            get
+            {
+                return _groupName;
+            }
+            set
+            {
+                _groupName = value;
+                _originGroupName = _originGroupName ?? value;
+            }
+        }
+
         public bool IsSelected {
             get
             {
@@ -45,7 +77,6 @@ namespace QuickSearch.Models.ResultItemsFactory
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         }
-
 
     }
 }

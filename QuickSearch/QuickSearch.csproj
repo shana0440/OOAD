@@ -69,8 +69,6 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Awesomium.Core, Version=1.7.5.1, Culture=neutral, PublicKeyToken=e1a0d7c8071a5214, processorArchitecture=x86" />
-    <Reference Include="Awesomium.Windows.Controls, Version=1.7.5.1, Culture=neutral, PublicKeyToken=7a34e179b8b61c39, processorArchitecture=x86" />
     <Reference Include="FMUtils.KeyboardHook, Version=1.0.140.2145, Culture=neutral, PublicKeyToken=1acd76c568cde84e, processorArchitecture=MSIL">
       <HintPath>..\packages\FMUtils.KeyboardHook.1.0.140.2145\lib\net40-Client\FMUtils.KeyboardHook.dll</HintPath>
       <Private>True</Private>
@@ -128,6 +126,7 @@
     <Compile Include="Controller\AsyncObservableCollection.cs" />
     <Compile Include="Controller\SearchService.cs" />
     <Compile Include="Controller\SearchThread.cs" />
+    <Compile Include="Controller\SearchTimeout.cs" />
     <Compile Include="HookKeyMatch.cs" />
     <Compile Include="Models\BitmapToBitmapImage.cs" />
     <Compile Include="Models\Calculator\CalculatorThread.cs" />

@@ -20,7 +20,7 @@ namespace QuickSearch.Models.Dictionary
         {
             GroupName = "字典";
             Title = word;
-            Priority = 800;
+            Priority = Config.DictionaryPriority;
             _icon = Properties.Resources.dictionary;
             _word = word;
             _definition = definition;

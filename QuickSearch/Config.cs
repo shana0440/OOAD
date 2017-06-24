@@ -21,5 +21,11 @@ namespace QuickSearch
         public const int SearchbarHeight = 420;
         public const int InputHieght = 50;
 
+        public const int CalculatorPriority = 999;
+        public const int CurrencyConverterPriority = 999;
+        public const int DictionaryPriority = 200;
+        public const int FileSystemPriority = 100;
+        public const int SearchEnginePriority = 50;
+
     }
 }

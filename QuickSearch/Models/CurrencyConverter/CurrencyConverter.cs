@@ -6,15 +6,19 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using QuickSearch.Models;
+using System.Text.RegularExpressions;
 
 namespace QuickSearch.Models.CurrencyConverter
 {
     public class CurrencyConverter
     {
 
-        public string Convert(string amount, string curreny)
+        public string Convert(string originCurrency)
         {
-            string url = String.Format(Config.CurrencyConvertUrl, amount, curreny.ToUpper());
+            if (!Regex.IsMatch(originCurrency, @"^\d+[A-Za-z]{3}$")) throw new ArgumentException("貨幣輸入不合法");
+            string currency = originCurrency.Substring(originCurrency.Length - 3, 3);
+            string amount = originCurrency.Substring(0, originCurrency.Length - 3);
+            string url = String.Format(Config.CurrencyConvertUrl, amount, currency.ToUpper());
             try
             {
                 string html = Crawler.GetResponse(url);

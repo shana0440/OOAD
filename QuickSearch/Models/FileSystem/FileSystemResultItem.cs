@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using QuickSearch.Models.ResultItemsFactory;
+using System.Xml;
 
 namespace QuickSearch.Models.FileSystem
 {
@@ -17,7 +18,7 @@ namespace QuickSearch.Models.FileSystem
         public FileSystemResultItem(string filePath)
         {
             GroupName = "檔案或資料夾";
-            Priority = 100;
+            Priority = Config.FileSystemPriority;
             _filePath = filePath;
             _property.Add("Created", "");
             _property.Add("Modified", "");
@@ -80,7 +81,47 @@ namespace QuickSearch.Models.FileSystem
 
         public override void OpenResource()
         {
+            Record(_filePath);
             Process.Start(_filePath);
+        }
+
+        void Record(string filePath)
+        {
+            var historyRecordsFile = @"fileOpenHistory.xml";
+            var xml = new XmlDocument();
+            if (!File.Exists(historyRecordsFile))
+            {
+                var recordsElem = xml.CreateElement("Records");
+                xml.AppendChild(recordsElem);
+                AddNewRecord(xml);
+            }
+            else
+            {
+                xml.Load(historyRecordsFile);
+                var node = xml.SelectSingleNode(String.Format("//Records/Record[@Title='{0}']", Title));
+                if (node == null)
+                    AddNewRecord(xml);
+                else
+                    IncreaseCount(node);
+            }
+            xml.Save(historyRecordsFile);
+        }
+
+        void AddNewRecord(XmlDocument xml)
+        {
+            var recordElem = xml.CreateElement("Record");
+            recordElem.SetAttribute("Title", Title);
+            recordElem.SetAttribute("Path", _filePath);
+            recordElem.SetAttribute("OpenCount", "1");
+
+            xml.SelectSingleNode("//Records").AppendChild(recordElem);
+        }
+
+        private void IncreaseCount(XmlNode node)
+        {
+            var count = Int32.Parse(node.Attributes["OpenCount"].Value);
+            count++;
+            node.Attributes["OpenCount"].Value = count.ToString();
         }
     }
 }

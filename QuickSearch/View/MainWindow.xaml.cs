@@ -14,6 +14,7 @@ using Xceed.Wpf.Toolkit.Core.Utilities;
 using HorizontalAlignment = System.Windows.HorizontalAlignment;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using System.Threading;
+using System.Windows.Media;
 
 namespace QuickSearch
 {
@@ -38,6 +39,7 @@ namespace QuickSearch
             _viewInitialization.Init();
             _searchService = new SearchService();
             _hookKeyMatch.PlusKeyDownEvent(SearchbarVisable);
+            Application.Current.Resources["DecorateImage"] = BitmapToBitmapImage.Transform((System.Drawing.Bitmap)System.Drawing.Image.FromFile(@"images\DecorateImage2.png"));
             _searchService.SubscribeSearchOverEvent(() => {
                 this.Dispatcher.Invoke(SearchOverEvent);
             });
@@ -51,8 +53,9 @@ namespace QuickSearch
             _isSearching = false;
             if (_searchService.ResultList.Count > 0)
             {
-                IResultItem item = _searchService.ResultList[0];
+                IResultItem item = _searchService.ResultList[_searchService.SelectedIndex];
                 VisualTreeHelperEx.FindDescendantByType<ScrollViewer>(ResultList)?.ScrollToTop();
+                _searchService.SelectItem(_searchService.SelectedIndex);
                 ShowSelectdItemContent(item);
             }
             else
@@ -167,7 +170,7 @@ namespace QuickSearch
         void HideWindow()
         {
             _isWindowVisible = false;
-            _searchService.AbortSearchThread();
+            _searchService.StopSearching();
             _searchService.ResultList.Clear();
             ResultIcon.Source = null;
             InputTextBox.Clear();
@@ -220,7 +223,7 @@ namespace QuickSearch
             {
                 InputTextBoxWatermark.Text = "Quick Search";
                 InputTextBoxWatermark.HorizontalAlignment = HorizontalAlignment.Left;
-                _searchService.AbortSearchThread();
+                _searchService.StopSearching();
                 _searchService.ResultList.Clear();
                 ResultIcon.Visibility = Visibility.Hidden;
             }
@@ -236,7 +239,7 @@ namespace QuickSearch
             var item = sender as ListBoxItem;
             if (item != null && item.IsSelected)
             {
-                _searchService.OpenItemResource(ResultList.SelectedIndex);
+                _searchService.OpenSelectedItemResource();
                 HideWindow();
             }
         }

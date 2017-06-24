@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace QuickSearch.Models.Calculator
@@ -12,15 +13,18 @@ namespace QuickSearch.Models.Calculator
 
         public string Execute(string expression)
         {
+            var expressionRegex = @"\(?\s?\d(\s?[\+\-\*/]?\s?\d)+\s?\)?";
+            var expressionFunctionRegex = String.Format(@"(sqrt|sin|cos|tan|log|exp|floor|abs|pow)", expressionRegex);
+            if (!Regex.IsMatch(expression, String.Format(@"{0}|{1}", expressionRegex, expressionFunctionRegex))) throw new Exception("算式不合法");
             expression = TransformMathOperators(expression);
             try
             {
                 var result = Eval.Execute(expression);
                 return result.ToString();
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                throw new ExecutionEngineException("算式有誤");
+                throw new Exception("算式有誤");
             }
         }
 

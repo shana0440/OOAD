@@ -22,13 +22,42 @@ namespace QuickSearchTest
             object[] param = { "2 * 1 + sqrt(100) + pow(20, 2)" };
             var answer = _obj.Invoke("Execute", param);
             Assert.AreEqual("412", answer);
+
+            param[0] = "sqrt(abs(-4))";
+            answer = _obj.Invoke("Execute", param);
+            Assert.AreEqual("2", answer);
+
+            param[0] = "1 + 1";
+            answer = _obj.Invoke("Execute", param);
+            Assert.AreEqual("2", answer);
+
+            param[0] = "1-1";
+            answer = _obj.Invoke("Execute", param);
+            Assert.AreEqual("0", answer);
+
+            param[0] = "1*1";
+            answer = _obj.Invoke("Execute", param);
+            Assert.AreEqual("1", answer);
+
+            param[0] = "1/1";
+            answer = _obj.Invoke("Execute", param);
+            Assert.AreEqual("1", answer);
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ExecutionEngineException), "算式有誤")]
+        [ExpectedException(typeof(Exception), "算式有誤")]
         public void TestExecuteError()
         {
             object[] param = { "2 * 1 + sqrt(100, 2) + pow(20, 2)" };
+            var answer = _obj.Invoke("Execute", param);
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception), "算式不合法")]
+        public void TestExecuteUnLegal()
+        {
+            object[] param = { "is english" };
             var answer = _obj.Invoke("Execute", param);
             Assert.Fail();
         }

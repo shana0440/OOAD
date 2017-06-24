@@ -1,16 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
-using QuickSearch.Models.Calculator;
-using QuickSearch.Models;
 using QuickSearch.Models.ResultItemsFactory;
 using System.Collections.ObjectModel;
-using QuickSearch.Models.FileSystem;
 using System;
-using QuickSearch.Models.Dictionary;
-using QuickSearch.Models.CurrencyConverter;
-using QuickSearch.Models.SearchEngine;
 using System.Threading;
-using System.Windows;
 
 namespace QuickSearch.Controller
 {
@@ -20,44 +12,48 @@ namespace QuickSearch.Controller
         SearchOverEventHandler _searchOverEvent;
         AsyncObservableCollection<IResultItem> _resultList = new AsyncObservableCollection<IResultItem>();
         public int SelectedIndex { get; internal set; }
-
-        Thread _searchThread;
-        SearchThread _searchThreadObject;
+        
+        SearchThread _searchThreadObject = new SearchThread();
+        SearchTimeout _searchTimeout = new SearchTimeout(250);
 
         public ObservableCollection<IResultItem> ResultList
         {
-            get
-            {
-                return _resultList;
-            }
+            get { return _resultList; }
         }
 
         public SearchService()
         {
-            _searchThreadObject = _searchThreadObject ?? new SearchThread();
             _searchThreadObject.EachWorkerSearchOverEvnet += (List<IResultItem> list) =>
             {
                 foreach (var item in list)
                 {
                     _resultList.Add(item);
                 }
+                try
+                {
+                    DecideBestResult(_resultList);
+                }
+                catch (InvalidOperationException)
+                {
+                    // do not thing
+                }
             };
-            _searchThreadObject.SubscribeSearchOverEvent(() =>
-            {
-                _searchThread.Join();
-                Console.WriteLine("SearchThread Search Over");
-                Console.WriteLine("Search Keyword: {0}", _searchThreadObject.Keyword);
-                Console.WriteLine("Get Reslut Items amount: {0}", _searchThreadObject.ResultList.Count);
-                Console.WriteLine("====================================");
-                SortBestResult(_resultList);
-                
-                _searchOverEvent();
-            });
 
-            _searchThread = _searchThread ?? new Thread(_searchThreadObject.Search);
+            _searchThreadObject.SearchOverEvent += () =>
+            {
+                DecideBestResult(_resultList);
+                _searchOverEvent();
+            };
+
+            _searchTimeout.SearchEvent = () =>
+            {
+                _resultList.Clear();
+                SelectedIndex = 0;
+                _searchThreadObject.Search();
+            };
         }
 
-        void SortBestResult(AsyncObservableCollection<IResultItem> results)
+        void DecideBestResult(AsyncObservableCollection<IResultItem> results)
         {
             if(results.Count <= 0) return;
             IResultItem bestSolution = null;
@@ -68,31 +64,22 @@ namespace QuickSearch.Controller
                     bestSolution = item;
                 }
             }
+            if (results[0].GroupName == "最佳搜尋結果")
+            {
+                results[0].GroupName = results[0].OriginGroupName;
+                Console.WriteLine("Origin Index: {0}", results[0].OriginIndex);
+                results.Move(0, results[0].OriginIndex);
+            }
             bestSolution.GroupName = "最佳搜尋結果";
+            bestSolution.OriginIndex = results.IndexOf(bestSolution);
             results.Remove(bestSolution);
             results.Insert(0, bestSolution);
         }
 
         public void Search(string keyword)
         {
-            _resultList.Clear();
-            if (!_searchThread.IsAlive)
-            {
-                var isThreadAbandoned = _searchThread.ThreadState == ThreadState.Stopped
-                    || _searchThread.ThreadState == ThreadState.Aborted
-                    || _searchThread.ThreadState == ThreadState.AbortRequested
-                    || _searchThread.ThreadState == ThreadState.Unstarted;
-                if (isThreadAbandoned)
-                {
-                    _searchThread = new Thread(_searchThreadObject.Search);
-                }
-                _searchThread.Start();
-                _resultList.Clear();
-                SelectedIndex = 0;
-            }
-
-            _searchThreadObject.Wait500ms();
-            _searchThreadObject.Keyword = keyword;
+            _searchTimeout.Restart();
+            _searchThreadObject.SetKeyword(keyword);
         }
 
 
@@ -103,12 +90,10 @@ namespace QuickSearch.Controller
 
         internal void OpenSelectedItemResource()
         {
-            _resultList[SelectedIndex].OpenResource();
-        }
-
-        public void OpenItemResource(int selectedIndex)
-        {
-            _resultList[selectedIndex].OpenResource();
+            if (SelectedIndex < _resultList.Count)
+            {
+                _resultList[SelectedIndex].OpenResource();
+            }
         }
 
         public void SelectItem(int selectedIndex)
@@ -124,9 +109,9 @@ namespace QuickSearch.Controller
             }
         }
 
-        public void AbortSearchThread()
+        public void StopSearching()
         {
-            _searchThread.Abort();
+            _searchTimeout.Stop();
             GC.Collect();
         }
     }

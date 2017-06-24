@@ -10,6 +10,7 @@ namespace QuickSearch.Models.Dictionary
 
         public Definition Search(string keyword)
         {
+            if (!Regex.IsMatch(keyword, @"^[A-Za-z]*$")) throw new ArgumentException("輸入除了英文以外的資料");
             string url = String.Format(Config.DirectoryUrl, Uri.EscapeDataString(keyword));
             string html = Crawler.GetResponse(url);
             return ParseHTML(html);
